@@ -365,6 +365,8 @@ export class ProfileService {
       height: typeof raw.height === 'number' ? `${Math.floor(raw.height / 30.48)} ft ${Math.round((raw.height / 2.54) % 12)} in` : raw.height,
       weight: raw.weight ? `${raw.weight} kg` : undefined,
       aboutMe: raw.aboutMe || '',
+      rasiGrid: raw.rasiGrid || raw.rasi_grid || undefined,
+      amsamGrid: raw.amsamGrid || raw.amsam_grid || undefined,
       status: (raw.status as ProfileStatus) || ProfileStatus.PENDING,
       approvedAt: raw.approvedAt || null,
       approvedBy: raw.approvedBy || null,

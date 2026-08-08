@@ -47,7 +47,8 @@ export const RejectDialog: React.FC<RejectDialogProps> = ({
 
     setIsLoading(true);
     try {
-      const res = await rejectProfileAction(profile.id, reason);
+      const profileId = Number(profile.id);
+      const res = await rejectProfileAction(profileId, reason);
       if (res.success && res.data) {
         showToast(res.message || `Profile ${profile.name} rejected.`, 'info');
         if (onSuccess) onSuccess(res.data);

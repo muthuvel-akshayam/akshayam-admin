@@ -35,7 +35,8 @@ export const UserRoleModal: React.FC<UserRoleModalProps> = ({
     setIsLoading(true);
     try {
       const action = isAdmin ? removeAdminAction : makeAdminAction;
-      const res = await action(user.id);
+      const userId = Number(user.id);
+      const res = await action(userId);
 
       if (res.success && res.data) {
         showToast(res.message || 'Privileges updated successfully.', 'success');

@@ -52,7 +52,8 @@ export const ProfileEditModal: React.FC<ProfileEditModalProps> = ({
     e.preventDefault();
     setIsLoading(true);
     try {
-      const res = await editProfileAction(profile.id, {
+      const profileId = Number(profile.id);
+      const res = await editProfileAction(profileId, {
         ...formData,
         age: Number(formData.age),
       });

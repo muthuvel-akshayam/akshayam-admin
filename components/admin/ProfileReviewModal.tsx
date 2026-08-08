@@ -58,7 +58,8 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
   const handleApprove = async () => {
     setIsLoading(true);
     try {
-      const res = await approveProfileAction(profile.id);
+      const profileId = Number(profile.id);
+      const res = await approveProfileAction(profileId);
       if (res.success) {
         showToast(res.message || 'Profile approved successfully!', 'success');
         if (!isStandalonePage) onClose?.();
@@ -76,10 +77,11 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
     if (!confirm(`Are you sure you want to permanently delete profile for ${profile.name}?`)) return;
     setIsLoading(true);
     try {
-      const res = await deleteProfileAction(profile.id);
+      const profileId = Number(profile.id);
+      const res = await deleteProfileAction(profileId);
       if (res.success) {
         showToast('Profile deleted successfully', 'success');
-        if (onDeleted) onDeleted(profile.id);
+        if (onDeleted) onDeleted(profileId);
         if (!isStandalonePage) onClose?.();
       } else {
         showToast(res.error || 'Deletion failed', 'error');

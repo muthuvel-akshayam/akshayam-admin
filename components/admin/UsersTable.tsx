@@ -40,11 +40,12 @@ export const UsersTable: React.FC<UsersTableProps> = ({
 
   const handleStatusToggle = async (e: React.MouseEvent, user: AdminUser) => {
     e.stopPropagation();
-    setLoadingId(user.id);
+    const userId = Number(user.id);
+    setLoadingId(userId);
     try {
       const isSuspended = user.status === 'SUSPENDED';
       const action = isSuspended ? activateUserAction : suspendUserAction;
-      const res = await action(user.id);
+      const res = await action(userId);
       if (res.success) showToast(res.message || `Account status updated for ${user.name}`, 'info');
       else showToast(res.error || 'Failed to change status', 'error');
     } catch (err: any) {
@@ -56,7 +57,8 @@ export const UsersTable: React.FC<UsersTableProps> = ({
 
   const handleDelete = async () => {
     if (!deleteConfirmUser) return;
-    setLoadingId(deleteConfirmUser.id);
+    const userId = Number(deleteConfirmUser.id);
+    setLoadingId(userId);
     try {
       if (deleteConfirmUser.profileId) {
         const res = await removeAfterMatchAction(deleteConfirmUser.profileId);

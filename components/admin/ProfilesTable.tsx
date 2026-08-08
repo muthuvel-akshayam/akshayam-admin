@@ -53,9 +53,10 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleApprove = async (profile: AdminProfile) => {
-    setLoadingId(profile.id);
+    const profileId = Number(profile.id);
+    setLoadingId(profileId);
     try {
-      const res = await approveProfileAction(profile.id);
+      const res = await approveProfileAction(profileId);
       if (res.success) {
         showToast(res.message || `Approved ${profile.name}`, 'success');
         if (onRefresh) onRefresh();
@@ -71,9 +72,10 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
 
   const handleDelete = async () => {
     if (!deleteConfirmProfile) return;
-    setLoadingId(deleteConfirmProfile.id);
+    const profileId = Number(deleteConfirmProfile.id);
+    setLoadingId(profileId);
     try {
-      const res = await removeAfterMatchAction(deleteConfirmProfile.id);
+      const res = await removeAfterMatchAction(profileId);
       if (res.success) {
         showToast('Profile moved to Remove After Match successfully', 'success');
         if (onRefresh) onRefresh();
@@ -89,9 +91,10 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
   };
 
   const handleRestore = async (profile: AdminProfile) => {
-    setLoadingId(profile.id);
+    const profileId = Number(profile.id);
+    setLoadingId(profileId);
     try {
-      const res = await restoreProfileAction(profile.id);
+      const res = await restoreProfileAction(profileId);
       if (res.success) {
         showToast(res.message || `Restored ${profile.name} to pending`, 'info');
         if (onRefresh) onRefresh();

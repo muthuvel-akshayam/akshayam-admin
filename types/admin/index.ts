@@ -96,6 +96,8 @@ export interface AdminProfile {
   complexion?: string;
   physicalStatus?: 'NORMAL' | 'PHYSICALLY_CHALLENGED';
   aboutMe?: string;
+  rasiGrid?: any;
+  amsamGrid?: any;
   
   // Rich details
   family?: FamilyInformation;
