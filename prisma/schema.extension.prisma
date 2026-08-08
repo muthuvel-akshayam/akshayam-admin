@@ -1,0 +1,106 @@
+// ==========================================
+// AKSHAYAM MATRIMONY - ADMIN DASHBOARD EXTENSION
+// Prisma Schema Extension for Moderation, RBAC, Compatibility & Settings
+// ==========================================
+//
+// INSTRUCTIONS FOR INTEGRATING WITH YOUR MAIN SCHEMA (c:\Projects\akshayam\prisma\schema.prisma):
+// 1. Copy the Enums below into your schema.prisma.
+// 2. Add the fields under "Profile Model Extensions" into your existing model Profile { ... }.
+// 3. Add the fields under "User Model Extensions" into your existing model User { ... }.
+// 4. Copy the new models (NakshatraCompatibility, SiteSettings, AdminAuditLog) to the bottom of schema.prisma.
+// 5. Run `npx prisma generate` and `npx prisma migrate dev` in your existing app directory.
+
+// ==========================================
+// 1. ENUMS FOR ROLE & MODERATION
+// ==========================================
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum ProfileStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+// ==========================================
+// 2. PROFILE MODEL EXTENSIONS
+// Add these fields to your existing `model Profile`
+// ==========================================
+
+/*
+model Profile {
+  // ... your existing fields ...
+
+  // Moderation & Approval System
+  status          ProfileStatus @default(PENDING)
+  approvedAt      DateTime?
+  approvedBy      String?       // ID of the admin who approved
+  rejectedReason  String?       // Reason provided if status is REJECTED
+  isLive          Boolean       @default(false)
+
+  // Indexes for high-performance admin and public search queries
+  @@index([status, isLive])
+}
+*/
+
+// ==========================================
+// 3. USER MODEL EXTENSIONS
+// Add these fields to your existing `model User`
+// ==========================================
+
+/*
+model User {
+  // ... your existing fields ...
+
+  role            UserRole      @default(USER)
+  status          String        @default("ACTIVE") // ACTIVE, SUSPENDED, DELETED
+
+  @@index([role, status])
+}
+*/
+
+// ==========================================
+// 4. NEW MODELS FOR ADMIN MODULE
+// ==========================================
+
+model NakshatraCompatibility {
+  id                String   @id @default(uuid())
+  maleNakshatra     String
+  femaleNakshatra   String
+  compatibilityScore Int     // e.g., 1 to 10 or percentage
+  compatibilityType String   // e.g., "Uthamam" (Excellent), "Madhyamam" (Average), "Adhamam" (Poor)
+  notes             String?  // Additional astrological notes from Excel
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@unique([maleNakshatra, femaleNakshatra])
+  @@index([maleNakshatra])
+  @@index([femaleNakshatra])
+}
+
+model SiteSettings {
+  id                    String   @id @default("default_settings")
+  minMaleAge            Int      @default(21)
+  minFemaleAge          Int      @default(18)
+  maxPhotoSizeMb        Int      @default(5)
+  maxDocSizeMb          Int      @default(10)
+  featuredProfilesLimit Int      @default(12)
+  maintenanceMode       Boolean  @default(false)
+  updatedAt             DateTime @updatedAt
+}
+
+model AdminAuditLog {
+  id          String   @id @default(uuid())
+  adminId     String
+  adminName   String?
+  action      String   // e.g., "APPROVE_PROFILE", "REJECT_PROFILE", "MAKE_ADMIN", "UPDATE_SETTINGS"
+  targetId    String?  // ID of profile, user, or setting modified
+  details     String?  // JSON string or summary of changes
+  createdAt   DateTime @default(now())
+
+  @@index([adminId, createdAt])
+  @@index([action])
+}

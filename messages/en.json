@@ -1,0 +1,51 @@
+{
+  "Navigation": {
+    "dashboard": "Dashboard",
+    "pending": "Pending",
+    "denied": "Denied",
+    "removeAfterMatch": "Remove After Match",
+    "users": "Users",
+    "nakshatraCompatibility": "Nakshatra Compatibility",
+    "analytics": "Analytics",
+    "settings": "Settings"
+  },
+  "LanguageSwitcher": {
+    "toggleLanguage": "Switch to Tamil",
+    "en": "English",
+    "ta": "Tamil"
+  },
+  "UserDrawer": {
+    "close": "Close"
+  },
+  "Nakshatra": {
+    "title": "Nakshatra Compatibility Matrix",
+    "subtitle": "Import, audit, and calculate uthamam / madhyamam astrological matching rules between male and female birth stars.",
+    "engineTitle": "Astrological Matching Engine",
+    "displayMatchingTitle": "Display Matching Nakshatras",
+    "displayMatchingDesc": "Select a birth star and gender below to instantly calculate uthamam (excellent) and madhyamam (average) compatibility partners from the imported matrix database.",
+    "searcherGender": "Searcher Gender",
+    "selectBirthStar": "Select Birth Star",
+    "maleNakshatra": "Male Nakshatra",
+    "femaleNakshatra": "Female Nakshatra",
+    "findCompatibleStars": "Find Compatible Stars →",
+    "closeResults": "✕ Close Results",
+    "compatibleMatchesFor": "Compatible Matches for",
+    "noMatchingRules": "No matching rules found in matrix for this star.",
+    "astrologicalPairing": "Astrological pairing",
+    "scoreUthamam": "★ {score}/10 • Uthamam",
+    "scoreMadhyamam": "★ {score}/10 • Madhyamam",
+    "scoreAdhamam": "★ {score}/10 • Adhamam",
+    "searchPlaceholder": "Search by Nakshatra (e.g. Rohini, Swati)...",
+    "filter": "Filter",
+    "allColumns": "All Columns",
+    "maleNakshatraOnly": "Male Nakshatra Only",
+    "femaleNakshatraOnly": "Female Nakshatra Only",
+    "importExcel": "Import Excel Spreadsheet",
+    "tableHeaderMale": "Male Nakshatra",
+    "tableHeaderFemale": "Female Nakshatra",
+    "tableHeaderScore": "Compatibility Score / Type",
+    "tableHeaderRemarks": "Astrological Remarks & Notes",
+    "noRecords": "No compatibility records found. Click \"Import Excel Spreadsheet\" to upload your Male / Female spreadsheets.",
+    "standardRules": "Standard planetary harmony rules apply."
+  }
+}

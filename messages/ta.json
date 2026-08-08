@@ -1,0 +1,51 @@
+{
+  "Navigation": {
+    "dashboard": "முகப்பு (Dashboard)",
+    "pending": "நிலுவையில் (Pending)",
+    "denied": "நிராகரிக்கப்பட்டது (Denied)",
+    "removeAfterMatch": "பொருத்தத்திற்குப் பிறகு நீக்கு",
+    "users": "பயனர்கள் (Users)",
+    "nakshatraCompatibility": "நட்சத்திர பொருத்தம் (Nakshatra Compatibility)",
+    "analytics": "பகுப்பாய்வு (Analytics)",
+    "settings": "அமைப்புகள் (Settings)"
+  },
+  "LanguageSwitcher": {
+    "toggleLanguage": "ஆங்கிலத்திற்கு மாற்று",
+    "en": "English",
+    "ta": "தமிழ்"
+  },
+  "UserDrawer": {
+    "close": "மூடு"
+  },
+  "Nakshatra": {
+    "title": "நட்சத்திர பொருத்த அட்டவணை",
+    "subtitle": "ஆண் மற்றும் பெண் பிறந்த நட்சத்திரங்களுக்கு இடையே உள்ள உத்தமம் / மத்திமம் ஜோதிட பொருத்தம் விதிகளை கணக்கிடுக.",
+    "engineTitle": "ஜோதிட பொருத்தம் இயந்திரம்",
+    "displayMatchingTitle": "பொருத்தமான நட்சத்திரங்களை காட்டு",
+    "displayMatchingDesc": "ஆண்/பெண் மற்றும் நட்சத்திரத்தை தேர்ந்தெடுத்து, உத்தமம் மற்றும் மத்திமம் பொருத்தங்களை உடனடியாக அறியவும்.",
+    "searcherGender": "பாலினம் தேடுக",
+    "selectBirthStar": "நட்சத்திரத்தை தேர்ந்தெடுக்கவும்",
+    "maleNakshatra": "ஆண் நட்சத்திரம்",
+    "femaleNakshatra": "பெண் நட்சத்திரம்",
+    "findCompatibleStars": "பொருத்தமான நட்சத்திரங்களை தேடு →",
+    "closeResults": "✕ முடிவுகளை மூடு",
+    "compatibleMatchesFor": "இதற்கான பொருத்தங்கள்",
+    "noMatchingRules": "இந்த நட்சத்திரத்திற்கு பொருத்தமான விதிகள் எதுவும் கிடைக்கவில்லை.",
+    "astrologicalPairing": "ஜோதிட பொருத்தம்",
+    "scoreUthamam": "★ {score}/10 • உத்தமம்",
+    "scoreMadhyamam": "★ {score}/10 • மத்திமம்",
+    "scoreAdhamam": "★ {score}/10 • அதமம்",
+    "searchPlaceholder": "நட்சத்திரத்தால் தேடவும் (உ.ம்: ரோகிணி, சுவாதி)...",
+    "filter": "வடிகட்டு",
+    "allColumns": "அனைத்து நெடுவரிசைகளும்",
+    "maleNakshatraOnly": "ஆண் நட்சத்திரம் மட்டும்",
+    "femaleNakshatraOnly": "பெண் நட்சத்திரம் மட்டும்",
+    "importExcel": "Excel கோப்பை பதிவேற்று",
+    "tableHeaderMale": "ஆண் நட்சத்திரம்",
+    "tableHeaderFemale": "பெண் நட்சத்திரம்",
+    "tableHeaderScore": "பொருத்தம் மதிப்பெண் / வகை",
+    "tableHeaderRemarks": "ஜோதிட குறிப்புகள்",
+    "noRecords": "பொருத்தமான பதிவுகள் கிடைக்கவில்லை. உங்கள் Excel கோப்புகளைப் பதிவேற்றவும்.",
+    "standardRules": "நிலையான கிரக பொருத்தம் விதிகள் பொருந்தும்."
+  }
+}

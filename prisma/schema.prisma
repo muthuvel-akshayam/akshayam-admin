@@ -1,0 +1,277 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id               String            @id
+  userIndex        Int               @unique @default(autoincrement())
+  email            String?           @unique
+  mobile_no        String?           @unique
+  password         String?
+  role             UserRole          @default(USER)
+  status           String            @default("ACTIVE")
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  receivedRequests ContactApproval[] @relation("ReceivedRequests")
+  sentRequests     ContactApproval[] @relation("SentRequests")
+  targetUserSentLogs    ProfileSentLog[] @relation("TargetUserSentLogs")
+  recipientUserSentLogs ProfileSentLog[] @relation("RecipientUserSentLogs")
+  expectations     Expectations?
+  family           Family?
+  profile          Profile?
+
+  @@index([role, status])
+}
+
+model Profile {
+  id                  String            @id
+  userId              String            @unique
+  name                String
+  gender              Gender
+  livingCountry       String
+  state               String
+  city                String
+  religion            String
+  caste               String
+  subCaste            String?
+  koottam             String?
+  dob                 DateTime
+  tob                 String?
+  lob                 String?
+  height              Float
+  weight              Float
+  physicalCondition   PhysicalCondition
+  skinColour          String
+  maritalStatus       MaritalStatus
+  familyStatus        FamilyStatus
+  foodHabits          Habit
+  drinkingHabits      Habit
+  smokingHabits       Habit
+  rasi                String?
+  nakshatra           String?
+  poruthaNakshatram   String[]
+  dosham              String?
+  jathakamUrl         String?
+  photoUrl            String?
+  casteCertificateUrl String?
+  hideMobileNo        Boolean           @default(true)
+  hideHouseAddress    Boolean           @default(true)
+  hideHouseLocation   Boolean           @default(true)
+  status              ProfileStatus     @default(PENDING)
+  approvedAt          DateTime?
+  approvedBy          String?
+  rejectedReason      String?
+  isLive              Boolean           @default(false)
+  amsamGrid           Json?
+  dasaBalance         String?
+  hidePhoto           Boolean           @default(false)
+  houseAddress        String?
+  rasiGrid            Json?
+  educations          Education[]
+  user                User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([status, isLive])
+}
+
+model Education {
+  id          String  @id
+  profileId   String
+  level       String
+  degreeName  String
+  institution String
+  profile     Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+}
+
+model Family {
+  id                 String              @id
+  userId             String              @unique
+  fatherName         String?
+  fatherLivingStatus ParentLivingStatus?
+  fatherStatus       String?
+  fatherMobile       String?
+  motherName         String?
+  motherLivingStatus ParentLivingStatus?
+  motherStatus       String?
+  motherMobile       String?
+  workNature         WorkNature?
+  salary             String?
+  organisation       String?
+  designation        String?
+  workingAddress     String?
+  googleLocation     String?
+  rentalIncome       String?
+  houseType          String?
+  houseSqFt          String?
+  siteLand           String?
+  thottam            String?
+  vacantLand         String?
+  totalAssetValue    String?
+  assetComments      String?
+  user               User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  siblings           Sibling[]
+}
+
+model Sibling {
+  id       String @id
+  familyId String
+  name     String
+  relation String
+  status   String
+  family   Family @relation(fields: [familyId], references: [id], onDelete: Cascade)
+}
+
+model Expectations {
+  id                      String   @id
+  userId                  String   @unique
+  expectedHeight          Float?
+  colourPreference        String?
+  maxAgeLimit             Int?
+  dowryExpectation        String?
+  preferredSectors        String[]
+  preferredLocations      String[]
+  expectedIncome          String?
+  expectsRentalIncome     Boolean?
+  expectsThottam          Boolean?
+  vacantLand              String?
+  preferredDistanceRadius Int?
+  city                    String?
+  comments                String?
+  user                    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ContactApproval {
+  id          String         @id
+  requesterId String
+  recipientId String
+  status      ApprovalStatus @default(PENDING)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  recipient   User           @relation("ReceivedRequests", fields: [recipientId], references: [id], onDelete: Cascade)
+  requester   User           @relation("SentRequests", fields: [requesterId], references: [id], onDelete: Cascade)
+
+  @@unique([requesterId, recipientId])
+}
+
+model NakshatraCompatibility {
+  id                 String   @id
+  maleNakshatra      String
+  femaleNakshatra    String
+  compatibilityScore Int
+  compatibilityType  String
+  notes              String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@unique([maleNakshatra, femaleNakshatra])
+  @@index([maleNakshatra])
+  @@index([femaleNakshatra])
+}
+
+model SiteSettings {
+  id                    String   @id @default("default_settings")
+  minMaleAge            Int      @default(21)
+  minFemaleAge          Int      @default(18)
+  maxPhotoSizeMb        Int      @default(5)
+  maxDocSizeMb          Int      @default(10)
+  featuredProfilesLimit Int      @default(12)
+  maintenanceMode       Boolean  @default(false)
+  updatedAt             DateTime @updatedAt
+}
+
+model AdminAuditLog {
+  id        String   @id
+  adminId   String
+  adminName String?
+  action    String
+  targetId  String?
+  details   String?
+  createdAt DateTime @default(now())
+
+  @@index([adminId, createdAt])
+  @@index([action])
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum PhysicalCondition {
+  SLIM
+  AVERAGE
+  FAT
+}
+
+enum MaritalStatus {
+  NEVER_MARRIED
+  DIVORCED
+  WIDOWED
+  AWAITING_DIVORCE
+}
+
+enum FamilyStatus {
+  MIDDLE
+  UPPER_MIDDLE
+  HIGH
+  VIP
+  LOW
+}
+
+enum Habit {
+  NONE
+  OCCASIONAL
+  REGULAR
+}
+
+enum ParentLivingStatus {
+  ALIVE
+  LATE
+}
+
+enum WorkNature {
+  JOB
+  BUSINESS
+  NOT_WORKING
+}
+
+enum ApprovalStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum ProfileStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  MATCHED_REMOVED
+}
+
+enum ProfileSentStatus {
+  SENT
+  NOT_MATCHED
+}
+
+model ProfileSentLog {
+  id              Int               @id @default(autoincrement())
+  targetUserId    String
+  recipientUserId String
+  status          ProfileSentStatus @default(SENT)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  targetUser      User              @relation("TargetUserSentLogs", fields: [targetUserId], references: [id], onDelete: Cascade)
+  recipientUser   User              @relation("RecipientUserSentLogs", fields: [recipientUserId], references: [id], onDelete: Cascade)
+
+  @@unique([targetUserId, recipientUserId])
+}
