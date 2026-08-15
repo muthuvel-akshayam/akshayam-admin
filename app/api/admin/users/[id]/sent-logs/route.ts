@@ -18,6 +18,11 @@ export async function GET(
     const logs = await prisma.profileSentLog.findMany({
       where: { targetUserId: userId },
       include: {
+        targetUser: {
+          select: {
+            mobile_no: true,
+          }
+        },
         recipientUser: {
           select: {
             id: true,

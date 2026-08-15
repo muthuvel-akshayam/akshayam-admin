@@ -35,6 +35,7 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
   const [userData, setUserData] = useState<any>(null);
   const [actionLoading, setActionLoading] = useState(false);
   const [reviewReason, setReviewReason] = useState('');
+  const [newUserId, setNewUserId] = useState('');
   const [previewDocument, setPreviewDocument] = useState<{ url: string; label: string } | null>(null);
   const [matchTrackingTab, setMatchTrackingTab] = useState<'SENT' | 'NOT_MATCHED' | null>(null);
   const { showToast } = useToast();
@@ -43,6 +44,7 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
     if (!isOpen || !userId) {
       setUserData(null);
       setReviewReason('');
+      setNewUserId('');
       return;
     }
 
@@ -50,8 +52,12 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
     fetch(`/api/admin/users/${encodeURIComponent(String(userId))}`)
       .then((res) => res.json())
       .then((data) => {
-        if (data.success) setUserData(data.data);
-        else showToast(data.error || 'Failed to load user', 'error');
+        if (data.success) {
+          setUserData(data.data);
+          setNewUserId(String(data.data.id));
+        } else {
+          showToast(data.error || 'Failed to load user', 'error');
+        }
       })
       .catch((error) => showToast(error.message, 'error'))
       .finally(() => setLoading(false));
@@ -118,9 +124,17 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
     setActionLoading(true);
     try {
       const response = await fetch(`/api/admin/users/${encodeURIComponent(String(userId))}/review`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action, reason: reviewReason }),
       });
+
+      const contentType = response.headers.get('content-type') || '';
+      if (!contentType.includes('application/json')) {
+        const text = await response.text();
+        throw new Error(text || 'Unexpected server response');
+      }
+
       const data = await response.json();
       if (!data.success) throw new Error(data.error || 'Profile review failed.');
       setUserData(data.data);
@@ -137,6 +151,44 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
   };
 
 
+
+  const handleUpdateUserId = async () => {
+    if (!userId || !userData) return;
+    const trimmedId = newUserId.trim();
+    if (!trimmedId) {
+      showToast('New user ID is required.', 'error');
+      return;
+    }
+    if (trimmedId === String(userData.id)) {
+      showToast('Please provide a different user ID to update.', 'error');
+      return;
+    }
+
+    setActionLoading(true);
+    try {
+      const response = await fetch(`/api/admin/users/${encodeURIComponent(String(userId))}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ newUserId: trimmedId }),
+      });
+
+      const contentType = response.headers.get('content-type') || '';
+      if (!contentType.includes('application/json')) {
+        const text = await response.text();
+        throw new Error(text || 'Unexpected server response');
+      }
+
+      const data = await response.json();
+      if (!data.success) throw new Error(data.error || 'Failed to update user ID.');
+      showToast('User ID updated successfully. The drawer will refresh.', 'success');
+      onReviewComplete?.();
+      onClose();
+    } catch (error: any) {
+      showToast(error.message || 'Failed to update user ID.', 'error');
+    } finally {
+      setActionLoading(false);
+    }
+  };
 
   if (!isOpen) return null;
   const isPending = profile?.status === 'PENDING';
@@ -160,7 +212,7 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
                 <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-2xl font-bold uppercase">
                   {(profile?.name || userData.email || 'U')[0]}
                 </div>
-                <div>
+                <div className="flex-1 min-w-0">
                   <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
                     {profile?.name || 'Unknown name'}
                     {userData.userIndex && (
@@ -170,6 +222,25 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
                     )}
                   </h3>
                   <p className="text-sm text-slate-500 break-all">{userData.email || 'No email provided'}</p>
+                  <div className="mt-3 grid gap-2 sm:grid-cols-[1fr_auto] items-end">
+                    <label className="text-xs font-semibold uppercase tracking-wide text-slate-400">User ID</label>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={newUserId}
+                        onChange={(event) => setNewUserId(event.target.value)}
+                        className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+                      />
+                      <Button
+                        variant="primary"
+                        isLoading={actionLoading}
+                        onClick={handleUpdateUserId}
+                        className="whitespace-nowrap"
+                      >
+                        Save ID
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm mt-5"><div><span className="block text-slate-500">Phone</span><strong>{userData.mobile_no || 'N/A'}</strong></div><div><span className="block text-slate-500">Account status</span><Badge status={userData.status} /></div><div><span className="block text-slate-500">Profile status</span><Badge status={profile?.status || 'PENDING'} /></div></div>

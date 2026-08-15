@@ -214,6 +214,54 @@ export class UserService {
   }
 
   /**
+   * Updates a user's primary ID and migrates all related references.
+   */
+  static async updateUserId(oldUserId: string, newUserId: string, adminId: number): Promise<AdminUser> {
+    try {
+      const db = prisma as any;
+      if (db.user) {
+        const existing = await db.user.findUnique({
+          where: { id: oldUserId },
+          include: {
+            profile: true,
+          },
+        });
+
+        if (!existing) {
+          throw new Error('User not found');
+        }
+
+        const alreadyExists = await db.user.findUnique({ where: { id: newUserId } });
+        if (alreadyExists) {
+          throw new Error('A user with the new ID already exists. Choose a different ID.');
+        }
+
+        const updatedUser = await prisma.$transaction(async (tx: any) => {
+          const updated = await tx.user.update({
+            where: { id: oldUserId },
+            data: { id: newUserId },
+            include: { profile: { select: { id: true, name: true } } },
+          });
+
+          return updated;
+        });
+
+        if (!updatedUser) {
+          throw new Error('Failed to migrate user ID.');
+        }
+
+        await logAdminAction(adminId, 'UPDATE_USER_ID', oldUserId, { newUserId });
+        return UserService.formatUser(updatedUser);
+      }
+    } catch (error) {
+      console.warn('DB update failed in updateUserId:', error);
+      throw error;
+    }
+
+    throw new Error('User update service unavailable.');
+  }
+
+  /**
    * Deletes a user account permanently
    */
   static async deleteUser(userId: number, adminId: number): Promise<boolean> {
@@ -257,5 +305,6 @@ export const getUsers = async (
 };
 export const updateUserRole = UserService.updateUserRole;
 export const updateUserStatus = UserService.updateUserStatus;
+export const updateUserId = UserService.updateUserId;
 export const deleteUser = UserService.deleteUser;
 

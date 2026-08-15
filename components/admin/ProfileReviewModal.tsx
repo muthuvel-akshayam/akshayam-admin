@@ -52,14 +52,15 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
   const [selectedPhotoIdx, setSelectedPhotoIdx] = useState(0);
   const [fullscreenImageUrl, setFullscreenImageUrl] = useState<string | null>(null);
   const [jathagamImgError, setJathagamImgError] = useState(false);
+  const [newUserId, setNewUserId] = useState(String(profile?.userId || ''));
 
   if (!profile) return null;
 
   const handleApprove = async () => {
     setIsLoading(true);
     try {
-      const profileId = Number(profile.id);
-      const res = await approveProfileAction(profileId);
+      const profileId = Number(profile.id) || (profile.id as any);
+      const res = await approveProfileAction(profileId, newUserId !== String(profile.userId) ? newUserId : undefined);
       if (res.success) {
         showToast(res.message || 'Profile approved successfully!', 'success');
         if (!isStandalonePage) onClose?.();
@@ -129,19 +130,29 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
         {/* Action Panel in Header */}
         <div className="flex items-center gap-2 self-end sm:self-auto">
           {profile.status !== ProfileStatus.APPROVED && (
-            <Button
-              variant="success"
-              size="sm"
-              onClick={handleApprove}
-              isLoading={isLoading}
-              leftIcon={
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-              }
-            >
-              Approve
-            </Button>
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                placeholder="Assign User ID"
+                value={newUserId}
+                onChange={(e) => setNewUserId(e.target.value)}
+                className="bg-white/10 border border-emerald-500 text-white placeholder:text-emerald-300 text-xs px-2 py-1.5 rounded-lg w-28 focus:outline-none focus:border-white transition-colors"
+                title="Optional: Assign a specific User ID before approving"
+              />
+              <Button
+                variant="success"
+                size="sm"
+                onClick={handleApprove}
+                isLoading={isLoading}
+                leftIcon={
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                }
+              >
+                Approve
+              </Button>
+            </div>
           )}
 
           {profile.status !== ProfileStatus.REJECTED && (

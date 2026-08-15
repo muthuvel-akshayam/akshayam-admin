@@ -1,6 +1,6 @@
 import React from 'react';
 import { redirect } from 'next/navigation';
-import { requireAdmin } from '@/lib/admin/auth';
+import { requireAdminRedirect } from '@/lib/admin/auth';
 import { getProfilesByStatus } from '@/services/admin/profile.service';
 import AdminLayout from '@/components/admin/AdminLayout';
 import '@/app/globals.css';
@@ -16,11 +16,7 @@ export default async function RootAdminLayout({
   children: React.ReactNode;
 }) {
   // Enforce role-based access control (RBAC): Only USER with role == ADMIN can enter
-  const auth = await requireAdmin();
-
-  if (!auth || !auth.user) {
-    redirect('/');
-  }
+  const auth = await requireAdminRedirect();
 
   // Fetch live count of pending profiles for sidebar badge notification
   const pendingData = await getProfilesByStatus('PENDING', 1, 1);

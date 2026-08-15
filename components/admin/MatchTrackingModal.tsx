@@ -191,7 +191,7 @@ export default function MatchTrackingModal({ isOpen, onClose, targetUserId, init
 
                   <div className="flex items-center gap-2 mt-auto">
                     <a
-                      href={`https://wa.me/${log.recipientUser?.mobile_no?.replace(/\D/g, '') || ''}`}
+                      href={`https://wa.me/${log.targetUser?.mobile_no?.replace(/\D/g, '') || ''}?text=${encodeURIComponent(`Here is a profile match we found for you:\n\nName: ${log.recipientUser?.profile?.name}\nAstrology: ${log.recipientUser?.profile?.nakshatra || 'N/A'} / ${log.recipientUser?.profile?.rasi || 'N/A'}\n\nPlease review and let us know if you are interested!`)}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex-1 flex justify-center items-center gap-1 py-2 text-xs font-bold rounded-lg border border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-colors"

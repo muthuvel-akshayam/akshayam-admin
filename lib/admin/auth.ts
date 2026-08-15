@@ -119,12 +119,20 @@ export async function checkIsAdmin(): Promise<AdminSession | null> {
  */
 export async function requireAdmin(): Promise<AdminSession> {
   const session = await checkIsAdmin();
-  
   if (!session) {
-    // Per requirement: If a normal user tries to access admin pages, redirect them to "/"
+    throw new Error('Unauthorized');
+  }
+  return session;
+}
+
+/**
+ * Guard for pages/layouts: redirect to "/" if not authenticated as admin.
+ */
+export async function requireAdminRedirect(): Promise<AdminSession> {
+  const session = await checkIsAdmin();
+  if (!session) {
     redirect('/');
   }
-
   return session;
 }
 

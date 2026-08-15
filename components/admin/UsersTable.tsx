@@ -143,7 +143,6 @@ export const UsersTable: React.FC<UsersTableProps> = ({
                           <div className="font-bold text-slate-900 leading-tight flex items-center gap-2">
                             {user.name} <span className="text-[10px] text-slate-500 font-semibold bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200">#{user.userIndex || '-'}</span>
                           </div>
-                          <div className="text-xs text-slate-400">{user.email}</div>
                         </div>
                       </div>
                     </td>

@@ -7,6 +7,7 @@
 import { revalidatePath } from 'next/cache';
 import { requireAdmin } from '../../lib/admin/auth';
 import { ProfileService } from '../../services/admin/profile.service';
+import { UserService } from '../../services/admin/user.service';
 import {
   AdminProfile,
   AdminDashboardStats,
@@ -20,10 +21,20 @@ import {
  * Approves a pending profile and makes it live for public search
  */
 export async function approveProfileAction(
-  id: number
+  id: number,
+  newUserId?: string
 ): Promise<ServerActionResponse<AdminProfile>> {
   try {
     const session = await requireAdmin();
+    
+    // Fetch profile to get the current userId if newUserId is provided
+    if (newUserId) {
+      const profile = await ProfileService.getProfileById(id);
+      if (profile && profile.userId && String(profile.userId) !== newUserId) {
+        await UserService.updateUserId(String(profile.userId), newUserId, session.user.id);
+      }
+    }
+
     const updated = await ProfileService.moderateProfile(
       id,
       ProfileStatus.APPROVED,
