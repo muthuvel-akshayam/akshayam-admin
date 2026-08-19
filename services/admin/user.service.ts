@@ -229,7 +229,7 @@ export class UserService {
           data: { isFeatured },
           include: { profile: { select: { id: true, name: true } } },
         });
-        await logAdminAction(String(adminId), `UPDATE_FEATURED_${isFeatured ? 'TRUE' : 'FALSE'}`, String(userId));
+        await logAdminAction(Number(adminId), `UPDATE_FEATURED_${isFeatured ? 'TRUE' : 'FALSE'}`, String(userId));
         return UserService.formatUser(updated);
       }
     } catch (error) {
