@@ -62,8 +62,8 @@ export const NakshatraMatches: React.FC<NakshatraMatchesProps> = ({ user }) => {
         </p>
       </div>
 
-      <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
-        <table className="w-full text-left text-xs sm:text-sm">
+      <div className="bg-white rounded-xl border border-slate-200 overflow-x-auto shadow-sm">
+        <table className="w-full min-w-[400px] text-left text-xs sm:text-sm">
           <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase tracking-wider text-[11px] font-bold">
             <tr>
               <th className="px-5 py-3">Target Nakshatra</th>

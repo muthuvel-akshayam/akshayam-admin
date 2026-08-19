@@ -197,10 +197,16 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
   return (
     <>
       <div className="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-40" onClick={onClose} />
-      <aside className="fixed inset-y-0 right-0 w-full max-w-3xl bg-white shadow-2xl z-50 flex flex-col border-l border-slate-200 animate-slideInRight">
-        <header className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-slate-50">
-          <div><h2 className="text-xl font-bold text-slate-800">Registration Review</h2><p className="text-xs text-slate-500">Review all submitted details before deciding.</p></div>
-          <button onClick={onClose} className="p-2 rounded-full hover:bg-slate-200 text-slate-500" aria-label="Close">✕</button>
+      <aside className="fixed top-16 bottom-0 right-0 w-full max-w-3xl bg-white shadow-2xl z-50 flex flex-col border-l border-slate-200 animate-slideInRight">
+        <header className="flex items-center gap-4 px-4 sm:px-6 py-4 border-b border-slate-200 bg-slate-50">
+          <button onClick={onClose} className="p-2 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-700 flex items-center gap-2 transition-colors text-xs font-bold">
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+            Back
+          </button>
+          <div>
+            <h2 className="text-lg sm:text-xl font-bold text-slate-800">Registration Review</h2>
+            <p className="text-xs text-slate-500 hidden sm:block">Review all submitted details before deciding.</p>
+          </div>
         </header>
 
         <main className="flex-1 overflow-y-auto p-6 space-y-6">
@@ -209,9 +215,17 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
           : <>
             <section className="bg-slate-50 rounded-2xl p-5 border border-slate-100">
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-2xl font-bold uppercase">
-                  {(profile?.name || userData.email || 'U')[0]}
-                </div>
+                {profile?.photoUrl ? (
+                  <img 
+                    src={getFullUrl(profile.photoUrl, 'Profile photo')} 
+                    alt={profile.name || 'User'} 
+                    className="w-16 h-16 rounded-full object-cover border-2 border-emerald-400 shadow-sm"
+                  />
+                ) : (
+                  <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-2xl font-bold uppercase border-2 border-emerald-200">
+                    {(profile?.name || userData.email || 'U')[0]}
+                  </div>
+                )}
                 <div className="flex-1 min-w-0">
                   <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
                     {profile?.name || 'Unknown name'}
