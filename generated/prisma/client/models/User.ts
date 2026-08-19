@@ -44,6 +44,7 @@ export type UserMinAggregateOutputType = {
   status: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  isFeatured: boolean | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -56,6 +57,7 @@ export type UserMaxAggregateOutputType = {
   status: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  isFeatured: boolean | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -68,6 +70,7 @@ export type UserCountAggregateOutputType = {
   status: number
   createdAt: number
   updatedAt: number
+  isFeatured: number
   _all: number
 }
 
@@ -90,6 +93,7 @@ export type UserMinAggregateInputType = {
   status?: true
   createdAt?: true
   updatedAt?: true
+  isFeatured?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -102,6 +106,7 @@ export type UserMaxAggregateInputType = {
   status?: true
   createdAt?: true
   updatedAt?: true
+  isFeatured?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -114,6 +119,7 @@ export type UserCountAggregateInputType = {
   status?: true
   createdAt?: true
   updatedAt?: true
+  isFeatured?: true
   _all?: true
 }
 
@@ -205,7 +211,7 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 
 export type UserGroupByOutputType = {
   id: string
-  userIndex: number
+  userIndex: number | null
   email: string | null
   mobile_no: string | null
   password: string | null
@@ -213,6 +219,7 @@ export type UserGroupByOutputType = {
   status: string
   createdAt: Date
   updatedAt: Date
+  isFeatured: boolean
   _count: UserCountAggregateOutputType | null
   _avg: UserAvgAggregateOutputType | null
   _sum: UserSumAggregateOutputType | null
@@ -240,7 +247,7 @@ export type UserWhereInput = {
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   id?: Prisma.StringFilter<"User"> | string
-  userIndex?: Prisma.IntFilter<"User"> | number
+  userIndex?: Prisma.IntNullableFilter<"User"> | number | null
   email?: Prisma.StringNullableFilter<"User"> | string | null
   mobile_no?: Prisma.StringNullableFilter<"User"> | string | null
   password?: Prisma.StringNullableFilter<"User"> | string | null
@@ -248,6 +255,7 @@ export type UserWhereInput = {
   status?: Prisma.StringFilter<"User"> | string
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  isFeatured?: Prisma.BoolFilter<"User"> | boolean
   receivedRequests?: Prisma.ContactApprovalListRelationFilter
   sentRequests?: Prisma.ContactApprovalListRelationFilter
   targetUserSentLogs?: Prisma.ProfileSentLogListRelationFilter
@@ -259,7 +267,7 @@ export type UserWhereInput = {
 
 export type UserOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  userIndex?: Prisma.SortOrder
+  userIndex?: Prisma.SortOrderInput | Prisma.SortOrder
   email?: Prisma.SortOrderInput | Prisma.SortOrder
   mobile_no?: Prisma.SortOrderInput | Prisma.SortOrder
   password?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -267,6 +275,7 @@ export type UserOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
   receivedRequests?: Prisma.ContactApprovalOrderByRelationAggregateInput
   sentRequests?: Prisma.ContactApprovalOrderByRelationAggregateInput
   targetUserSentLogs?: Prisma.ProfileSentLogOrderByRelationAggregateInput
@@ -289,6 +298,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.StringFilter<"User"> | string
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  isFeatured?: Prisma.BoolFilter<"User"> | boolean
   receivedRequests?: Prisma.ContactApprovalListRelationFilter
   sentRequests?: Prisma.ContactApprovalListRelationFilter
   targetUserSentLogs?: Prisma.ProfileSentLogListRelationFilter
@@ -300,7 +310,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  userIndex?: Prisma.SortOrder
+  userIndex?: Prisma.SortOrderInput | Prisma.SortOrder
   email?: Prisma.SortOrderInput | Prisma.SortOrder
   mobile_no?: Prisma.SortOrderInput | Prisma.SortOrder
   password?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -308,6 +318,7 @@ export type UserOrderByWithAggregationInput = {
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
@@ -320,7 +331,7 @@ export type UserScalarWhereWithAggregatesInput = {
   OR?: Prisma.UserScalarWhereWithAggregatesInput[]
   NOT?: Prisma.UserScalarWhereWithAggregatesInput | Prisma.UserScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"User"> | string
-  userIndex?: Prisma.IntWithAggregatesFilter<"User"> | number
+  userIndex?: Prisma.IntNullableWithAggregatesFilter<"User"> | number | null
   email?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   mobile_no?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   password?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
@@ -328,11 +339,12 @@ export type UserScalarWhereWithAggregatesInput = {
   status?: Prisma.StringWithAggregatesFilter<"User"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
+  isFeatured?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
 }
 
 export type UserCreateInput = {
   id: string
-  userIndex?: number
+  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -340,6 +352,7 @@ export type UserCreateInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  isFeatured?: boolean
   receivedRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRequesterInput
   targetUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutTargetUserInput
@@ -351,7 +364,7 @@ export type UserCreateInput = {
 
 export type UserUncheckedCreateInput = {
   id: string
-  userIndex?: number
+  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -359,6 +372,7 @@ export type UserUncheckedCreateInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  isFeatured?: boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRequesterInput
   targetUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutTargetUserInput
@@ -377,6 +391,7 @@ export type UserUpdateInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUpdateManyWithoutRequesterNestedInput
   targetUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutTargetUserNestedInput
@@ -388,7 +403,7 @@ export type UserUpdateInput = {
 
 export type UserUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -396,6 +411,7 @@ export type UserUncheckedUpdateInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRequesterNestedInput
   targetUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutTargetUserNestedInput
@@ -407,7 +423,7 @@ export type UserUncheckedUpdateInput = {
 
 export type UserCreateManyInput = {
   id: string
-  userIndex?: number
+  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -415,6 +431,7 @@ export type UserCreateManyInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  isFeatured?: boolean
 }
 
 export type UserUpdateManyMutationInput = {
@@ -426,11 +443,12 @@ export type UserUpdateManyMutationInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type UserUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -438,6 +456,7 @@ export type UserUncheckedUpdateManyInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -450,6 +469,7 @@ export type UserCountOrderByAggregateInput = {
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
 }
 
 export type UserAvgOrderByAggregateInput = {
@@ -466,6 +486,7 @@ export type UserMaxOrderByAggregateInput = {
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -478,6 +499,7 @@ export type UserMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
 }
 
 export type UserSumOrderByAggregateInput = {
@@ -505,8 +527,12 @@ export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
   increment?: number
   decrement?: number
   multiply?: number
@@ -613,7 +639,7 @@ export type UserUpdateOneRequiredWithoutRecipientUserSentLogsNestedInput = {
 
 export type UserCreateWithoutProfileInput = {
   id: string
-  userIndex?: number
+  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -621,6 +647,7 @@ export type UserCreateWithoutProfileInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  isFeatured?: boolean
   receivedRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRequesterInput
   targetUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutTargetUserInput
@@ -631,7 +658,7 @@ export type UserCreateWithoutProfileInput = {
 
 export type UserUncheckedCreateWithoutProfileInput = {
   id: string
-  userIndex?: number
+  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -639,6 +666,7 @@ export type UserUncheckedCreateWithoutProfileInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  isFeatured?: boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRequesterInput
   targetUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutTargetUserInput
@@ -672,6 +700,7 @@ export type UserUpdateWithoutProfileInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUpdateManyWithoutRequesterNestedInput
   targetUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutTargetUserNestedInput
@@ -682,7 +711,7 @@ export type UserUpdateWithoutProfileInput = {
 
 export type UserUncheckedUpdateWithoutProfileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -690,6 +719,7 @@ export type UserUncheckedUpdateWithoutProfileInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRequesterNestedInput
   targetUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutTargetUserNestedInput
@@ -700,7 +730,7 @@ export type UserUncheckedUpdateWithoutProfileInput = {
 
 export type UserCreateWithoutFamilyInput = {
   id: string
-  userIndex?: number
+  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -708,6 +738,7 @@ export type UserCreateWithoutFamilyInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  isFeatured?: boolean
   receivedRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRequesterInput
   targetUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutTargetUserInput
@@ -718,7 +749,7 @@ export type UserCreateWithoutFamilyInput = {
 
 export type UserUncheckedCreateWithoutFamilyInput = {
   id: string
-  userIndex?: number
+  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -726,6 +757,7 @@ export type UserUncheckedCreateWithoutFamilyInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  isFeatured?: boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRequesterInput
   targetUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutTargetUserInput
@@ -759,6 +791,7 @@ export type UserUpdateWithoutFamilyInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUpdateManyWithoutRequesterNestedInput
   targetUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutTargetUserNestedInput
@@ -769,7 +802,7 @@ export type UserUpdateWithoutFamilyInput = {
 
 export type UserUncheckedUpdateWithoutFamilyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -777,6 +810,7 @@ export type UserUncheckedUpdateWithoutFamilyInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRequesterNestedInput
   targetUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutTargetUserNestedInput
@@ -787,7 +821,7 @@ export type UserUncheckedUpdateWithoutFamilyInput = {
 
 export type UserCreateWithoutExpectationsInput = {
   id: string
-  userIndex?: number
+  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -795,6 +829,7 @@ export type UserCreateWithoutExpectationsInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  isFeatured?: boolean
   receivedRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRequesterInput
   targetUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutTargetUserInput
@@ -805,7 +840,7 @@ export type UserCreateWithoutExpectationsInput = {
 
 export type UserUncheckedCreateWithoutExpectationsInput = {
   id: string
-  userIndex?: number
+  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -813,6 +848,7 @@ export type UserUncheckedCreateWithoutExpectationsInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  isFeatured?: boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRequesterInput
   targetUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutTargetUserInput
@@ -846,6 +882,7 @@ export type UserUpdateWithoutExpectationsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUpdateManyWithoutRequesterNestedInput
   targetUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutTargetUserNestedInput
@@ -856,7 +893,7 @@ export type UserUpdateWithoutExpectationsInput = {
 
 export type UserUncheckedUpdateWithoutExpectationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -864,6 +901,7 @@ export type UserUncheckedUpdateWithoutExpectationsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRequesterNestedInput
   targetUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutTargetUserNestedInput
@@ -874,7 +912,7 @@ export type UserUncheckedUpdateWithoutExpectationsInput = {
 
 export type UserCreateWithoutReceivedRequestsInput = {
   id: string
-  userIndex?: number
+  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -882,6 +920,7 @@ export type UserCreateWithoutReceivedRequestsInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  isFeatured?: boolean
   sentRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRequesterInput
   targetUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutTargetUserInput
   recipientUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutRecipientUserInput
@@ -892,7 +931,7 @@ export type UserCreateWithoutReceivedRequestsInput = {
 
 export type UserUncheckedCreateWithoutReceivedRequestsInput = {
   id: string
-  userIndex?: number
+  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -900,6 +939,7 @@ export type UserUncheckedCreateWithoutReceivedRequestsInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  isFeatured?: boolean
   sentRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRequesterInput
   targetUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutTargetUserInput
   recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutRecipientUserInput
@@ -915,7 +955,7 @@ export type UserCreateOrConnectWithoutReceivedRequestsInput = {
 
 export type UserCreateWithoutSentRequestsInput = {
   id: string
-  userIndex?: number
+  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -923,6 +963,7 @@ export type UserCreateWithoutSentRequestsInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  isFeatured?: boolean
   receivedRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRecipientInput
   targetUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutTargetUserInput
   recipientUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutRecipientUserInput
@@ -933,7 +974,7 @@ export type UserCreateWithoutSentRequestsInput = {
 
 export type UserUncheckedCreateWithoutSentRequestsInput = {
   id: string
-  userIndex?: number
+  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -941,6 +982,7 @@ export type UserUncheckedCreateWithoutSentRequestsInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  isFeatured?: boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRecipientInput
   targetUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutTargetUserInput
   recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutRecipientUserInput
@@ -974,6 +1016,7 @@ export type UserUpdateWithoutReceivedRequestsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sentRequests?: Prisma.ContactApprovalUpdateManyWithoutRequesterNestedInput
   targetUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutTargetUserNestedInput
   recipientUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutRecipientUserNestedInput
@@ -984,7 +1027,7 @@ export type UserUpdateWithoutReceivedRequestsInput = {
 
 export type UserUncheckedUpdateWithoutReceivedRequestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -992,6 +1035,7 @@ export type UserUncheckedUpdateWithoutReceivedRequestsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sentRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRequesterNestedInput
   targetUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutTargetUserNestedInput
   recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutRecipientUserNestedInput
@@ -1020,6 +1064,7 @@ export type UserUpdateWithoutSentRequestsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUpdateManyWithoutRecipientNestedInput
   targetUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutTargetUserNestedInput
   recipientUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutRecipientUserNestedInput
@@ -1030,7 +1075,7 @@ export type UserUpdateWithoutSentRequestsInput = {
 
 export type UserUncheckedUpdateWithoutSentRequestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1038,6 +1083,7 @@ export type UserUncheckedUpdateWithoutSentRequestsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRecipientNestedInput
   targetUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutTargetUserNestedInput
   recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutRecipientUserNestedInput
@@ -1048,7 +1094,7 @@ export type UserUncheckedUpdateWithoutSentRequestsInput = {
 
 export type UserCreateWithoutTargetUserSentLogsInput = {
   id: string
-  userIndex?: number
+  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -1056,6 +1102,7 @@ export type UserCreateWithoutTargetUserSentLogsInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  isFeatured?: boolean
   receivedRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRequesterInput
   recipientUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutRecipientUserInput
@@ -1066,7 +1113,7 @@ export type UserCreateWithoutTargetUserSentLogsInput = {
 
 export type UserUncheckedCreateWithoutTargetUserSentLogsInput = {
   id: string
-  userIndex?: number
+  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -1074,6 +1121,7 @@ export type UserUncheckedCreateWithoutTargetUserSentLogsInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  isFeatured?: boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRequesterInput
   recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutRecipientUserInput
@@ -1089,7 +1137,7 @@ export type UserCreateOrConnectWithoutTargetUserSentLogsInput = {
 
 export type UserCreateWithoutRecipientUserSentLogsInput = {
   id: string
-  userIndex?: number
+  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -1097,6 +1145,7 @@ export type UserCreateWithoutRecipientUserSentLogsInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  isFeatured?: boolean
   receivedRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRequesterInput
   targetUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutTargetUserInput
@@ -1107,7 +1156,7 @@ export type UserCreateWithoutRecipientUserSentLogsInput = {
 
 export type UserUncheckedCreateWithoutRecipientUserSentLogsInput = {
   id: string
-  userIndex?: number
+  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -1115,6 +1164,7 @@ export type UserUncheckedCreateWithoutRecipientUserSentLogsInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  isFeatured?: boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRequesterInput
   targetUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutTargetUserInput
@@ -1148,6 +1198,7 @@ export type UserUpdateWithoutTargetUserSentLogsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUpdateManyWithoutRequesterNestedInput
   recipientUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutRecipientUserNestedInput
@@ -1158,7 +1209,7 @@ export type UserUpdateWithoutTargetUserSentLogsInput = {
 
 export type UserUncheckedUpdateWithoutTargetUserSentLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1166,6 +1217,7 @@ export type UserUncheckedUpdateWithoutTargetUserSentLogsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRequesterNestedInput
   recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutRecipientUserNestedInput
@@ -1194,6 +1246,7 @@ export type UserUpdateWithoutRecipientUserSentLogsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUpdateManyWithoutRequesterNestedInput
   targetUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutTargetUserNestedInput
@@ -1204,7 +1257,7 @@ export type UserUpdateWithoutRecipientUserSentLogsInput = {
 
 export type UserUncheckedUpdateWithoutRecipientUserSentLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1212,6 +1265,7 @@ export type UserUncheckedUpdateWithoutRecipientUserSentLogsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRequesterNestedInput
   targetUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutTargetUserNestedInput
@@ -1288,6 +1342,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  isFeatured?: boolean
   receivedRequests?: boolean | Prisma.User$receivedRequestsArgs<ExtArgs>
   sentRequests?: boolean | Prisma.User$sentRequestsArgs<ExtArgs>
   targetUserSentLogs?: boolean | Prisma.User$targetUserSentLogsArgs<ExtArgs>
@@ -1308,6 +1363,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  isFeatured?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1320,6 +1376,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  isFeatured?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -1332,9 +1389,10 @@ export type UserSelectScalar = {
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  isFeatured?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userIndex" | "email" | "mobile_no" | "password" | "role" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userIndex" | "email" | "mobile_no" | "password" | "role" | "status" | "createdAt" | "updatedAt" | "isFeatured", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   receivedRequests?: boolean | Prisma.User$receivedRequestsArgs<ExtArgs>
   sentRequests?: boolean | Prisma.User$sentRequestsArgs<ExtArgs>
@@ -1361,7 +1419,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    userIndex: number
+    userIndex: number | null
     email: string | null
     mobile_no: string | null
     password: string | null
@@ -1369,6 +1427,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     status: string
     createdAt: Date
     updatedAt: Date
+    isFeatured: boolean
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -1808,6 +1867,7 @@ export interface UserFieldRefs {
   readonly status: Prisma.FieldRef<"User", 'String'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly isFeatured: Prisma.FieldRef<"User", 'Boolean'>
 }
     
 

@@ -214,6 +214,34 @@ export class UserService {
   }
 
   /**
+   * Toggles the featured status of a user
+   */
+  static async updateUserFeatured(
+    userId: string | number,
+    isFeatured: boolean,
+    adminId: string | number
+  ): Promise<AdminUser> {
+    try {
+      const db = prisma as any;
+      if (db.user) {
+        const updated = await db.user.update({
+          where: { id: String(userId) },
+          data: { isFeatured },
+          include: { profile: { select: { id: true, name: true } } },
+        });
+        await logAdminAction(String(adminId), `UPDATE_FEATURED_${isFeatured ? 'TRUE' : 'FALSE'}`, String(userId));
+        return UserService.formatUser(updated);
+      }
+    } catch (error) {
+      console.warn('DB update failed in updateUserFeatured:', error);
+    }
+
+    const mock = getMockUsers().find((u) => u.id === userId) || getMockUsers()[0];
+    mock.isFeatured = isFeatured;
+    return mock;
+  }
+
+  /**
    * Updates a user's primary ID and migrates all related references.
    */
   static async updateUserId(oldUserId: string, newUserId: string, adminId: number): Promise<AdminUser> {
@@ -289,6 +317,7 @@ export class UserService {
       status: raw.status || 'ACTIVE',
       registeredDate: raw.createdAt || raw.registeredDate || new Date().toISOString(),
       profileId: raw.profile?.id || raw.profileId,
+      isFeatured: raw.isFeatured || false,
     };
   }
 }
@@ -305,6 +334,7 @@ export const getUsers = async (
 };
 export const updateUserRole = UserService.updateUserRole;
 export const updateUserStatus = UserService.updateUserStatus;
+export const updateUserFeatured = UserService.updateUserFeatured;
 export const updateUserId = UserService.updateUserId;
 export const deleteUser = UserService.deleteUser;
 

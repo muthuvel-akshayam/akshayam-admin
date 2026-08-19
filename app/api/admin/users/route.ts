@@ -79,6 +79,7 @@ export async function GET(request: NextRequest) {
       status: u.profile?.status || u.status,
       registeredDate: u.createdAt,
       profileId: u.profile?.id,
+      isFeatured: u.isFeatured || false,
     }));
 
     return NextResponse.json({

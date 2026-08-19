@@ -9,7 +9,7 @@ datasource db {
 
 model User {
   id               String            @id
-  userIndex        Int               @unique @default(autoincrement())
+  userIndex        Int?              @unique @default(autoincrement())
   email            String?           @unique
   mobile_no        String?           @unique
   password         String?
@@ -24,6 +24,7 @@ model User {
   expectations     Expectations?
   family           Family?
   profile          Profile?
+  isFeatured       Boolean           @default(false)
 
   @@index([role, status])
 }

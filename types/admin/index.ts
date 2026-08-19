@@ -24,6 +24,7 @@ export interface AdminUser {
   status: 'ACTIVE' | 'SUSPENDED' | 'DELETED';
   registeredDate: string | Date;
   profileId?: number;
+  isFeatured?: boolean;
 }
 
 export interface PhotoItem {

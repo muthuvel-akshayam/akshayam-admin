@@ -126,6 +126,28 @@ export async function activateUserAction(
 }
 
 /**
+ * Toggles the featured status of a user
+ */
+export async function toggleUserFeaturedAction(
+  userId: string | number,
+  isFeatured: boolean
+): Promise<ServerActionResponse<AdminUser>> {
+  try {
+    const session = await requireAdmin();
+    const updated = await UserService.updateUserFeatured(userId, isFeatured, session.user.id);
+    revalidatePath('/admin/users');
+
+    return {
+      success: true,
+      data: updated,
+      message: `User ${updated.name} is ${isFeatured ? 'now featured' : 'no longer featured'}.`,
+    };
+  } catch (error: any) {
+    return { success: false, error: error.message || 'Failed to update featured status.' };
+  }
+}
+
+/**
  * Permanently deletes a user and associated data
  */
 export async function deleteUserAction(

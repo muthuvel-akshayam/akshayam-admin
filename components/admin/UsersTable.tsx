@@ -11,6 +11,7 @@ import {
   suspendUserAction,
   activateUserAction,
   deleteUserAction,
+  toggleUserFeaturedAction,
 } from '../../actions/admin/user.actions';
 import { removeAfterMatchAction } from '../../actions/admin/profile.actions';
 
@@ -49,6 +50,26 @@ export const UsersTable: React.FC<UsersTableProps> = ({
       if (res.success) showToast(res.message || `Account status updated for ${user.name}`, 'info');
       else showToast(res.error || 'Failed to change status', 'error');
     } catch (err: any) {
+      showToast(err.message, 'error');
+    } finally {
+      setLoadingId(null);
+    }
+  };
+
+  const handleFeaturedToggle = async (e: React.ChangeEvent<HTMLInputElement>, user: AdminUser) => {
+    e.stopPropagation();
+    const isFeatured = e.target.checked;
+    setLoadingId(Number(user.id));
+    try {
+      const res = await toggleUserFeaturedAction(user.id, isFeatured);
+      if (res.success) {
+        showToast(res.message || 'Featured status updated', 'success');
+      } else {
+        e.target.checked = !isFeatured;
+        showToast(res.error || 'Failed to update', 'error');
+      }
+    } catch (err: any) {
+      e.target.checked = !isFeatured;
       showToast(err.message, 'error');
     } finally {
       setLoadingId(null);
@@ -111,6 +132,7 @@ export const UsersTable: React.FC<UsersTableProps> = ({
               <th className="px-4 py-3.5">Role</th>
               <th className="px-4 py-3.5">Status</th>
               <th className="px-4 py-3.5">Date</th>
+              <th className="px-4 py-3.5 text-center">Featured</th>
               <th className="px-6 py-3.5 text-right">Actions</th>
             </tr>
           </thead>
@@ -162,6 +184,16 @@ export const UsersTable: React.FC<UsersTableProps> = ({
                     </td>
                     <td className="px-4 py-3.5 whitespace-nowrap text-slate-500 text-xs">
                       {new Date(user.registeredDate).toLocaleDateString()}
+                    </td>
+                    <td className="px-4 py-3.5 whitespace-nowrap text-center" onClick={(e) => e.stopPropagation()}>
+                      <input
+                        type="checkbox"
+                        defaultChecked={user.isFeatured}
+                        disabled={loadingId === user.id}
+                        onChange={(e) => handleFeaturedToggle(e, user)}
+                        className="w-4 h-4 text-emerald-600 bg-slate-100 border-slate-300 rounded focus:ring-emerald-500 focus:ring-2 cursor-pointer disabled:opacity-50"
+                        title="Show on Landing Page"
+                      />
                     </td>
                     <td className="px-6 py-3.5 whitespace-nowrap text-right">
                       <div className="flex items-center justify-end gap-2">
