@@ -214,7 +214,7 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
     if (!profile) return;
     const education = userData?.educations?.[0]?.degreeName || 'N/A';
     const kulam = profile.koottam || profile.caste || profile.subCaste || 'N/A';
-    const profileUrl = `https://www.akshayammatrimony.com/profiles/${profile.displayId || profile.id}`;
+    const profileUrl = `https://www.akshayammatrimony.com/profiles/${profile.displayId || profile.userId || profile.id}`;
     const shareText = `பெயர் :${profile.name} படிப்பு :${education} குலம் : ${kulam} - மேலும் விபரங்களுக்கு லிங்க்கை கிளிக் செய்யவும்\n${profileUrl}`;
     
     // Open in WhatsApp
