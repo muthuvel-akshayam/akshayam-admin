@@ -189,9 +189,9 @@ export class UserService {
    * Suspends or activates user account
    */
   static async updateUserStatus(
-    userId: number,
-    status: 'ACTIVE' | 'SUSPENDED' | 'DELETED',
-    adminId: number
+    userId: string | number,
+    status: 'ACTIVE' | 'SUSPENDED' | 'DELETED' | 'PENDING',
+    adminId: string | number
   ): Promise<AdminUser> {
     try {
       const db = prisma as any;
