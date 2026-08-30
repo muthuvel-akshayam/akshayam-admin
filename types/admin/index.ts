@@ -87,6 +87,8 @@ export interface AdminProfile {
   caste: string;
   subCaste?: string;
   gothram?: string;
+  koottam?: string;
+  displayId?: string;
   nakshatra: string;
   rasi?: string;
   dosham?: string;
