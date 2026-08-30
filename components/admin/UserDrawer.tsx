@@ -212,9 +212,10 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
 
   const handleShare = () => {
     if (!profile) return;
-    const age = profile.dob ? Math.max(0, new Date().getFullYear() - new Date(profile.dob).getFullYear()) : 'N/A';
     const education = userData?.educations?.[0]?.degreeName || 'N/A';
-    const shareText = `Profile: ${profile.name}\nAge: ${age}\nHeight: ${profile.height || 'N/A'} cm\nEducation: ${education}\nCity: ${profile.city}`;
+    const kulam = profile.koottam || profile.caste || profile.subCaste || 'N/A';
+    const profileUrl = `https://www.akshayammatrimony.com/profiles/${profile.id}`;
+    const shareText = `பெயர் :${profile.name} படிப்பு :${education} குலம் : ${kulam} - மேலும் விபரங்களுக்கு லிங்க்கை கிளிக் செய்யவும்\n${profileUrl}`;
     
     // Open in WhatsApp
     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;

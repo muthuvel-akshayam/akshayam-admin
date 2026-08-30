@@ -107,7 +107,10 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
 
   const handleShare = (e: React.MouseEvent) => {
     e.stopPropagation();
-    const shareText = `Profile: ${profile.name}\nAge: ${profile.age}\nHeight: ${profile.height}\nEducation: ${profile.educationOccupation?.highestEducation || 'N/A'}\nCity: ${profile.city}`;
+    const education = profile.educationOccupation?.highestEducation || 'N/A';
+    const kulam = profile.koottam || profile.caste || profile.subCaste || 'N/A';
+    const profileUrl = `https://www.akshayammatrimony.com/profiles/${profile.id}`;
+    const shareText = `பெயர் :${profile.name} படிப்பு :${education} குலம் : ${kulam} - மேலும் விபரங்களுக்கு லிங்க்கை கிளிக் செய்யவும்\n${profileUrl}`;
     
     // Open in WhatsApp
     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
