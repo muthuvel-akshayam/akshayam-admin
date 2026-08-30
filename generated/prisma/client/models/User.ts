@@ -36,7 +36,6 @@ export type UserSumAggregateOutputType = {
 
 export type UserMinAggregateOutputType = {
   id: string | null
-  userIndex: number | null
   email: string | null
   mobile_no: string | null
   password: string | null
@@ -44,12 +43,14 @@ export type UserMinAggregateOutputType = {
   status: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  userIndex: number | null
   isFeatured: boolean | null
+  userid: string | null
+  paymentScreenshot: string | null
 }
 
 export type UserMaxAggregateOutputType = {
   id: string | null
-  userIndex: number | null
   email: string | null
   mobile_no: string | null
   password: string | null
@@ -57,12 +58,14 @@ export type UserMaxAggregateOutputType = {
   status: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  userIndex: number | null
   isFeatured: boolean | null
+  userid: string | null
+  paymentScreenshot: string | null
 }
 
 export type UserCountAggregateOutputType = {
   id: number
-  userIndex: number
   email: number
   mobile_no: number
   password: number
@@ -70,7 +73,10 @@ export type UserCountAggregateOutputType = {
   status: number
   createdAt: number
   updatedAt: number
+  userIndex: number
   isFeatured: number
+  userid: number
+  paymentScreenshot: number
   _all: number
 }
 
@@ -85,7 +91,6 @@ export type UserSumAggregateInputType = {
 
 export type UserMinAggregateInputType = {
   id?: true
-  userIndex?: true
   email?: true
   mobile_no?: true
   password?: true
@@ -93,12 +98,14 @@ export type UserMinAggregateInputType = {
   status?: true
   createdAt?: true
   updatedAt?: true
+  userIndex?: true
   isFeatured?: true
+  userid?: true
+  paymentScreenshot?: true
 }
 
 export type UserMaxAggregateInputType = {
   id?: true
-  userIndex?: true
   email?: true
   mobile_no?: true
   password?: true
@@ -106,12 +113,14 @@ export type UserMaxAggregateInputType = {
   status?: true
   createdAt?: true
   updatedAt?: true
+  userIndex?: true
   isFeatured?: true
+  userid?: true
+  paymentScreenshot?: true
 }
 
 export type UserCountAggregateInputType = {
   id?: true
-  userIndex?: true
   email?: true
   mobile_no?: true
   password?: true
@@ -119,7 +128,10 @@ export type UserCountAggregateInputType = {
   status?: true
   createdAt?: true
   updatedAt?: true
+  userIndex?: true
   isFeatured?: true
+  userid?: true
+  paymentScreenshot?: true
   _all?: true
 }
 
@@ -211,7 +223,6 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 
 export type UserGroupByOutputType = {
   id: string
-  userIndex: number | null
   email: string | null
   mobile_no: string | null
   password: string | null
@@ -219,7 +230,10 @@ export type UserGroupByOutputType = {
   status: string
   createdAt: Date
   updatedAt: Date
+  userIndex: number | null
   isFeatured: boolean
+  userid: string | null
+  paymentScreenshot: string | null
   _count: UserCountAggregateOutputType | null
   _avg: UserAvgAggregateOutputType | null
   _sum: UserSumAggregateOutputType | null
@@ -247,7 +261,6 @@ export type UserWhereInput = {
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   id?: Prisma.StringFilter<"User"> | string
-  userIndex?: Prisma.IntNullableFilter<"User"> | number | null
   email?: Prisma.StringNullableFilter<"User"> | string | null
   mobile_no?: Prisma.StringNullableFilter<"User"> | string | null
   password?: Prisma.StringNullableFilter<"User"> | string | null
@@ -255,19 +268,24 @@ export type UserWhereInput = {
   status?: Prisma.StringFilter<"User"> | string
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  userIndex?: Prisma.IntNullableFilter<"User"> | number | null
   isFeatured?: Prisma.BoolFilter<"User"> | boolean
+  userid?: Prisma.StringNullableFilter<"User"> | string | null
+  paymentScreenshot?: Prisma.StringNullableFilter<"User"> | string | null
   receivedRequests?: Prisma.ContactApprovalListRelationFilter
   sentRequests?: Prisma.ContactApprovalListRelationFilter
-  targetUserSentLogs?: Prisma.ProfileSentLogListRelationFilter
-  recipientUserSentLogs?: Prisma.ProfileSentLogListRelationFilter
   expectations?: Prisma.XOR<Prisma.ExpectationsNullableScalarRelationFilter, Prisma.ExpectationsWhereInput> | null
   family?: Prisma.XOR<Prisma.FamilyNullableScalarRelationFilter, Prisma.FamilyWhereInput> | null
+  passwordResetRequests?: Prisma.PasswordResetRequestListRelationFilter
   profile?: Prisma.XOR<Prisma.ProfileNullableScalarRelationFilter, Prisma.ProfileWhereInput> | null
+  recipientUserSentLogs?: Prisma.ProfileSentLogListRelationFilter
+  targetUserSentLogs?: Prisma.ProfileSentLogListRelationFilter
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistListRelationFilter
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  userIndex?: Prisma.SortOrderInput | Prisma.SortOrder
   email?: Prisma.SortOrderInput | Prisma.SortOrder
   mobile_no?: Prisma.SortOrderInput | Prisma.SortOrder
   password?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -275,21 +293,27 @@ export type UserOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  userIndex?: Prisma.SortOrderInput | Prisma.SortOrder
   isFeatured?: Prisma.SortOrder
+  userid?: Prisma.SortOrderInput | Prisma.SortOrder
+  paymentScreenshot?: Prisma.SortOrderInput | Prisma.SortOrder
   receivedRequests?: Prisma.ContactApprovalOrderByRelationAggregateInput
   sentRequests?: Prisma.ContactApprovalOrderByRelationAggregateInput
-  targetUserSentLogs?: Prisma.ProfileSentLogOrderByRelationAggregateInput
-  recipientUserSentLogs?: Prisma.ProfileSentLogOrderByRelationAggregateInput
   expectations?: Prisma.ExpectationsOrderByWithRelationInput
   family?: Prisma.FamilyOrderByWithRelationInput
+  passwordResetRequests?: Prisma.PasswordResetRequestOrderByRelationAggregateInput
   profile?: Prisma.ProfileOrderByWithRelationInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogOrderByRelationAggregateInput
+  targetUserSentLogs?: Prisma.ProfileSentLogOrderByRelationAggregateInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistOrderByRelationAggregateInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  userIndex?: number
   email?: string
   mobile_no?: string
+  userid?: string
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
@@ -298,19 +322,23 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.StringFilter<"User"> | string
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  userIndex?: Prisma.IntNullableFilter<"User"> | number | null
   isFeatured?: Prisma.BoolFilter<"User"> | boolean
+  paymentScreenshot?: Prisma.StringNullableFilter<"User"> | string | null
   receivedRequests?: Prisma.ContactApprovalListRelationFilter
   sentRequests?: Prisma.ContactApprovalListRelationFilter
-  targetUserSentLogs?: Prisma.ProfileSentLogListRelationFilter
-  recipientUserSentLogs?: Prisma.ProfileSentLogListRelationFilter
   expectations?: Prisma.XOR<Prisma.ExpectationsNullableScalarRelationFilter, Prisma.ExpectationsWhereInput> | null
   family?: Prisma.XOR<Prisma.FamilyNullableScalarRelationFilter, Prisma.FamilyWhereInput> | null
+  passwordResetRequests?: Prisma.PasswordResetRequestListRelationFilter
   profile?: Prisma.XOR<Prisma.ProfileNullableScalarRelationFilter, Prisma.ProfileWhereInput> | null
-}, "id" | "userIndex" | "email" | "mobile_no">
+  recipientUserSentLogs?: Prisma.ProfileSentLogListRelationFilter
+  targetUserSentLogs?: Prisma.ProfileSentLogListRelationFilter
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistListRelationFilter
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistListRelationFilter
+}, "id" | "email" | "mobile_no" | "userid">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  userIndex?: Prisma.SortOrderInput | Prisma.SortOrder
   email?: Prisma.SortOrderInput | Prisma.SortOrder
   mobile_no?: Prisma.SortOrderInput | Prisma.SortOrder
   password?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -318,7 +346,10 @@ export type UserOrderByWithAggregationInput = {
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  userIndex?: Prisma.SortOrderInput | Prisma.SortOrder
   isFeatured?: Prisma.SortOrder
+  userid?: Prisma.SortOrderInput | Prisma.SortOrder
+  paymentScreenshot?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
@@ -331,7 +362,6 @@ export type UserScalarWhereWithAggregatesInput = {
   OR?: Prisma.UserScalarWhereWithAggregatesInput[]
   NOT?: Prisma.UserScalarWhereWithAggregatesInput | Prisma.UserScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"User"> | string
-  userIndex?: Prisma.IntNullableWithAggregatesFilter<"User"> | number | null
   email?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   mobile_no?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   password?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
@@ -339,12 +369,14 @@ export type UserScalarWhereWithAggregatesInput = {
   status?: Prisma.StringWithAggregatesFilter<"User"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
+  userIndex?: Prisma.IntNullableWithAggregatesFilter<"User"> | number | null
   isFeatured?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  userid?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  paymentScreenshot?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
 }
 
 export type UserCreateInput = {
   id: string
-  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -352,19 +384,24 @@ export type UserCreateInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  userIndex?: number | null
   isFeatured?: boolean
+  userid?: string | null
+  paymentScreenshot?: string | null
   receivedRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRequesterInput
-  targetUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutTargetUserInput
-  recipientUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutRecipientUserInput
   expectations?: Prisma.ExpectationsCreateNestedOneWithoutUserInput
   family?: Prisma.FamilyCreateNestedOneWithoutUserInput
+  passwordResetRequests?: Prisma.PasswordResetRequestCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutRecipientUserInput
+  targetUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutTargetUserInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistCreateNestedManyWithoutUser_Shortlist_targetIdToUserInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistCreateNestedManyWithoutUser_Shortlist_userIdToUserInput
 }
 
 export type UserUncheckedCreateInput = {
   id: string
-  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -372,14 +409,20 @@ export type UserUncheckedCreateInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  userIndex?: number | null
   isFeatured?: boolean
+  userid?: string | null
+  paymentScreenshot?: string | null
   receivedRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRequesterInput
-  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutTargetUserInput
-  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutRecipientUserInput
   expectations?: Prisma.ExpectationsUncheckedCreateNestedOneWithoutUserInput
   family?: Prisma.FamilyUncheckedCreateNestedOneWithoutUserInput
+  passwordResetRequests?: Prisma.PasswordResetRequestUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutRecipientUserInput
+  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutTargetUserInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistUncheckedCreateNestedManyWithoutUser_Shortlist_targetIdToUserInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistUncheckedCreateNestedManyWithoutUser_Shortlist_userIdToUserInput
 }
 
 export type UserUpdateInput = {
@@ -391,19 +434,24 @@ export type UserUpdateInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedRequests?: Prisma.ContactApprovalUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUpdateManyWithoutRequesterNestedInput
-  targetUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutTargetUserNestedInput
-  recipientUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutRecipientUserNestedInput
   expectations?: Prisma.ExpectationsUpdateOneWithoutUserNestedInput
   family?: Prisma.FamilyUpdateOneWithoutUserNestedInput
+  passwordResetRequests?: Prisma.PasswordResetRequestUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutRecipientUserNestedInput
+  targetUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutTargetUserNestedInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistUpdateManyWithoutUser_Shortlist_targetIdToUserNestedInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistUpdateManyWithoutUser_Shortlist_userIdToUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -411,19 +459,24 @@ export type UserUncheckedUpdateInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRequesterNestedInput
-  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutTargetUserNestedInput
-  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutRecipientUserNestedInput
   expectations?: Prisma.ExpectationsUncheckedUpdateOneWithoutUserNestedInput
   family?: Prisma.FamilyUncheckedUpdateOneWithoutUserNestedInput
+  passwordResetRequests?: Prisma.PasswordResetRequestUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutRecipientUserNestedInput
+  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutTargetUserNestedInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistUncheckedUpdateManyWithoutUser_Shortlist_targetIdToUserNestedInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistUncheckedUpdateManyWithoutUser_Shortlist_userIdToUserNestedInput
 }
 
 export type UserCreateManyInput = {
   id: string
-  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -431,7 +484,10 @@ export type UserCreateManyInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  userIndex?: number | null
   isFeatured?: boolean
+  userid?: string | null
+  paymentScreenshot?: string | null
 }
 
 export type UserUpdateManyMutationInput = {
@@ -443,12 +499,14 @@ export type UserUpdateManyMutationInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type UserUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -456,12 +514,14 @@ export type UserUncheckedUpdateManyInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type UserCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  userIndex?: Prisma.SortOrder
   email?: Prisma.SortOrder
   mobile_no?: Prisma.SortOrder
   password?: Prisma.SortOrder
@@ -469,7 +529,10 @@ export type UserCountOrderByAggregateInput = {
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  userIndex?: Prisma.SortOrder
   isFeatured?: Prisma.SortOrder
+  userid?: Prisma.SortOrder
+  paymentScreenshot?: Prisma.SortOrder
 }
 
 export type UserAvgOrderByAggregateInput = {
@@ -478,7 +541,6 @@ export type UserAvgOrderByAggregateInput = {
 
 export type UserMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  userIndex?: Prisma.SortOrder
   email?: Prisma.SortOrder
   mobile_no?: Prisma.SortOrder
   password?: Prisma.SortOrder
@@ -486,12 +548,14 @@ export type UserMaxOrderByAggregateInput = {
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  userIndex?: Prisma.SortOrder
   isFeatured?: Prisma.SortOrder
+  userid?: Prisma.SortOrder
+  paymentScreenshot?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  userIndex?: Prisma.SortOrder
   email?: Prisma.SortOrder
   mobile_no?: Prisma.SortOrder
   password?: Prisma.SortOrder
@@ -499,7 +563,10 @@ export type UserMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  userIndex?: Prisma.SortOrder
   isFeatured?: Prisma.SortOrder
+  userid?: Prisma.SortOrder
+  paymentScreenshot?: Prisma.SortOrder
 }
 
 export type UserSumOrderByAggregateInput = {
@@ -527,16 +594,16 @@ export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
 export type NullableIntFieldUpdateOperationsInput = {
   set?: number | null
   increment?: number
   decrement?: number
   multiply?: number
   divide?: number
+}
+
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
 }
 
 export type UserCreateNestedOneWithoutProfileInput = {
@@ -609,10 +676,18 @@ export type UserUpdateOneRequiredWithoutSentRequestsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSentRequestsInput, Prisma.UserUpdateWithoutSentRequestsInput>, Prisma.UserUncheckedUpdateWithoutSentRequestsInput>
 }
 
-export type UserCreateNestedOneWithoutTargetUserSentLogsInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutTargetUserSentLogsInput, Prisma.UserUncheckedCreateWithoutTargetUserSentLogsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTargetUserSentLogsInput
+export type UserCreateNestedOneWithoutPasswordResetRequestsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPasswordResetRequestsInput, Prisma.UserUncheckedCreateWithoutPasswordResetRequestsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPasswordResetRequestsInput
   connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPasswordResetRequestsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPasswordResetRequestsInput, Prisma.UserUncheckedCreateWithoutPasswordResetRequestsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPasswordResetRequestsInput
+  upsert?: Prisma.UserUpsertWithoutPasswordResetRequestsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPasswordResetRequestsInput, Prisma.UserUpdateWithoutPasswordResetRequestsInput>, Prisma.UserUncheckedUpdateWithoutPasswordResetRequestsInput>
 }
 
 export type UserCreateNestedOneWithoutRecipientUserSentLogsInput = {
@@ -621,12 +696,10 @@ export type UserCreateNestedOneWithoutRecipientUserSentLogsInput = {
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUpdateOneRequiredWithoutTargetUserSentLogsNestedInput = {
+export type UserCreateNestedOneWithoutTargetUserSentLogsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutTargetUserSentLogsInput, Prisma.UserUncheckedCreateWithoutTargetUserSentLogsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutTargetUserSentLogsInput
-  upsert?: Prisma.UserUpsertWithoutTargetUserSentLogsInput
   connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTargetUserSentLogsInput, Prisma.UserUpdateWithoutTargetUserSentLogsInput>, Prisma.UserUncheckedUpdateWithoutTargetUserSentLogsInput>
 }
 
 export type UserUpdateOneRequiredWithoutRecipientUserSentLogsNestedInput = {
@@ -637,9 +710,44 @@ export type UserUpdateOneRequiredWithoutRecipientUserSentLogsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRecipientUserSentLogsInput, Prisma.UserUpdateWithoutRecipientUserSentLogsInput>, Prisma.UserUncheckedUpdateWithoutRecipientUserSentLogsInput>
 }
 
+export type UserUpdateOneRequiredWithoutTargetUserSentLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTargetUserSentLogsInput, Prisma.UserUncheckedCreateWithoutTargetUserSentLogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTargetUserSentLogsInput
+  upsert?: Prisma.UserUpsertWithoutTargetUserSentLogsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTargetUserSentLogsInput, Prisma.UserUpdateWithoutTargetUserSentLogsInput>, Prisma.UserUncheckedUpdateWithoutTargetUserSentLogsInput>
+}
+
+export type UserCreateNestedOneWithoutShortlist_Shortlist_targetIdToUserInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutShortlist_Shortlist_targetIdToUserInput, Prisma.UserUncheckedCreateWithoutShortlist_Shortlist_targetIdToUserInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutShortlist_Shortlist_targetIdToUserInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutShortlist_Shortlist_userIdToUserInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutShortlist_Shortlist_userIdToUserInput, Prisma.UserUncheckedCreateWithoutShortlist_Shortlist_userIdToUserInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutShortlist_Shortlist_userIdToUserInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutShortlist_Shortlist_targetIdToUserNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutShortlist_Shortlist_targetIdToUserInput, Prisma.UserUncheckedCreateWithoutShortlist_Shortlist_targetIdToUserInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutShortlist_Shortlist_targetIdToUserInput
+  upsert?: Prisma.UserUpsertWithoutShortlist_Shortlist_targetIdToUserInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutShortlist_Shortlist_targetIdToUserInput, Prisma.UserUpdateWithoutShortlist_Shortlist_targetIdToUserInput>, Prisma.UserUncheckedUpdateWithoutShortlist_Shortlist_targetIdToUserInput>
+}
+
+export type UserUpdateOneRequiredWithoutShortlist_Shortlist_userIdToUserNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutShortlist_Shortlist_userIdToUserInput, Prisma.UserUncheckedCreateWithoutShortlist_Shortlist_userIdToUserInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutShortlist_Shortlist_userIdToUserInput
+  upsert?: Prisma.UserUpsertWithoutShortlist_Shortlist_userIdToUserInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutShortlist_Shortlist_userIdToUserInput, Prisma.UserUpdateWithoutShortlist_Shortlist_userIdToUserInput>, Prisma.UserUncheckedUpdateWithoutShortlist_Shortlist_userIdToUserInput>
+}
+
 export type UserCreateWithoutProfileInput = {
   id: string
-  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -647,18 +755,23 @@ export type UserCreateWithoutProfileInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  userIndex?: number | null
   isFeatured?: boolean
+  userid?: string | null
+  paymentScreenshot?: string | null
   receivedRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRequesterInput
-  targetUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutTargetUserInput
-  recipientUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutRecipientUserInput
   expectations?: Prisma.ExpectationsCreateNestedOneWithoutUserInput
   family?: Prisma.FamilyCreateNestedOneWithoutUserInput
+  passwordResetRequests?: Prisma.PasswordResetRequestCreateNestedManyWithoutUserInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutRecipientUserInput
+  targetUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutTargetUserInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistCreateNestedManyWithoutUser_Shortlist_targetIdToUserInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistCreateNestedManyWithoutUser_Shortlist_userIdToUserInput
 }
 
 export type UserUncheckedCreateWithoutProfileInput = {
   id: string
-  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -666,13 +779,19 @@ export type UserUncheckedCreateWithoutProfileInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  userIndex?: number | null
   isFeatured?: boolean
+  userid?: string | null
+  paymentScreenshot?: string | null
   receivedRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRequesterInput
-  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutTargetUserInput
-  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutRecipientUserInput
   expectations?: Prisma.ExpectationsUncheckedCreateNestedOneWithoutUserInput
   family?: Prisma.FamilyUncheckedCreateNestedOneWithoutUserInput
+  passwordResetRequests?: Prisma.PasswordResetRequestUncheckedCreateNestedManyWithoutUserInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutRecipientUserInput
+  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutTargetUserInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistUncheckedCreateNestedManyWithoutUser_Shortlist_targetIdToUserInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistUncheckedCreateNestedManyWithoutUser_Shortlist_userIdToUserInput
 }
 
 export type UserCreateOrConnectWithoutProfileInput = {
@@ -700,18 +819,23 @@ export type UserUpdateWithoutProfileInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedRequests?: Prisma.ContactApprovalUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUpdateManyWithoutRequesterNestedInput
-  targetUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutTargetUserNestedInput
-  recipientUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutRecipientUserNestedInput
   expectations?: Prisma.ExpectationsUpdateOneWithoutUserNestedInput
   family?: Prisma.FamilyUpdateOneWithoutUserNestedInput
+  passwordResetRequests?: Prisma.PasswordResetRequestUpdateManyWithoutUserNestedInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutRecipientUserNestedInput
+  targetUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutTargetUserNestedInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistUpdateManyWithoutUser_Shortlist_targetIdToUserNestedInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistUpdateManyWithoutUser_Shortlist_userIdToUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProfileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -719,18 +843,23 @@ export type UserUncheckedUpdateWithoutProfileInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRequesterNestedInput
-  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutTargetUserNestedInput
-  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutRecipientUserNestedInput
   expectations?: Prisma.ExpectationsUncheckedUpdateOneWithoutUserNestedInput
   family?: Prisma.FamilyUncheckedUpdateOneWithoutUserNestedInput
+  passwordResetRequests?: Prisma.PasswordResetRequestUncheckedUpdateManyWithoutUserNestedInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutRecipientUserNestedInput
+  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutTargetUserNestedInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistUncheckedUpdateManyWithoutUser_Shortlist_targetIdToUserNestedInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistUncheckedUpdateManyWithoutUser_Shortlist_userIdToUserNestedInput
 }
 
 export type UserCreateWithoutFamilyInput = {
   id: string
-  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -738,18 +867,23 @@ export type UserCreateWithoutFamilyInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  userIndex?: number | null
   isFeatured?: boolean
+  userid?: string | null
+  paymentScreenshot?: string | null
   receivedRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRequesterInput
-  targetUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutTargetUserInput
-  recipientUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutRecipientUserInput
   expectations?: Prisma.ExpectationsCreateNestedOneWithoutUserInput
+  passwordResetRequests?: Prisma.PasswordResetRequestCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutRecipientUserInput
+  targetUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutTargetUserInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistCreateNestedManyWithoutUser_Shortlist_targetIdToUserInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistCreateNestedManyWithoutUser_Shortlist_userIdToUserInput
 }
 
 export type UserUncheckedCreateWithoutFamilyInput = {
   id: string
-  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -757,13 +891,19 @@ export type UserUncheckedCreateWithoutFamilyInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  userIndex?: number | null
   isFeatured?: boolean
+  userid?: string | null
+  paymentScreenshot?: string | null
   receivedRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRequesterInput
-  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutTargetUserInput
-  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutRecipientUserInput
   expectations?: Prisma.ExpectationsUncheckedCreateNestedOneWithoutUserInput
+  passwordResetRequests?: Prisma.PasswordResetRequestUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutRecipientUserInput
+  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutTargetUserInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistUncheckedCreateNestedManyWithoutUser_Shortlist_targetIdToUserInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistUncheckedCreateNestedManyWithoutUser_Shortlist_userIdToUserInput
 }
 
 export type UserCreateOrConnectWithoutFamilyInput = {
@@ -791,18 +931,23 @@ export type UserUpdateWithoutFamilyInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedRequests?: Prisma.ContactApprovalUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUpdateManyWithoutRequesterNestedInput
-  targetUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutTargetUserNestedInput
-  recipientUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutRecipientUserNestedInput
   expectations?: Prisma.ExpectationsUpdateOneWithoutUserNestedInput
+  passwordResetRequests?: Prisma.PasswordResetRequestUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutRecipientUserNestedInput
+  targetUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutTargetUserNestedInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistUpdateManyWithoutUser_Shortlist_targetIdToUserNestedInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistUpdateManyWithoutUser_Shortlist_userIdToUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFamilyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -810,18 +955,23 @@ export type UserUncheckedUpdateWithoutFamilyInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRequesterNestedInput
-  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutTargetUserNestedInput
-  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutRecipientUserNestedInput
   expectations?: Prisma.ExpectationsUncheckedUpdateOneWithoutUserNestedInput
+  passwordResetRequests?: Prisma.PasswordResetRequestUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutRecipientUserNestedInput
+  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutTargetUserNestedInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistUncheckedUpdateManyWithoutUser_Shortlist_targetIdToUserNestedInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistUncheckedUpdateManyWithoutUser_Shortlist_userIdToUserNestedInput
 }
 
 export type UserCreateWithoutExpectationsInput = {
   id: string
-  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -829,18 +979,23 @@ export type UserCreateWithoutExpectationsInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  userIndex?: number | null
   isFeatured?: boolean
+  userid?: string | null
+  paymentScreenshot?: string | null
   receivedRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRequesterInput
-  targetUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutTargetUserInput
-  recipientUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutRecipientUserInput
   family?: Prisma.FamilyCreateNestedOneWithoutUserInput
+  passwordResetRequests?: Prisma.PasswordResetRequestCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutRecipientUserInput
+  targetUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutTargetUserInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistCreateNestedManyWithoutUser_Shortlist_targetIdToUserInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistCreateNestedManyWithoutUser_Shortlist_userIdToUserInput
 }
 
 export type UserUncheckedCreateWithoutExpectationsInput = {
   id: string
-  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -848,13 +1003,19 @@ export type UserUncheckedCreateWithoutExpectationsInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  userIndex?: number | null
   isFeatured?: boolean
+  userid?: string | null
+  paymentScreenshot?: string | null
   receivedRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRequesterInput
-  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutTargetUserInput
-  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutRecipientUserInput
   family?: Prisma.FamilyUncheckedCreateNestedOneWithoutUserInput
+  passwordResetRequests?: Prisma.PasswordResetRequestUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutRecipientUserInput
+  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutTargetUserInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistUncheckedCreateNestedManyWithoutUser_Shortlist_targetIdToUserInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistUncheckedCreateNestedManyWithoutUser_Shortlist_userIdToUserInput
 }
 
 export type UserCreateOrConnectWithoutExpectationsInput = {
@@ -882,18 +1043,23 @@ export type UserUpdateWithoutExpectationsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedRequests?: Prisma.ContactApprovalUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUpdateManyWithoutRequesterNestedInput
-  targetUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutTargetUserNestedInput
-  recipientUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutRecipientUserNestedInput
   family?: Prisma.FamilyUpdateOneWithoutUserNestedInput
+  passwordResetRequests?: Prisma.PasswordResetRequestUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutRecipientUserNestedInput
+  targetUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutTargetUserNestedInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistUpdateManyWithoutUser_Shortlist_targetIdToUserNestedInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistUpdateManyWithoutUser_Shortlist_userIdToUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutExpectationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -901,18 +1067,23 @@ export type UserUncheckedUpdateWithoutExpectationsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRequesterNestedInput
-  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutTargetUserNestedInput
-  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutRecipientUserNestedInput
   family?: Prisma.FamilyUncheckedUpdateOneWithoutUserNestedInput
+  passwordResetRequests?: Prisma.PasswordResetRequestUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutRecipientUserNestedInput
+  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutTargetUserNestedInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistUncheckedUpdateManyWithoutUser_Shortlist_targetIdToUserNestedInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistUncheckedUpdateManyWithoutUser_Shortlist_userIdToUserNestedInput
 }
 
 export type UserCreateWithoutReceivedRequestsInput = {
   id: string
-  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -920,18 +1091,23 @@ export type UserCreateWithoutReceivedRequestsInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  userIndex?: number | null
   isFeatured?: boolean
+  userid?: string | null
+  paymentScreenshot?: string | null
   sentRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRequesterInput
-  targetUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutTargetUserInput
-  recipientUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutRecipientUserInput
   expectations?: Prisma.ExpectationsCreateNestedOneWithoutUserInput
   family?: Prisma.FamilyCreateNestedOneWithoutUserInput
+  passwordResetRequests?: Prisma.PasswordResetRequestCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutRecipientUserInput
+  targetUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutTargetUserInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistCreateNestedManyWithoutUser_Shortlist_targetIdToUserInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistCreateNestedManyWithoutUser_Shortlist_userIdToUserInput
 }
 
 export type UserUncheckedCreateWithoutReceivedRequestsInput = {
   id: string
-  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -939,13 +1115,19 @@ export type UserUncheckedCreateWithoutReceivedRequestsInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  userIndex?: number | null
   isFeatured?: boolean
+  userid?: string | null
+  paymentScreenshot?: string | null
   sentRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRequesterInput
-  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutTargetUserInput
-  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutRecipientUserInput
   expectations?: Prisma.ExpectationsUncheckedCreateNestedOneWithoutUserInput
   family?: Prisma.FamilyUncheckedCreateNestedOneWithoutUserInput
+  passwordResetRequests?: Prisma.PasswordResetRequestUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutRecipientUserInput
+  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutTargetUserInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistUncheckedCreateNestedManyWithoutUser_Shortlist_targetIdToUserInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistUncheckedCreateNestedManyWithoutUser_Shortlist_userIdToUserInput
 }
 
 export type UserCreateOrConnectWithoutReceivedRequestsInput = {
@@ -955,7 +1137,6 @@ export type UserCreateOrConnectWithoutReceivedRequestsInput = {
 
 export type UserCreateWithoutSentRequestsInput = {
   id: string
-  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -963,18 +1144,23 @@ export type UserCreateWithoutSentRequestsInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  userIndex?: number | null
   isFeatured?: boolean
+  userid?: string | null
+  paymentScreenshot?: string | null
   receivedRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRecipientInput
-  targetUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutTargetUserInput
-  recipientUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutRecipientUserInput
   expectations?: Prisma.ExpectationsCreateNestedOneWithoutUserInput
   family?: Prisma.FamilyCreateNestedOneWithoutUserInput
+  passwordResetRequests?: Prisma.PasswordResetRequestCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutRecipientUserInput
+  targetUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutTargetUserInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistCreateNestedManyWithoutUser_Shortlist_targetIdToUserInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistCreateNestedManyWithoutUser_Shortlist_userIdToUserInput
 }
 
 export type UserUncheckedCreateWithoutSentRequestsInput = {
   id: string
-  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -982,13 +1168,19 @@ export type UserUncheckedCreateWithoutSentRequestsInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  userIndex?: number | null
   isFeatured?: boolean
+  userid?: string | null
+  paymentScreenshot?: string | null
   receivedRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRecipientInput
-  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutTargetUserInput
-  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutRecipientUserInput
   expectations?: Prisma.ExpectationsUncheckedCreateNestedOneWithoutUserInput
   family?: Prisma.FamilyUncheckedCreateNestedOneWithoutUserInput
+  passwordResetRequests?: Prisma.PasswordResetRequestUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutRecipientUserInput
+  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutTargetUserInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistUncheckedCreateNestedManyWithoutUser_Shortlist_targetIdToUserInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistUncheckedCreateNestedManyWithoutUser_Shortlist_userIdToUserInput
 }
 
 export type UserCreateOrConnectWithoutSentRequestsInput = {
@@ -1016,18 +1208,23 @@ export type UserUpdateWithoutReceivedRequestsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sentRequests?: Prisma.ContactApprovalUpdateManyWithoutRequesterNestedInput
-  targetUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutTargetUserNestedInput
-  recipientUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutRecipientUserNestedInput
   expectations?: Prisma.ExpectationsUpdateOneWithoutUserNestedInput
   family?: Prisma.FamilyUpdateOneWithoutUserNestedInput
+  passwordResetRequests?: Prisma.PasswordResetRequestUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutRecipientUserNestedInput
+  targetUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutTargetUserNestedInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistUpdateManyWithoutUser_Shortlist_targetIdToUserNestedInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistUpdateManyWithoutUser_Shortlist_userIdToUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReceivedRequestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1035,13 +1232,19 @@ export type UserUncheckedUpdateWithoutReceivedRequestsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sentRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRequesterNestedInput
-  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutTargetUserNestedInput
-  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutRecipientUserNestedInput
   expectations?: Prisma.ExpectationsUncheckedUpdateOneWithoutUserNestedInput
   family?: Prisma.FamilyUncheckedUpdateOneWithoutUserNestedInput
+  passwordResetRequests?: Prisma.PasswordResetRequestUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutRecipientUserNestedInput
+  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutTargetUserNestedInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistUncheckedUpdateManyWithoutUser_Shortlist_targetIdToUserNestedInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistUncheckedUpdateManyWithoutUser_Shortlist_userIdToUserNestedInput
 }
 
 export type UserUpsertWithoutSentRequestsInput = {
@@ -1064,18 +1267,23 @@ export type UserUpdateWithoutSentRequestsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedRequests?: Prisma.ContactApprovalUpdateManyWithoutRecipientNestedInput
-  targetUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutTargetUserNestedInput
-  recipientUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutRecipientUserNestedInput
   expectations?: Prisma.ExpectationsUpdateOneWithoutUserNestedInput
   family?: Prisma.FamilyUpdateOneWithoutUserNestedInput
+  passwordResetRequests?: Prisma.PasswordResetRequestUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutRecipientUserNestedInput
+  targetUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutTargetUserNestedInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistUpdateManyWithoutUser_Shortlist_targetIdToUserNestedInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistUpdateManyWithoutUser_Shortlist_userIdToUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSentRequestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1083,18 +1291,23 @@ export type UserUncheckedUpdateWithoutSentRequestsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRecipientNestedInput
-  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutTargetUserNestedInput
-  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutRecipientUserNestedInput
   expectations?: Prisma.ExpectationsUncheckedUpdateOneWithoutUserNestedInput
   family?: Prisma.FamilyUncheckedUpdateOneWithoutUserNestedInput
+  passwordResetRequests?: Prisma.PasswordResetRequestUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutRecipientUserNestedInput
+  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutTargetUserNestedInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistUncheckedUpdateManyWithoutUser_Shortlist_targetIdToUserNestedInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistUncheckedUpdateManyWithoutUser_Shortlist_userIdToUserNestedInput
 }
 
-export type UserCreateWithoutTargetUserSentLogsInput = {
+export type UserCreateWithoutPasswordResetRequestsInput = {
   id: string
-  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -1102,18 +1315,23 @@ export type UserCreateWithoutTargetUserSentLogsInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  userIndex?: number | null
   isFeatured?: boolean
+  userid?: string | null
+  paymentScreenshot?: string | null
   receivedRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRequesterInput
-  recipientUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutRecipientUserInput
   expectations?: Prisma.ExpectationsCreateNestedOneWithoutUserInput
   family?: Prisma.FamilyCreateNestedOneWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutRecipientUserInput
+  targetUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutTargetUserInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistCreateNestedManyWithoutUser_Shortlist_targetIdToUserInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistCreateNestedManyWithoutUser_Shortlist_userIdToUserInput
 }
 
-export type UserUncheckedCreateWithoutTargetUserSentLogsInput = {
+export type UserUncheckedCreateWithoutPasswordResetRequestsInput = {
   id: string
-  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -1121,23 +1339,87 @@ export type UserUncheckedCreateWithoutTargetUserSentLogsInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  userIndex?: number | null
   isFeatured?: boolean
+  userid?: string | null
+  paymentScreenshot?: string | null
   receivedRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRequesterInput
-  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutRecipientUserInput
   expectations?: Prisma.ExpectationsUncheckedCreateNestedOneWithoutUserInput
   family?: Prisma.FamilyUncheckedCreateNestedOneWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutRecipientUserInput
+  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutTargetUserInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistUncheckedCreateNestedManyWithoutUser_Shortlist_targetIdToUserInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistUncheckedCreateNestedManyWithoutUser_Shortlist_userIdToUserInput
 }
 
-export type UserCreateOrConnectWithoutTargetUserSentLogsInput = {
+export type UserCreateOrConnectWithoutPasswordResetRequestsInput = {
   where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutTargetUserSentLogsInput, Prisma.UserUncheckedCreateWithoutTargetUserSentLogsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPasswordResetRequestsInput, Prisma.UserUncheckedCreateWithoutPasswordResetRequestsInput>
+}
+
+export type UserUpsertWithoutPasswordResetRequestsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPasswordResetRequestsInput, Prisma.UserUncheckedUpdateWithoutPasswordResetRequestsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPasswordResetRequestsInput, Prisma.UserUncheckedCreateWithoutPasswordResetRequestsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPasswordResetRequestsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPasswordResetRequestsInput, Prisma.UserUncheckedUpdateWithoutPasswordResetRequestsInput>
+}
+
+export type UserUpdateWithoutPasswordResetRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedRequests?: Prisma.ContactApprovalUpdateManyWithoutRecipientNestedInput
+  sentRequests?: Prisma.ContactApprovalUpdateManyWithoutRequesterNestedInput
+  expectations?: Prisma.ExpectationsUpdateOneWithoutUserNestedInput
+  family?: Prisma.FamilyUpdateOneWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutRecipientUserNestedInput
+  targetUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutTargetUserNestedInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistUpdateManyWithoutUser_Shortlist_targetIdToUserNestedInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistUpdateManyWithoutUser_Shortlist_userIdToUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPasswordResetRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRecipientNestedInput
+  sentRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRequesterNestedInput
+  expectations?: Prisma.ExpectationsUncheckedUpdateOneWithoutUserNestedInput
+  family?: Prisma.FamilyUncheckedUpdateOneWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutRecipientUserNestedInput
+  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutTargetUserNestedInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistUncheckedUpdateManyWithoutUser_Shortlist_targetIdToUserNestedInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistUncheckedUpdateManyWithoutUser_Shortlist_userIdToUserNestedInput
 }
 
 export type UserCreateWithoutRecipientUserSentLogsInput = {
   id: string
-  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -1145,18 +1427,23 @@ export type UserCreateWithoutRecipientUserSentLogsInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  userIndex?: number | null
   isFeatured?: boolean
+  userid?: string | null
+  paymentScreenshot?: string | null
   receivedRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRequesterInput
-  targetUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutTargetUserInput
   expectations?: Prisma.ExpectationsCreateNestedOneWithoutUserInput
   family?: Prisma.FamilyCreateNestedOneWithoutUserInput
+  passwordResetRequests?: Prisma.PasswordResetRequestCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  targetUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutTargetUserInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistCreateNestedManyWithoutUser_Shortlist_targetIdToUserInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistCreateNestedManyWithoutUser_Shortlist_userIdToUserInput
 }
 
 export type UserUncheckedCreateWithoutRecipientUserSentLogsInput = {
   id: string
-  userIndex?: number | null
   email?: string | null
   mobile_no?: string | null
   password?: string | null
@@ -1164,13 +1451,19 @@ export type UserUncheckedCreateWithoutRecipientUserSentLogsInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  userIndex?: number | null
   isFeatured?: boolean
+  userid?: string | null
+  paymentScreenshot?: string | null
   receivedRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRequesterInput
-  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutTargetUserInput
   expectations?: Prisma.ExpectationsUncheckedCreateNestedOneWithoutUserInput
   family?: Prisma.FamilyUncheckedCreateNestedOneWithoutUserInput
+  passwordResetRequests?: Prisma.PasswordResetRequestUncheckedCreateNestedManyWithoutUserInput
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutTargetUserInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistUncheckedCreateNestedManyWithoutUser_Shortlist_targetIdToUserInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistUncheckedCreateNestedManyWithoutUser_Shortlist_userIdToUserInput
 }
 
 export type UserCreateOrConnectWithoutRecipientUserSentLogsInput = {
@@ -1178,52 +1471,57 @@ export type UserCreateOrConnectWithoutRecipientUserSentLogsInput = {
   create: Prisma.XOR<Prisma.UserCreateWithoutRecipientUserSentLogsInput, Prisma.UserUncheckedCreateWithoutRecipientUserSentLogsInput>
 }
 
-export type UserUpsertWithoutTargetUserSentLogsInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutTargetUserSentLogsInput, Prisma.UserUncheckedUpdateWithoutTargetUserSentLogsInput>
+export type UserCreateWithoutTargetUserSentLogsInput = {
+  id: string
+  email?: string | null
+  mobile_no?: string | null
+  password?: string | null
+  role?: $Enums.UserRole
+  status?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  userIndex?: number | null
+  isFeatured?: boolean
+  userid?: string | null
+  paymentScreenshot?: string | null
+  receivedRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRecipientInput
+  sentRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRequesterInput
+  expectations?: Prisma.ExpectationsCreateNestedOneWithoutUserInput
+  family?: Prisma.FamilyCreateNestedOneWithoutUserInput
+  passwordResetRequests?: Prisma.PasswordResetRequestCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutRecipientUserInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistCreateNestedManyWithoutUser_Shortlist_targetIdToUserInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistCreateNestedManyWithoutUser_Shortlist_userIdToUserInput
+}
+
+export type UserUncheckedCreateWithoutTargetUserSentLogsInput = {
+  id: string
+  email?: string | null
+  mobile_no?: string | null
+  password?: string | null
+  role?: $Enums.UserRole
+  status?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  userIndex?: number | null
+  isFeatured?: boolean
+  userid?: string | null
+  paymentScreenshot?: string | null
+  receivedRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRecipientInput
+  sentRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRequesterInput
+  expectations?: Prisma.ExpectationsUncheckedCreateNestedOneWithoutUserInput
+  family?: Prisma.FamilyUncheckedCreateNestedOneWithoutUserInput
+  passwordResetRequests?: Prisma.PasswordResetRequestUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutRecipientUserInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistUncheckedCreateNestedManyWithoutUser_Shortlist_targetIdToUserInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistUncheckedCreateNestedManyWithoutUser_Shortlist_userIdToUserInput
+}
+
+export type UserCreateOrConnectWithoutTargetUserSentLogsInput = {
+  where: Prisma.UserWhereUniqueInput
   create: Prisma.XOR<Prisma.UserCreateWithoutTargetUserSentLogsInput, Prisma.UserUncheckedCreateWithoutTargetUserSentLogsInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutTargetUserSentLogsInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutTargetUserSentLogsInput, Prisma.UserUncheckedUpdateWithoutTargetUserSentLogsInput>
-}
-
-export type UserUpdateWithoutTargetUserSentLogsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  receivedRequests?: Prisma.ContactApprovalUpdateManyWithoutRecipientNestedInput
-  sentRequests?: Prisma.ContactApprovalUpdateManyWithoutRequesterNestedInput
-  recipientUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutRecipientUserNestedInput
-  expectations?: Prisma.ExpectationsUpdateOneWithoutUserNestedInput
-  family?: Prisma.FamilyUpdateOneWithoutUserNestedInput
-  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
-}
-
-export type UserUncheckedUpdateWithoutTargetUserSentLogsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  receivedRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRecipientNestedInput
-  sentRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRequesterNestedInput
-  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutRecipientUserNestedInput
-  expectations?: Prisma.ExpectationsUncheckedUpdateOneWithoutUserNestedInput
-  family?: Prisma.FamilyUncheckedUpdateOneWithoutUserNestedInput
-  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutRecipientUserSentLogsInput = {
@@ -1246,18 +1544,23 @@ export type UserUpdateWithoutRecipientUserSentLogsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedRequests?: Prisma.ContactApprovalUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUpdateManyWithoutRequesterNestedInput
-  targetUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutTargetUserNestedInput
   expectations?: Prisma.ExpectationsUpdateOneWithoutUserNestedInput
   family?: Prisma.FamilyUpdateOneWithoutUserNestedInput
+  passwordResetRequests?: Prisma.PasswordResetRequestUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  targetUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutTargetUserNestedInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistUpdateManyWithoutUser_Shortlist_targetIdToUserNestedInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistUpdateManyWithoutUser_Shortlist_userIdToUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRecipientUserSentLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1265,13 +1568,302 @@ export type UserUncheckedUpdateWithoutRecipientUserSentLogsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   receivedRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRequesterNestedInput
-  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutTargetUserNestedInput
   expectations?: Prisma.ExpectationsUncheckedUpdateOneWithoutUserNestedInput
   family?: Prisma.FamilyUncheckedUpdateOneWithoutUserNestedInput
+  passwordResetRequests?: Prisma.PasswordResetRequestUncheckedUpdateManyWithoutUserNestedInput
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutTargetUserNestedInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistUncheckedUpdateManyWithoutUser_Shortlist_targetIdToUserNestedInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistUncheckedUpdateManyWithoutUser_Shortlist_userIdToUserNestedInput
+}
+
+export type UserUpsertWithoutTargetUserSentLogsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutTargetUserSentLogsInput, Prisma.UserUncheckedUpdateWithoutTargetUserSentLogsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutTargetUserSentLogsInput, Prisma.UserUncheckedCreateWithoutTargetUserSentLogsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutTargetUserSentLogsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutTargetUserSentLogsInput, Prisma.UserUncheckedUpdateWithoutTargetUserSentLogsInput>
+}
+
+export type UserUpdateWithoutTargetUserSentLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedRequests?: Prisma.ContactApprovalUpdateManyWithoutRecipientNestedInput
+  sentRequests?: Prisma.ContactApprovalUpdateManyWithoutRequesterNestedInput
+  expectations?: Prisma.ExpectationsUpdateOneWithoutUserNestedInput
+  family?: Prisma.FamilyUpdateOneWithoutUserNestedInput
+  passwordResetRequests?: Prisma.PasswordResetRequestUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutRecipientUserNestedInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistUpdateManyWithoutUser_Shortlist_targetIdToUserNestedInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistUpdateManyWithoutUser_Shortlist_userIdToUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutTargetUserSentLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRecipientNestedInput
+  sentRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRequesterNestedInput
+  expectations?: Prisma.ExpectationsUncheckedUpdateOneWithoutUserNestedInput
+  family?: Prisma.FamilyUncheckedUpdateOneWithoutUserNestedInput
+  passwordResetRequests?: Prisma.PasswordResetRequestUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutRecipientUserNestedInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistUncheckedUpdateManyWithoutUser_Shortlist_targetIdToUserNestedInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistUncheckedUpdateManyWithoutUser_Shortlist_userIdToUserNestedInput
+}
+
+export type UserCreateWithoutShortlist_Shortlist_targetIdToUserInput = {
+  id: string
+  email?: string | null
+  mobile_no?: string | null
+  password?: string | null
+  role?: $Enums.UserRole
+  status?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  userIndex?: number | null
+  isFeatured?: boolean
+  userid?: string | null
+  paymentScreenshot?: string | null
+  receivedRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRecipientInput
+  sentRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRequesterInput
+  expectations?: Prisma.ExpectationsCreateNestedOneWithoutUserInput
+  family?: Prisma.FamilyCreateNestedOneWithoutUserInput
+  passwordResetRequests?: Prisma.PasswordResetRequestCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutRecipientUserInput
+  targetUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutTargetUserInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistCreateNestedManyWithoutUser_Shortlist_userIdToUserInput
+}
+
+export type UserUncheckedCreateWithoutShortlist_Shortlist_targetIdToUserInput = {
+  id: string
+  email?: string | null
+  mobile_no?: string | null
+  password?: string | null
+  role?: $Enums.UserRole
+  status?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  userIndex?: number | null
+  isFeatured?: boolean
+  userid?: string | null
+  paymentScreenshot?: string | null
+  receivedRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRecipientInput
+  sentRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRequesterInput
+  expectations?: Prisma.ExpectationsUncheckedCreateNestedOneWithoutUserInput
+  family?: Prisma.FamilyUncheckedCreateNestedOneWithoutUserInput
+  passwordResetRequests?: Prisma.PasswordResetRequestUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutRecipientUserInput
+  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutTargetUserInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistUncheckedCreateNestedManyWithoutUser_Shortlist_userIdToUserInput
+}
+
+export type UserCreateOrConnectWithoutShortlist_Shortlist_targetIdToUserInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutShortlist_Shortlist_targetIdToUserInput, Prisma.UserUncheckedCreateWithoutShortlist_Shortlist_targetIdToUserInput>
+}
+
+export type UserCreateWithoutShortlist_Shortlist_userIdToUserInput = {
+  id: string
+  email?: string | null
+  mobile_no?: string | null
+  password?: string | null
+  role?: $Enums.UserRole
+  status?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  userIndex?: number | null
+  isFeatured?: boolean
+  userid?: string | null
+  paymentScreenshot?: string | null
+  receivedRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRecipientInput
+  sentRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRequesterInput
+  expectations?: Prisma.ExpectationsCreateNestedOneWithoutUserInput
+  family?: Prisma.FamilyCreateNestedOneWithoutUserInput
+  passwordResetRequests?: Prisma.PasswordResetRequestCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutRecipientUserInput
+  targetUserSentLogs?: Prisma.ProfileSentLogCreateNestedManyWithoutTargetUserInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistCreateNestedManyWithoutUser_Shortlist_targetIdToUserInput
+}
+
+export type UserUncheckedCreateWithoutShortlist_Shortlist_userIdToUserInput = {
+  id: string
+  email?: string | null
+  mobile_no?: string | null
+  password?: string | null
+  role?: $Enums.UserRole
+  status?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  userIndex?: number | null
+  isFeatured?: boolean
+  userid?: string | null
+  paymentScreenshot?: string | null
+  receivedRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRecipientInput
+  sentRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRequesterInput
+  expectations?: Prisma.ExpectationsUncheckedCreateNestedOneWithoutUserInput
+  family?: Prisma.FamilyUncheckedCreateNestedOneWithoutUserInput
+  passwordResetRequests?: Prisma.PasswordResetRequestUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutRecipientUserInput
+  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedCreateNestedManyWithoutTargetUserInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistUncheckedCreateNestedManyWithoutUser_Shortlist_targetIdToUserInput
+}
+
+export type UserCreateOrConnectWithoutShortlist_Shortlist_userIdToUserInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutShortlist_Shortlist_userIdToUserInput, Prisma.UserUncheckedCreateWithoutShortlist_Shortlist_userIdToUserInput>
+}
+
+export type UserUpsertWithoutShortlist_Shortlist_targetIdToUserInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutShortlist_Shortlist_targetIdToUserInput, Prisma.UserUncheckedUpdateWithoutShortlist_Shortlist_targetIdToUserInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutShortlist_Shortlist_targetIdToUserInput, Prisma.UserUncheckedCreateWithoutShortlist_Shortlist_targetIdToUserInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutShortlist_Shortlist_targetIdToUserInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutShortlist_Shortlist_targetIdToUserInput, Prisma.UserUncheckedUpdateWithoutShortlist_Shortlist_targetIdToUserInput>
+}
+
+export type UserUpdateWithoutShortlist_Shortlist_targetIdToUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedRequests?: Prisma.ContactApprovalUpdateManyWithoutRecipientNestedInput
+  sentRequests?: Prisma.ContactApprovalUpdateManyWithoutRequesterNestedInput
+  expectations?: Prisma.ExpectationsUpdateOneWithoutUserNestedInput
+  family?: Prisma.FamilyUpdateOneWithoutUserNestedInput
+  passwordResetRequests?: Prisma.PasswordResetRequestUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutRecipientUserNestedInput
+  targetUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutTargetUserNestedInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistUpdateManyWithoutUser_Shortlist_userIdToUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutShortlist_Shortlist_targetIdToUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRecipientNestedInput
+  sentRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRequesterNestedInput
+  expectations?: Prisma.ExpectationsUncheckedUpdateOneWithoutUserNestedInput
+  family?: Prisma.FamilyUncheckedUpdateOneWithoutUserNestedInput
+  passwordResetRequests?: Prisma.PasswordResetRequestUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutRecipientUserNestedInput
+  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutTargetUserNestedInput
+  Shortlist_Shortlist_userIdToUser?: Prisma.ShortlistUncheckedUpdateManyWithoutUser_Shortlist_userIdToUserNestedInput
+}
+
+export type UserUpsertWithoutShortlist_Shortlist_userIdToUserInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutShortlist_Shortlist_userIdToUserInput, Prisma.UserUncheckedUpdateWithoutShortlist_Shortlist_userIdToUserInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutShortlist_Shortlist_userIdToUserInput, Prisma.UserUncheckedCreateWithoutShortlist_Shortlist_userIdToUserInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutShortlist_Shortlist_userIdToUserInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutShortlist_Shortlist_userIdToUserInput, Prisma.UserUncheckedUpdateWithoutShortlist_Shortlist_userIdToUserInput>
+}
+
+export type UserUpdateWithoutShortlist_Shortlist_userIdToUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedRequests?: Prisma.ContactApprovalUpdateManyWithoutRecipientNestedInput
+  sentRequests?: Prisma.ContactApprovalUpdateManyWithoutRequesterNestedInput
+  expectations?: Prisma.ExpectationsUpdateOneWithoutUserNestedInput
+  family?: Prisma.FamilyUpdateOneWithoutUserNestedInput
+  passwordResetRequests?: Prisma.PasswordResetRequestUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutRecipientUserNestedInput
+  targetUserSentLogs?: Prisma.ProfileSentLogUpdateManyWithoutTargetUserNestedInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistUpdateManyWithoutUser_Shortlist_targetIdToUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutShortlist_Shortlist_userIdToUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userIndex?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receivedRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRecipientNestedInput
+  sentRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRequesterNestedInput
+  expectations?: Prisma.ExpectationsUncheckedUpdateOneWithoutUserNestedInput
+  family?: Prisma.FamilyUncheckedUpdateOneWithoutUserNestedInput
+  passwordResetRequests?: Prisma.PasswordResetRequestUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  recipientUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutRecipientUserNestedInput
+  targetUserSentLogs?: Prisma.ProfileSentLogUncheckedUpdateManyWithoutTargetUserNestedInput
+  Shortlist_Shortlist_targetIdToUser?: Prisma.ShortlistUncheckedUpdateManyWithoutUser_Shortlist_targetIdToUserNestedInput
 }
 
 
@@ -1282,15 +1874,21 @@ export type UserUncheckedUpdateWithoutRecipientUserSentLogsInput = {
 export type UserCountOutputType = {
   receivedRequests: number
   sentRequests: number
-  targetUserSentLogs: number
+  passwordResetRequests: number
   recipientUserSentLogs: number
+  targetUserSentLogs: number
+  Shortlist_Shortlist_targetIdToUser: number
+  Shortlist_Shortlist_userIdToUser: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   receivedRequests?: boolean | UserCountOutputTypeCountReceivedRequestsArgs
   sentRequests?: boolean | UserCountOutputTypeCountSentRequestsArgs
-  targetUserSentLogs?: boolean | UserCountOutputTypeCountTargetUserSentLogsArgs
+  passwordResetRequests?: boolean | UserCountOutputTypeCountPasswordResetRequestsArgs
   recipientUserSentLogs?: boolean | UserCountOutputTypeCountRecipientUserSentLogsArgs
+  targetUserSentLogs?: boolean | UserCountOutputTypeCountTargetUserSentLogsArgs
+  Shortlist_Shortlist_targetIdToUser?: boolean | UserCountOutputTypeCountShortlist_Shortlist_targetIdToUserArgs
+  Shortlist_Shortlist_userIdToUser?: boolean | UserCountOutputTypeCountShortlist_Shortlist_userIdToUserArgs
 }
 
 /**
@@ -1320,8 +1918,8 @@ export type UserCountOutputTypeCountSentRequestsArgs<ExtArgs extends runtime.Typ
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountTargetUserSentLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.ProfileSentLogWhereInput
+export type UserCountOutputTypeCountPasswordResetRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PasswordResetRequestWhereInput
 }
 
 /**
@@ -1331,10 +1929,30 @@ export type UserCountOutputTypeCountRecipientUserSentLogsArgs<ExtArgs extends ru
   where?: Prisma.ProfileSentLogWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountTargetUserSentLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ProfileSentLogWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountShortlist_Shortlist_targetIdToUserArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ShortlistWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountShortlist_Shortlist_userIdToUserArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ShortlistWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  userIndex?: boolean
   email?: boolean
   mobile_no?: boolean
   password?: boolean
@@ -1342,20 +1960,25 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  userIndex?: boolean
   isFeatured?: boolean
+  userid?: boolean
+  paymentScreenshot?: boolean
   receivedRequests?: boolean | Prisma.User$receivedRequestsArgs<ExtArgs>
   sentRequests?: boolean | Prisma.User$sentRequestsArgs<ExtArgs>
-  targetUserSentLogs?: boolean | Prisma.User$targetUserSentLogsArgs<ExtArgs>
-  recipientUserSentLogs?: boolean | Prisma.User$recipientUserSentLogsArgs<ExtArgs>
   expectations?: boolean | Prisma.User$expectationsArgs<ExtArgs>
   family?: boolean | Prisma.User$familyArgs<ExtArgs>
+  passwordResetRequests?: boolean | Prisma.User$passwordResetRequestsArgs<ExtArgs>
   profile?: boolean | Prisma.User$profileArgs<ExtArgs>
+  recipientUserSentLogs?: boolean | Prisma.User$recipientUserSentLogsArgs<ExtArgs>
+  targetUserSentLogs?: boolean | Prisma.User$targetUserSentLogsArgs<ExtArgs>
+  Shortlist_Shortlist_targetIdToUser?: boolean | Prisma.User$Shortlist_Shortlist_targetIdToUserArgs<ExtArgs>
+  Shortlist_Shortlist_userIdToUser?: boolean | Prisma.User$Shortlist_Shortlist_userIdToUserArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  userIndex?: boolean
   email?: boolean
   mobile_no?: boolean
   password?: boolean
@@ -1363,12 +1986,14 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  userIndex?: boolean
   isFeatured?: boolean
+  userid?: boolean
+  paymentScreenshot?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  userIndex?: boolean
   email?: boolean
   mobile_no?: boolean
   password?: boolean
@@ -1376,12 +2001,14 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  userIndex?: boolean
   isFeatured?: boolean
+  userid?: boolean
+  paymentScreenshot?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
   id?: boolean
-  userIndex?: boolean
   email?: boolean
   mobile_no?: boolean
   password?: boolean
@@ -1389,18 +2016,24 @@ export type UserSelectScalar = {
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  userIndex?: boolean
   isFeatured?: boolean
+  userid?: boolean
+  paymentScreenshot?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userIndex" | "email" | "mobile_no" | "password" | "role" | "status" | "createdAt" | "updatedAt" | "isFeatured", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "mobile_no" | "password" | "role" | "status" | "createdAt" | "updatedAt" | "userIndex" | "isFeatured" | "userid" | "paymentScreenshot", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   receivedRequests?: boolean | Prisma.User$receivedRequestsArgs<ExtArgs>
   sentRequests?: boolean | Prisma.User$sentRequestsArgs<ExtArgs>
-  targetUserSentLogs?: boolean | Prisma.User$targetUserSentLogsArgs<ExtArgs>
-  recipientUserSentLogs?: boolean | Prisma.User$recipientUserSentLogsArgs<ExtArgs>
   expectations?: boolean | Prisma.User$expectationsArgs<ExtArgs>
   family?: boolean | Prisma.User$familyArgs<ExtArgs>
+  passwordResetRequests?: boolean | Prisma.User$passwordResetRequestsArgs<ExtArgs>
   profile?: boolean | Prisma.User$profileArgs<ExtArgs>
+  recipientUserSentLogs?: boolean | Prisma.User$recipientUserSentLogsArgs<ExtArgs>
+  targetUserSentLogs?: boolean | Prisma.User$targetUserSentLogsArgs<ExtArgs>
+  Shortlist_Shortlist_targetIdToUser?: boolean | Prisma.User$Shortlist_Shortlist_targetIdToUserArgs<ExtArgs>
+  Shortlist_Shortlist_userIdToUser?: boolean | Prisma.User$Shortlist_Shortlist_userIdToUserArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1411,15 +2044,17 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     receivedRequests: Prisma.$ContactApprovalPayload<ExtArgs>[]
     sentRequests: Prisma.$ContactApprovalPayload<ExtArgs>[]
-    targetUserSentLogs: Prisma.$ProfileSentLogPayload<ExtArgs>[]
-    recipientUserSentLogs: Prisma.$ProfileSentLogPayload<ExtArgs>[]
     expectations: Prisma.$ExpectationsPayload<ExtArgs> | null
     family: Prisma.$FamilyPayload<ExtArgs> | null
+    passwordResetRequests: Prisma.$PasswordResetRequestPayload<ExtArgs>[]
     profile: Prisma.$ProfilePayload<ExtArgs> | null
+    recipientUserSentLogs: Prisma.$ProfileSentLogPayload<ExtArgs>[]
+    targetUserSentLogs: Prisma.$ProfileSentLogPayload<ExtArgs>[]
+    Shortlist_Shortlist_targetIdToUser: Prisma.$ShortlistPayload<ExtArgs>[]
+    Shortlist_Shortlist_userIdToUser: Prisma.$ShortlistPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    userIndex: number | null
     email: string | null
     mobile_no: string | null
     password: string | null
@@ -1427,7 +2062,10 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     status: string
     createdAt: Date
     updatedAt: Date
+    userIndex: number | null
     isFeatured: boolean
+    userid: string | null
+    paymentScreenshot: string | null
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -1824,11 +2462,14 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   receivedRequests<T extends Prisma.User$receivedRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$receivedRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContactApprovalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sentRequests<T extends Prisma.User$sentRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sentRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContactApprovalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  targetUserSentLogs<T extends Prisma.User$targetUserSentLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$targetUserSentLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProfileSentLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  recipientUserSentLogs<T extends Prisma.User$recipientUserSentLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$recipientUserSentLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProfileSentLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   expectations<T extends Prisma.User$expectationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$expectationsArgs<ExtArgs>>): Prisma.Prisma__ExpectationsClient<runtime.Types.Result.GetResult<Prisma.$ExpectationsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   family<T extends Prisma.User$familyArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$familyArgs<ExtArgs>>): Prisma.Prisma__FamilyClient<runtime.Types.Result.GetResult<Prisma.$FamilyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  passwordResetRequests<T extends Prisma.User$passwordResetRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$passwordResetRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PasswordResetRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   profile<T extends Prisma.User$profileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$profileArgs<ExtArgs>>): Prisma.Prisma__ProfileClient<runtime.Types.Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  recipientUserSentLogs<T extends Prisma.User$recipientUserSentLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$recipientUserSentLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProfileSentLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  targetUserSentLogs<T extends Prisma.User$targetUserSentLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$targetUserSentLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProfileSentLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  Shortlist_Shortlist_targetIdToUser<T extends Prisma.User$Shortlist_Shortlist_targetIdToUserArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$Shortlist_Shortlist_targetIdToUserArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ShortlistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  Shortlist_Shortlist_userIdToUser<T extends Prisma.User$Shortlist_Shortlist_userIdToUserArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$Shortlist_Shortlist_userIdToUserArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ShortlistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1859,7 +2500,6 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
  */
 export interface UserFieldRefs {
   readonly id: Prisma.FieldRef<"User", 'String'>
-  readonly userIndex: Prisma.FieldRef<"User", 'Int'>
   readonly email: Prisma.FieldRef<"User", 'String'>
   readonly mobile_no: Prisma.FieldRef<"User", 'String'>
   readonly password: Prisma.FieldRef<"User", 'String'>
@@ -1867,7 +2507,10 @@ export interface UserFieldRefs {
   readonly status: Prisma.FieldRef<"User", 'String'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly userIndex: Prisma.FieldRef<"User", 'Int'>
   readonly isFeatured: Prisma.FieldRef<"User", 'Boolean'>
+  readonly userid: Prisma.FieldRef<"User", 'String'>
+  readonly paymentScreenshot: Prisma.FieldRef<"User", 'String'>
 }
     
 
@@ -2309,54 +2952,6 @@ export type User$sentRequestsArgs<ExtArgs extends runtime.Types.Extensions.Inter
 }
 
 /**
- * User.targetUserSentLogs
- */
-export type User$targetUserSentLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the ProfileSentLog
-   */
-  select?: Prisma.ProfileSentLogSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the ProfileSentLog
-   */
-  omit?: Prisma.ProfileSentLogOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.ProfileSentLogInclude<ExtArgs> | null
-  where?: Prisma.ProfileSentLogWhereInput
-  orderBy?: Prisma.ProfileSentLogOrderByWithRelationInput | Prisma.ProfileSentLogOrderByWithRelationInput[]
-  cursor?: Prisma.ProfileSentLogWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.ProfileSentLogScalarFieldEnum | Prisma.ProfileSentLogScalarFieldEnum[]
-}
-
-/**
- * User.recipientUserSentLogs
- */
-export type User$recipientUserSentLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the ProfileSentLog
-   */
-  select?: Prisma.ProfileSentLogSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the ProfileSentLog
-   */
-  omit?: Prisma.ProfileSentLogOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.ProfileSentLogInclude<ExtArgs> | null
-  where?: Prisma.ProfileSentLogWhereInput
-  orderBy?: Prisma.ProfileSentLogOrderByWithRelationInput | Prisma.ProfileSentLogOrderByWithRelationInput[]
-  cursor?: Prisma.ProfileSentLogWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.ProfileSentLogScalarFieldEnum | Prisma.ProfileSentLogScalarFieldEnum[]
-}
-
-/**
  * User.expectations
  */
 export type User$expectationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2395,6 +2990,30 @@ export type User$familyArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 }
 
 /**
+ * User.passwordResetRequests
+ */
+export type User$passwordResetRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PasswordResetRequest
+   */
+  select?: Prisma.PasswordResetRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PasswordResetRequest
+   */
+  omit?: Prisma.PasswordResetRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PasswordResetRequestInclude<ExtArgs> | null
+  where?: Prisma.PasswordResetRequestWhereInput
+  orderBy?: Prisma.PasswordResetRequestOrderByWithRelationInput | Prisma.PasswordResetRequestOrderByWithRelationInput[]
+  cursor?: Prisma.PasswordResetRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PasswordResetRequestScalarFieldEnum | Prisma.PasswordResetRequestScalarFieldEnum[]
+}
+
+/**
  * User.profile
  */
 export type User$profileArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2411,6 +3030,102 @@ export type User$profileArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    */
   include?: Prisma.ProfileInclude<ExtArgs> | null
   where?: Prisma.ProfileWhereInput
+}
+
+/**
+ * User.recipientUserSentLogs
+ */
+export type User$recipientUserSentLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProfileSentLog
+   */
+  select?: Prisma.ProfileSentLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ProfileSentLog
+   */
+  omit?: Prisma.ProfileSentLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProfileSentLogInclude<ExtArgs> | null
+  where?: Prisma.ProfileSentLogWhereInput
+  orderBy?: Prisma.ProfileSentLogOrderByWithRelationInput | Prisma.ProfileSentLogOrderByWithRelationInput[]
+  cursor?: Prisma.ProfileSentLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ProfileSentLogScalarFieldEnum | Prisma.ProfileSentLogScalarFieldEnum[]
+}
+
+/**
+ * User.targetUserSentLogs
+ */
+export type User$targetUserSentLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProfileSentLog
+   */
+  select?: Prisma.ProfileSentLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ProfileSentLog
+   */
+  omit?: Prisma.ProfileSentLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProfileSentLogInclude<ExtArgs> | null
+  where?: Prisma.ProfileSentLogWhereInput
+  orderBy?: Prisma.ProfileSentLogOrderByWithRelationInput | Prisma.ProfileSentLogOrderByWithRelationInput[]
+  cursor?: Prisma.ProfileSentLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ProfileSentLogScalarFieldEnum | Prisma.ProfileSentLogScalarFieldEnum[]
+}
+
+/**
+ * User.Shortlist_Shortlist_targetIdToUser
+ */
+export type User$Shortlist_Shortlist_targetIdToUserArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Shortlist
+   */
+  select?: Prisma.ShortlistSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Shortlist
+   */
+  omit?: Prisma.ShortlistOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ShortlistInclude<ExtArgs> | null
+  where?: Prisma.ShortlistWhereInput
+  orderBy?: Prisma.ShortlistOrderByWithRelationInput | Prisma.ShortlistOrderByWithRelationInput[]
+  cursor?: Prisma.ShortlistWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ShortlistScalarFieldEnum | Prisma.ShortlistScalarFieldEnum[]
+}
+
+/**
+ * User.Shortlist_Shortlist_userIdToUser
+ */
+export type User$Shortlist_Shortlist_userIdToUserArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Shortlist
+   */
+  select?: Prisma.ShortlistSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Shortlist
+   */
+  omit?: Prisma.ShortlistOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ShortlistInclude<ExtArgs> | null
+  where?: Prisma.ShortlistWhereInput
+  orderBy?: Prisma.ShortlistOrderByWithRelationInput | Prisma.ShortlistOrderByWithRelationInput[]
+  cursor?: Prisma.ShortlistWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ShortlistScalarFieldEnum | Prisma.ShortlistScalarFieldEnum[]
 }
 
 /**

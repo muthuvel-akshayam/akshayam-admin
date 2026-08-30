@@ -4,10 +4,11 @@
 // ADMIN TOPBAR COMPONENT
 // ==========================================
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useToast } from './ui/Toast';
 import LanguageSwitcher from './LanguageSwitcher';
+import { getUnreadPasswordResetRequestsCount, getPasswordResetRequests } from '../../actions/admin/passwordReset.actions';
 
 export interface TopbarProps {
   onToggleSidebar?: () => void;
@@ -23,6 +24,30 @@ export const Topbar: React.FC<TopbarProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [resetRequests, setResetRequests] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetchNotifications();
+    const interval = setInterval(fetchNotifications, 60000); // Polling every minute
+    return () => clearInterval(interval);
+  }, []);
+
+  const fetchNotifications = async () => {
+    try {
+      const resCount = await getUnreadPasswordResetRequestsCount();
+      if (resCount.success) setUnreadCount(resCount.count || 0);
+
+      const resReqs = await getPasswordResetRequests();
+      if (resReqs.success) {
+        // Just take the top 5 pending requests for the dropdown
+        const pending = (resReqs.data || []).filter((r: any) => r.status === 'PENDING').slice(0, 5);
+        setResetRequests(pending);
+      }
+    } catch (err) {
+      console.error('Failed to fetch notifications', err);
+    }
+  };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -87,6 +112,7 @@ export const Topbar: React.FC<TopbarProps> = ({
             onClick={() => {
               setShowNotifications(!showNotifications);
               setShowProfileMenu(false);
+              if (!showNotifications) fetchNotifications();
             }}
             className="relative p-2.5 rounded-xl text-slate-600  hover:bg-slate-100  transition-colors"
             title="Notifications"
@@ -94,40 +120,53 @@ export const Topbar: React.FC<TopbarProps> = ({
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
             </svg>
-            <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-white  animate-pulse" />
+            {unreadCount > 0 && (
+              <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-red-500 ring-2 ring-white animate-pulse" />
+            )}
           </button>
 
           {showNotifications && (
             <div className="absolute right-0 mt-2 w-80 bg-white  rounded-2xl shadow-xl border border-slate-200  py-3 z-50 animate-scaleUp">
               <div className="px-4 pb-2 border-b border-slate-100  flex justify-between items-center">
                 <span className="font-bold text-sm text-slate-800 ">Notifications</span>
-                <span className="text-[10px] uppercase font-bold bg-emerald-100 text-emerald-800   px-2 py-0.5 rounded-full">
-                  2 New
-                </span>
+                {unreadCount > 0 && (
+                  <span className="text-[10px] uppercase font-bold bg-red-100 text-red-800 px-2 py-0.5 rounded-full">
+                    {unreadCount} New
+                  </span>
+                )}
               </div>
               <div className="divide-y divide-slate-100  max-h-64 overflow-y-auto">
-                <div
+                {resetRequests.length > 0 ? (
+                  resetRequests.map((req) => (
+                    <div
+                      key={req.id}
+                      onClick={() => {
+                        setShowNotifications(false);
+                        router.push('/admin/password-resets');
+                      }}
+                      className="p-3.5 hover:bg-slate-50  cursor-pointer transition-colors"
+                    >
+                      <p className="text-xs font-semibold text-slate-800 ">Password Reset Request</p>
+                      <p className="text-xs text-slate-500  mt-0.5">{req.user?.profile?.name || req.user?.mobile_no} requested a reset.</p>
+                      <p className="text-[10px] text-emerald-600 mt-1 font-medium">{new Date(req.createdAt).toLocaleTimeString()}</p>
+                    </div>
+                  ))
+                ) : (
+                  <div className="p-4 text-center">
+                    <p className="text-xs text-slate-500">No new notifications</p>
+                  </div>
+                )}
+              </div>
+              <div className="px-4 pt-2 border-t border-slate-100 text-center">
+                <button
                   onClick={() => {
                     setShowNotifications(false);
-                    router.push('/admin/profiles/pending');
+                    router.push('/admin/password-resets');
                   }}
-                  className="p-3.5 hover:bg-slate-50  cursor-pointer transition-colors"
+                  className="text-xs font-bold text-emerald-600 hover:text-emerald-700"
                 >
-                  <p className="text-xs font-semibold text-slate-800 ">New Profile Submission</p>
-                  <p className="text-xs text-slate-500  mt-0.5">Ananya Iyer submitted profile for verification.</p>
-                  <p className="text-[10px] text-emerald-600 mt-1 font-medium">10 mins ago</p>
-                </div>
-                <div
-                  onClick={() => {
-                    setShowNotifications(false);
-                    router.push('/admin/compatibility');
-                  }}
-                  className="p-3.5 hover:bg-slate-50  cursor-pointer transition-colors"
-                >
-                  <p className="text-xs font-semibold text-slate-800 ">Excel Import Ready</p>
-                  <p className="text-xs text-slate-500  mt-0.5">Nakshatra compatibility matrix updated.</p>
-                  <p className="text-[10px] text-slate-400 mt-1">2 hours ago</p>
-                </div>
+                  View all requests
+                </button>
               </div>
             </div>
           )}
@@ -151,44 +190,34 @@ export const Topbar: React.FC<TopbarProps> = ({
           </button>
 
           {showProfileMenu && (
-            <div className="absolute right-0 mt-2 w-56 bg-white  rounded-2xl shadow-xl border border-slate-200  py-2 z-50 animate-scaleUp">
-              <div className="py-1">
-                <button
-                  onClick={() => {
-                    setShowProfileMenu(false);
-                    router.push('/admin/settings');
-                  }}
-                  className="w-full text-left px-4 py-2 text-xs text-slate-700  hover:bg-slate-50  flex items-center gap-2.5"
-                >
-                  <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                  </svg>
-                  Site Settings
-                </button>
-                <button
-                  onClick={() => {
-                    setShowProfileMenu(false);
-                    router.push('/');
-                  }}
-                  className="w-full text-left px-4 py-2 text-xs text-slate-700  hover:bg-slate-50  flex items-center gap-2.5"
-                >
-                  <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                  </svg>
-                  View Live Site
-                </button>
+            <div className="absolute right-0 mt-2 w-48 bg-white  rounded-2xl shadow-xl border border-slate-200  py-2 z-50 animate-scaleUp">
+              <div className="px-4 py-2 border-b border-slate-100  mb-1">
+                <p className="text-sm font-bold text-slate-800 ">Admin User</p>
+                <p className="text-xs text-slate-500 ">admin@akshayam.com</p>
               </div>
-              <div className="border-t border-slate-100  pt-1 mt-1">
-                <button
-                  onClick={handleLogout}
-                  className="w-full text-left px-4 py-2 text-xs text-rose-600 hover:bg-rose-50  flex items-center gap-2.5 font-semibold"
-                >
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                  </svg>
-                  Logout
-                </button>
-              </div>
+              
+              <button 
+                onClick={() => {
+                  setShowProfileMenu(false);
+                  router.push('/admin/settings');
+                }}
+                className="w-full text-left px-4 py-2 text-sm text-slate-600  hover:bg-slate-50  hover:text-slate-900  transition-colors flex items-center gap-2"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                Settings
+              </button>
+              <button 
+                onClick={handleLogout}
+                className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors flex items-center gap-2 mt-1"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+                Sign out
+              </button>
             </div>
           )}
         </div>

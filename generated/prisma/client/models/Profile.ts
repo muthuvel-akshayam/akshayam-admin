@@ -77,6 +77,11 @@ export type ProfileMinAggregateOutputType = {
   dasaBalance: string | null
   hidePhoto: boolean | null
   houseAddress: string | null
+  idProofUrl: string | null
+  displayId: string | null
+  houseLocation: string | null
+  profileCreatedBy: string | null
+  reviewerId: string | null
 }
 
 export type ProfileMaxAggregateOutputType = {
@@ -120,6 +125,11 @@ export type ProfileMaxAggregateOutputType = {
   dasaBalance: string | null
   hidePhoto: boolean | null
   houseAddress: string | null
+  idProofUrl: string | null
+  displayId: string | null
+  houseLocation: string | null
+  profileCreatedBy: string | null
+  reviewerId: string | null
 }
 
 export type ProfileCountAggregateOutputType = {
@@ -166,6 +176,12 @@ export type ProfileCountAggregateOutputType = {
   hidePhoto: number
   houseAddress: number
   rasiGrid: number
+  jathagamData: number
+  idProofUrl: number
+  displayId: number
+  houseLocation: number
+  profileCreatedBy: number
+  reviewerId: number
   _all: number
 }
 
@@ -221,6 +237,11 @@ export type ProfileMinAggregateInputType = {
   dasaBalance?: true
   hidePhoto?: true
   houseAddress?: true
+  idProofUrl?: true
+  displayId?: true
+  houseLocation?: true
+  profileCreatedBy?: true
+  reviewerId?: true
 }
 
 export type ProfileMaxAggregateInputType = {
@@ -264,6 +285,11 @@ export type ProfileMaxAggregateInputType = {
   dasaBalance?: true
   hidePhoto?: true
   houseAddress?: true
+  idProofUrl?: true
+  displayId?: true
+  houseLocation?: true
+  profileCreatedBy?: true
+  reviewerId?: true
 }
 
 export type ProfileCountAggregateInputType = {
@@ -310,6 +336,12 @@ export type ProfileCountAggregateInputType = {
   hidePhoto?: true
   houseAddress?: true
   rasiGrid?: true
+  jathagamData?: true
+  idProofUrl?: true
+  displayId?: true
+  houseLocation?: true
+  profileCreatedBy?: true
+  reviewerId?: true
   _all?: true
 }
 
@@ -443,6 +475,12 @@ export type ProfileGroupByOutputType = {
   hidePhoto: boolean
   houseAddress: string | null
   rasiGrid: runtime.JsonValue | null
+  jathagamData: runtime.JsonValue | null
+  idProofUrl: string | null
+  displayId: string | null
+  houseLocation: string | null
+  profileCreatedBy: string | null
+  reviewerId: string | null
   _count: ProfileCountAggregateOutputType | null
   _avg: ProfileAvgAggregateOutputType | null
   _sum: ProfileSumAggregateOutputType | null
@@ -512,6 +550,12 @@ export type ProfileWhereInput = {
   hidePhoto?: Prisma.BoolFilter<"Profile"> | boolean
   houseAddress?: Prisma.StringNullableFilter<"Profile"> | string | null
   rasiGrid?: Prisma.JsonNullableFilter<"Profile">
+  jathagamData?: Prisma.JsonNullableFilter<"Profile">
+  idProofUrl?: Prisma.StringNullableFilter<"Profile"> | string | null
+  displayId?: Prisma.StringNullableFilter<"Profile"> | string | null
+  houseLocation?: Prisma.StringNullableFilter<"Profile"> | string | null
+  profileCreatedBy?: Prisma.StringNullableFilter<"Profile"> | string | null
+  reviewerId?: Prisma.StringNullableFilter<"Profile"> | string | null
   educations?: Prisma.EducationListRelationFilter
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
@@ -560,6 +604,12 @@ export type ProfileOrderByWithRelationInput = {
   hidePhoto?: Prisma.SortOrder
   houseAddress?: Prisma.SortOrderInput | Prisma.SortOrder
   rasiGrid?: Prisma.SortOrderInput | Prisma.SortOrder
+  jathagamData?: Prisma.SortOrderInput | Prisma.SortOrder
+  idProofUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  displayId?: Prisma.SortOrderInput | Prisma.SortOrder
+  houseLocation?: Prisma.SortOrderInput | Prisma.SortOrder
+  profileCreatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewerId?: Prisma.SortOrderInput | Prisma.SortOrder
   educations?: Prisma.EducationOrderByRelationAggregateInput
   user?: Prisma.UserOrderByWithRelationInput
 }
@@ -567,6 +617,7 @@ export type ProfileOrderByWithRelationInput = {
 export type ProfileWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   userId?: string
+  displayId?: string
   AND?: Prisma.ProfileWhereInput | Prisma.ProfileWhereInput[]
   OR?: Prisma.ProfileWhereInput[]
   NOT?: Prisma.ProfileWhereInput | Prisma.ProfileWhereInput[]
@@ -611,9 +662,14 @@ export type ProfileWhereUniqueInput = Prisma.AtLeast<{
   hidePhoto?: Prisma.BoolFilter<"Profile"> | boolean
   houseAddress?: Prisma.StringNullableFilter<"Profile"> | string | null
   rasiGrid?: Prisma.JsonNullableFilter<"Profile">
+  jathagamData?: Prisma.JsonNullableFilter<"Profile">
+  idProofUrl?: Prisma.StringNullableFilter<"Profile"> | string | null
+  houseLocation?: Prisma.StringNullableFilter<"Profile"> | string | null
+  profileCreatedBy?: Prisma.StringNullableFilter<"Profile"> | string | null
+  reviewerId?: Prisma.StringNullableFilter<"Profile"> | string | null
   educations?: Prisma.EducationListRelationFilter
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-}, "id" | "userId">
+}, "id" | "userId" | "displayId">
 
 export type ProfileOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -659,6 +715,12 @@ export type ProfileOrderByWithAggregationInput = {
   hidePhoto?: Prisma.SortOrder
   houseAddress?: Prisma.SortOrderInput | Prisma.SortOrder
   rasiGrid?: Prisma.SortOrderInput | Prisma.SortOrder
+  jathagamData?: Prisma.SortOrderInput | Prisma.SortOrder
+  idProofUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  displayId?: Prisma.SortOrderInput | Prisma.SortOrder
+  houseLocation?: Prisma.SortOrderInput | Prisma.SortOrder
+  profileCreatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewerId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ProfileCountOrderByAggregateInput
   _avg?: Prisma.ProfileAvgOrderByAggregateInput
   _max?: Prisma.ProfileMaxOrderByAggregateInput
@@ -713,6 +775,12 @@ export type ProfileScalarWhereWithAggregatesInput = {
   hidePhoto?: Prisma.BoolWithAggregatesFilter<"Profile"> | boolean
   houseAddress?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
   rasiGrid?: Prisma.JsonNullableWithAggregatesFilter<"Profile">
+  jathagamData?: Prisma.JsonNullableWithAggregatesFilter<"Profile">
+  idProofUrl?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
+  displayId?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
+  houseLocation?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
+  profileCreatedBy?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
+  reviewerId?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
 }
 
 export type ProfileCreateInput = {
@@ -758,6 +826,12 @@ export type ProfileCreateInput = {
   hidePhoto?: boolean
   houseAddress?: string | null
   rasiGrid?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  jathagamData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  idProofUrl?: string | null
+  displayId?: string | null
+  houseLocation?: string | null
+  profileCreatedBy?: string | null
+  reviewerId?: string | null
   educations?: Prisma.EducationCreateNestedManyWithoutProfileInput
   user: Prisma.UserCreateNestedOneWithoutProfileInput
 }
@@ -806,6 +880,12 @@ export type ProfileUncheckedCreateInput = {
   hidePhoto?: boolean
   houseAddress?: string | null
   rasiGrid?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  jathagamData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  idProofUrl?: string | null
+  displayId?: string | null
+  houseLocation?: string | null
+  profileCreatedBy?: string | null
+  reviewerId?: string | null
   educations?: Prisma.EducationUncheckedCreateNestedManyWithoutProfileInput
 }
 
@@ -852,6 +932,12 @@ export type ProfileUpdateInput = {
   hidePhoto?: Prisma.BoolFieldUpdateOperationsInput | boolean
   houseAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rasiGrid?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  jathagamData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  idProofUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  displayId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  houseLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileCreatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   educations?: Prisma.EducationUpdateManyWithoutProfileNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutProfileNestedInput
 }
@@ -900,6 +986,12 @@ export type ProfileUncheckedUpdateInput = {
   hidePhoto?: Prisma.BoolFieldUpdateOperationsInput | boolean
   houseAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rasiGrid?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  jathagamData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  idProofUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  displayId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  houseLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileCreatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   educations?: Prisma.EducationUncheckedUpdateManyWithoutProfileNestedInput
 }
 
@@ -947,6 +1039,12 @@ export type ProfileCreateManyInput = {
   hidePhoto?: boolean
   houseAddress?: string | null
   rasiGrid?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  jathagamData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  idProofUrl?: string | null
+  displayId?: string | null
+  houseLocation?: string | null
+  profileCreatedBy?: string | null
+  reviewerId?: string | null
 }
 
 export type ProfileUpdateManyMutationInput = {
@@ -992,6 +1090,12 @@ export type ProfileUpdateManyMutationInput = {
   hidePhoto?: Prisma.BoolFieldUpdateOperationsInput | boolean
   houseAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rasiGrid?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  jathagamData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  idProofUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  displayId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  houseLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileCreatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ProfileUncheckedUpdateManyInput = {
@@ -1038,6 +1142,12 @@ export type ProfileUncheckedUpdateManyInput = {
   hidePhoto?: Prisma.BoolFieldUpdateOperationsInput | boolean
   houseAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rasiGrid?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  jathagamData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  idProofUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  displayId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  houseLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileCreatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ProfileNullableScalarRelationFilter = {
@@ -1097,6 +1207,12 @@ export type ProfileCountOrderByAggregateInput = {
   hidePhoto?: Prisma.SortOrder
   houseAddress?: Prisma.SortOrder
   rasiGrid?: Prisma.SortOrder
+  jathagamData?: Prisma.SortOrder
+  idProofUrl?: Prisma.SortOrder
+  displayId?: Prisma.SortOrder
+  houseLocation?: Prisma.SortOrder
+  profileCreatedBy?: Prisma.SortOrder
+  reviewerId?: Prisma.SortOrder
 }
 
 export type ProfileAvgOrderByAggregateInput = {
@@ -1145,6 +1261,11 @@ export type ProfileMaxOrderByAggregateInput = {
   dasaBalance?: Prisma.SortOrder
   hidePhoto?: Prisma.SortOrder
   houseAddress?: Prisma.SortOrder
+  idProofUrl?: Prisma.SortOrder
+  displayId?: Prisma.SortOrder
+  houseLocation?: Prisma.SortOrder
+  profileCreatedBy?: Prisma.SortOrder
+  reviewerId?: Prisma.SortOrder
 }
 
 export type ProfileMinOrderByAggregateInput = {
@@ -1188,6 +1309,11 @@ export type ProfileMinOrderByAggregateInput = {
   dasaBalance?: Prisma.SortOrder
   hidePhoto?: Prisma.SortOrder
   houseAddress?: Prisma.SortOrder
+  idProofUrl?: Prisma.SortOrder
+  displayId?: Prisma.SortOrder
+  houseLocation?: Prisma.SortOrder
+  profileCreatedBy?: Prisma.SortOrder
+  reviewerId?: Prisma.SortOrder
 }
 
 export type ProfileSumOrderByAggregateInput = {
@@ -1334,6 +1460,12 @@ export type ProfileCreateWithoutUserInput = {
   hidePhoto?: boolean
   houseAddress?: string | null
   rasiGrid?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  jathagamData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  idProofUrl?: string | null
+  displayId?: string | null
+  houseLocation?: string | null
+  profileCreatedBy?: string | null
+  reviewerId?: string | null
   educations?: Prisma.EducationCreateNestedManyWithoutProfileInput
 }
 
@@ -1380,6 +1512,12 @@ export type ProfileUncheckedCreateWithoutUserInput = {
   hidePhoto?: boolean
   houseAddress?: string | null
   rasiGrid?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  jathagamData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  idProofUrl?: string | null
+  displayId?: string | null
+  houseLocation?: string | null
+  profileCreatedBy?: string | null
+  reviewerId?: string | null
   educations?: Prisma.EducationUncheckedCreateNestedManyWithoutProfileInput
 }
 
@@ -1442,6 +1580,12 @@ export type ProfileUpdateWithoutUserInput = {
   hidePhoto?: Prisma.BoolFieldUpdateOperationsInput | boolean
   houseAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rasiGrid?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  jathagamData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  idProofUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  displayId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  houseLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileCreatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   educations?: Prisma.EducationUpdateManyWithoutProfileNestedInput
 }
 
@@ -1488,6 +1632,12 @@ export type ProfileUncheckedUpdateWithoutUserInput = {
   hidePhoto?: Prisma.BoolFieldUpdateOperationsInput | boolean
   houseAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rasiGrid?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  jathagamData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  idProofUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  displayId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  houseLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileCreatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   educations?: Prisma.EducationUncheckedUpdateManyWithoutProfileNestedInput
 }
 
@@ -1534,6 +1684,12 @@ export type ProfileCreateWithoutEducationsInput = {
   hidePhoto?: boolean
   houseAddress?: string | null
   rasiGrid?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  jathagamData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  idProofUrl?: string | null
+  displayId?: string | null
+  houseLocation?: string | null
+  profileCreatedBy?: string | null
+  reviewerId?: string | null
   user: Prisma.UserCreateNestedOneWithoutProfileInput
 }
 
@@ -1581,6 +1737,12 @@ export type ProfileUncheckedCreateWithoutEducationsInput = {
   hidePhoto?: boolean
   houseAddress?: string | null
   rasiGrid?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  jathagamData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  idProofUrl?: string | null
+  displayId?: string | null
+  houseLocation?: string | null
+  profileCreatedBy?: string | null
+  reviewerId?: string | null
 }
 
 export type ProfileCreateOrConnectWithoutEducationsInput = {
@@ -1642,6 +1804,12 @@ export type ProfileUpdateWithoutEducationsInput = {
   hidePhoto?: Prisma.BoolFieldUpdateOperationsInput | boolean
   houseAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rasiGrid?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  jathagamData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  idProofUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  displayId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  houseLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileCreatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutProfileNestedInput
 }
 
@@ -1689,6 +1857,12 @@ export type ProfileUncheckedUpdateWithoutEducationsInput = {
   hidePhoto?: Prisma.BoolFieldUpdateOperationsInput | boolean
   houseAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rasiGrid?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  jathagamData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  idProofUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  displayId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  houseLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileCreatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -1766,6 +1940,12 @@ export type ProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   hidePhoto?: boolean
   houseAddress?: boolean
   rasiGrid?: boolean
+  jathagamData?: boolean
+  idProofUrl?: boolean
+  displayId?: boolean
+  houseLocation?: boolean
+  profileCreatedBy?: boolean
+  reviewerId?: boolean
   educations?: boolean | Prisma.Profile$educationsArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.ProfileCountOutputTypeDefaultArgs<ExtArgs>
@@ -1815,6 +1995,12 @@ export type ProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   hidePhoto?: boolean
   houseAddress?: boolean
   rasiGrid?: boolean
+  jathagamData?: boolean
+  idProofUrl?: boolean
+  displayId?: boolean
+  houseLocation?: boolean
+  profileCreatedBy?: boolean
+  reviewerId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["profile"]>
 
@@ -1862,6 +2048,12 @@ export type ProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   hidePhoto?: boolean
   houseAddress?: boolean
   rasiGrid?: boolean
+  jathagamData?: boolean
+  idProofUrl?: boolean
+  displayId?: boolean
+  houseLocation?: boolean
+  profileCreatedBy?: boolean
+  reviewerId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["profile"]>
 
@@ -1909,9 +2101,15 @@ export type ProfileSelectScalar = {
   hidePhoto?: boolean
   houseAddress?: boolean
   rasiGrid?: boolean
+  jathagamData?: boolean
+  idProofUrl?: boolean
+  displayId?: boolean
+  houseLocation?: boolean
+  profileCreatedBy?: boolean
+  reviewerId?: boolean
 }
 
-export type ProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "gender" | "livingCountry" | "state" | "city" | "religion" | "caste" | "subCaste" | "koottam" | "dob" | "tob" | "lob" | "height" | "weight" | "physicalCondition" | "skinColour" | "maritalStatus" | "familyStatus" | "foodHabits" | "drinkingHabits" | "smokingHabits" | "rasi" | "nakshatra" | "poruthaNakshatram" | "dosham" | "jathakamUrl" | "photoUrl" | "casteCertificateUrl" | "hideMobileNo" | "hideHouseAddress" | "hideHouseLocation" | "status" | "approvedAt" | "approvedBy" | "rejectedReason" | "isLive" | "amsamGrid" | "dasaBalance" | "hidePhoto" | "houseAddress" | "rasiGrid", ExtArgs["result"]["profile"]>
+export type ProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "gender" | "livingCountry" | "state" | "city" | "religion" | "caste" | "subCaste" | "koottam" | "dob" | "tob" | "lob" | "height" | "weight" | "physicalCondition" | "skinColour" | "maritalStatus" | "familyStatus" | "foodHabits" | "drinkingHabits" | "smokingHabits" | "rasi" | "nakshatra" | "poruthaNakshatram" | "dosham" | "jathakamUrl" | "photoUrl" | "casteCertificateUrl" | "hideMobileNo" | "hideHouseAddress" | "hideHouseLocation" | "status" | "approvedAt" | "approvedBy" | "rejectedReason" | "isLive" | "amsamGrid" | "dasaBalance" | "hidePhoto" | "houseAddress" | "rasiGrid" | "jathagamData" | "idProofUrl" | "displayId" | "houseLocation" | "profileCreatedBy" | "reviewerId", ExtArgs["result"]["profile"]>
 export type ProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   educations?: boolean | Prisma.Profile$educationsArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1974,6 +2172,12 @@ export type $ProfilePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     hidePhoto: boolean
     houseAddress: string | null
     rasiGrid: runtime.JsonValue | null
+    jathagamData: runtime.JsonValue | null
+    idProofUrl: string | null
+    displayId: string | null
+    houseLocation: string | null
+    profileCreatedBy: string | null
+    reviewerId: string | null
   }, ExtArgs["result"]["profile"]>
   composites: {}
 }
@@ -2442,6 +2646,12 @@ export interface ProfileFieldRefs {
   readonly hidePhoto: Prisma.FieldRef<"Profile", 'Boolean'>
   readonly houseAddress: Prisma.FieldRef<"Profile", 'String'>
   readonly rasiGrid: Prisma.FieldRef<"Profile", 'Json'>
+  readonly jathagamData: Prisma.FieldRef<"Profile", 'Json'>
+  readonly idProofUrl: Prisma.FieldRef<"Profile", 'String'>
+  readonly displayId: Prisma.FieldRef<"Profile", 'String'>
+  readonly houseLocation: Prisma.FieldRef<"Profile", 'String'>
+  readonly profileCreatedBy: Prisma.FieldRef<"Profile", 'String'>
+  readonly reviewerId: Prisma.FieldRef<"Profile", 'String'>
 }
     
 

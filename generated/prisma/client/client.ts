@@ -92,7 +92,22 @@ export type SiteSettings = Prisma.SiteSettingsModel
  */
 export type AdminAuditLog = Prisma.AdminAuditLogModel
 /**
+ * Model PasswordResetRequest
+ * 
+ */
+export type PasswordResetRequest = Prisma.PasswordResetRequestModel
+/**
  * Model ProfileSentLog
  * 
  */
 export type ProfileSentLog = Prisma.ProfileSentLogModel
+/**
+ * Model CasteLookup
+ * 
+ */
+export type CasteLookup = Prisma.CasteLookupModel
+/**
+ * Model Shortlist
+ * 
+ */
+export type Shortlist = Prisma.ShortlistModel

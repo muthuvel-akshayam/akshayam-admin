@@ -407,7 +407,10 @@ export const ModelName = {
   NakshatraCompatibility: 'NakshatraCompatibility',
   SiteSettings: 'SiteSettings',
   AdminAuditLog: 'AdminAuditLog',
-  ProfileSentLog: 'ProfileSentLog'
+  PasswordResetRequest: 'PasswordResetRequest',
+  ProfileSentLog: 'ProfileSentLog',
+  CasteLookup: 'CasteLookup',
+  Shortlist: 'Shortlist'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -423,7 +426,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "profile" | "education" | "family" | "sibling" | "expectations" | "contactApproval" | "nakshatraCompatibility" | "siteSettings" | "adminAuditLog" | "profileSentLog"
+    modelProps: "user" | "profile" | "education" | "family" | "sibling" | "expectations" | "contactApproval" | "nakshatraCompatibility" | "siteSettings" | "adminAuditLog" | "passwordResetRequest" | "profileSentLog" | "casteLookup" | "shortlist"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1167,6 +1170,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PasswordResetRequest: {
+      payload: Prisma.$PasswordResetRequestPayload<ExtArgs>
+      fields: Prisma.PasswordResetRequestFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PasswordResetRequestFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetRequestPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PasswordResetRequestFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetRequestPayload>
+        }
+        findFirst: {
+          args: Prisma.PasswordResetRequestFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetRequestPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PasswordResetRequestFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetRequestPayload>
+        }
+        findMany: {
+          args: Prisma.PasswordResetRequestFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetRequestPayload>[]
+        }
+        create: {
+          args: Prisma.PasswordResetRequestCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetRequestPayload>
+        }
+        createMany: {
+          args: Prisma.PasswordResetRequestCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PasswordResetRequestCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetRequestPayload>[]
+        }
+        delete: {
+          args: Prisma.PasswordResetRequestDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetRequestPayload>
+        }
+        update: {
+          args: Prisma.PasswordResetRequestUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetRequestPayload>
+        }
+        deleteMany: {
+          args: Prisma.PasswordResetRequestDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PasswordResetRequestUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PasswordResetRequestUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetRequestPayload>[]
+        }
+        upsert: {
+          args: Prisma.PasswordResetRequestUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordResetRequestPayload>
+        }
+        aggregate: {
+          args: Prisma.PasswordResetRequestAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePasswordResetRequest>
+        }
+        groupBy: {
+          args: Prisma.PasswordResetRequestGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PasswordResetRequestGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PasswordResetRequestCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PasswordResetRequestCountAggregateOutputType> | number
+        }
+      }
+    }
     ProfileSentLog: {
       payload: Prisma.$ProfileSentLogPayload<ExtArgs>
       fields: Prisma.ProfileSentLogFieldRefs
@@ -1241,6 +1318,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    CasteLookup: {
+      payload: Prisma.$CasteLookupPayload<ExtArgs>
+      fields: Prisma.CasteLookupFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CasteLookupFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CasteLookupPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CasteLookupFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CasteLookupPayload>
+        }
+        findFirst: {
+          args: Prisma.CasteLookupFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CasteLookupPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CasteLookupFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CasteLookupPayload>
+        }
+        findMany: {
+          args: Prisma.CasteLookupFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CasteLookupPayload>[]
+        }
+        create: {
+          args: Prisma.CasteLookupCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CasteLookupPayload>
+        }
+        createMany: {
+          args: Prisma.CasteLookupCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CasteLookupCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CasteLookupPayload>[]
+        }
+        delete: {
+          args: Prisma.CasteLookupDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CasteLookupPayload>
+        }
+        update: {
+          args: Prisma.CasteLookupUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CasteLookupPayload>
+        }
+        deleteMany: {
+          args: Prisma.CasteLookupDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CasteLookupUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CasteLookupUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CasteLookupPayload>[]
+        }
+        upsert: {
+          args: Prisma.CasteLookupUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CasteLookupPayload>
+        }
+        aggregate: {
+          args: Prisma.CasteLookupAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCasteLookup>
+        }
+        groupBy: {
+          args: Prisma.CasteLookupGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CasteLookupGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CasteLookupCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CasteLookupCountAggregateOutputType> | number
+        }
+      }
+    }
+    Shortlist: {
+      payload: Prisma.$ShortlistPayload<ExtArgs>
+      fields: Prisma.ShortlistFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ShortlistFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortlistPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ShortlistFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortlistPayload>
+        }
+        findFirst: {
+          args: Prisma.ShortlistFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortlistPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ShortlistFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortlistPayload>
+        }
+        findMany: {
+          args: Prisma.ShortlistFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortlistPayload>[]
+        }
+        create: {
+          args: Prisma.ShortlistCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortlistPayload>
+        }
+        createMany: {
+          args: Prisma.ShortlistCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ShortlistCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortlistPayload>[]
+        }
+        delete: {
+          args: Prisma.ShortlistDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortlistPayload>
+        }
+        update: {
+          args: Prisma.ShortlistUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortlistPayload>
+        }
+        deleteMany: {
+          args: Prisma.ShortlistDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ShortlistUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ShortlistUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortlistPayload>[]
+        }
+        upsert: {
+          args: Prisma.ShortlistUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortlistPayload>
+        }
+        aggregate: {
+          args: Prisma.ShortlistAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateShortlist>
+        }
+        groupBy: {
+          args: Prisma.ShortlistGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ShortlistGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ShortlistCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ShortlistCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1282,7 +1507,6 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const UserScalarFieldEnum = {
   id: 'id',
-  userIndex: 'userIndex',
   email: 'email',
   mobile_no: 'mobile_no',
   password: 'password',
@@ -1290,7 +1514,10 @@ export const UserScalarFieldEnum = {
   status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  isFeatured: 'isFeatured'
+  userIndex: 'userIndex',
+  isFeatured: 'isFeatured',
+  userid: 'userid',
+  paymentScreenshot: 'paymentScreenshot'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -1339,7 +1566,13 @@ export const ProfileScalarFieldEnum = {
   dasaBalance: 'dasaBalance',
   hidePhoto: 'hidePhoto',
   houseAddress: 'houseAddress',
-  rasiGrid: 'rasiGrid'
+  rasiGrid: 'rasiGrid',
+  jathagamData: 'jathagamData',
+  idProofUrl: 'idProofUrl',
+  displayId: 'displayId',
+  houseLocation: 'houseLocation',
+  profileCreatedBy: 'profileCreatedBy',
+  reviewerId: 'reviewerId'
 } as const
 
 export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum]
@@ -1380,7 +1613,8 @@ export const FamilyScalarFieldEnum = {
   thottam: 'thottam',
   vacantLand: 'vacantLand',
   totalAssetValue: 'totalAssetValue',
-  assetComments: 'assetComments'
+  assetComments: 'assetComments',
+  dowryDetails: 'dowryDetails'
 } as const
 
 export type FamilyScalarFieldEnum = (typeof FamilyScalarFieldEnum)[keyof typeof FamilyScalarFieldEnum]
@@ -1412,7 +1646,8 @@ export const ExpectationsScalarFieldEnum = {
   vacantLand: 'vacantLand',
   preferredDistanceRadius: 'preferredDistanceRadius',
   city: 'city',
-  comments: 'comments'
+  comments: 'comments',
+  expectsVacantLand: 'expectsVacantLand'
 } as const
 
 export type ExpectationsScalarFieldEnum = (typeof ExpectationsScalarFieldEnum)[keyof typeof ExpectationsScalarFieldEnum]
@@ -1471,6 +1706,18 @@ export const AdminAuditLogScalarFieldEnum = {
 export type AdminAuditLogScalarFieldEnum = (typeof AdminAuditLogScalarFieldEnum)[keyof typeof AdminAuditLogScalarFieldEnum]
 
 
+export const PasswordResetRequestScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  status: 'status',
+  isRead: 'isRead',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PasswordResetRequestScalarFieldEnum = (typeof PasswordResetRequestScalarFieldEnum)[keyof typeof PasswordResetRequestScalarFieldEnum]
+
+
 export const ProfileSentLogScalarFieldEnum = {
   id: 'id',
   targetUserId: 'targetUserId',
@@ -1481,6 +1728,26 @@ export const ProfileSentLogScalarFieldEnum = {
 } as const
 
 export type ProfileSentLogScalarFieldEnum = (typeof ProfileSentLogScalarFieldEnum)[keyof typeof ProfileSentLogScalarFieldEnum]
+
+
+export const CasteLookupScalarFieldEnum = {
+  id: 'id',
+  religion: 'religion',
+  caste: 'caste',
+  subcaste: 'subcaste'
+} as const
+
+export type CasteLookupScalarFieldEnum = (typeof CasteLookupScalarFieldEnum)[keyof typeof CasteLookupScalarFieldEnum]
+
+
+export const ShortlistScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  targetId: 'targetId',
+  createdAt: 'createdAt'
+} as const
+
+export type ShortlistScalarFieldEnum = (typeof ShortlistScalarFieldEnum)[keyof typeof ShortlistScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1545,20 +1812,6 @@ export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
 
 
 /**
- * Reference to a field of type 'Int'
- */
-export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-/**
- * Reference to a field of type 'Int[]'
- */
-export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-    
-
-
-/**
  * Reference to a field of type 'UserRole'
  */
 export type EnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole'>
@@ -1583,6 +1836,20 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Int'
+ */
+export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+/**
+ * Reference to a field of type 'Int[]'
+ */
+export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
 
 
@@ -1744,6 +2011,20 @@ export type EnumApprovalStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$P
  * Reference to a field of type 'ApprovalStatus[]'
  */
 export type ListEnumApprovalStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApprovalStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PasswordResetStatus'
+ */
+export type EnumPasswordResetStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PasswordResetStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'PasswordResetStatus[]'
+ */
+export type ListEnumPasswordResetStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PasswordResetStatus[]'>
     
 
 
@@ -1921,7 +2202,10 @@ export type GlobalOmitConfig = {
   nakshatraCompatibility?: Prisma.NakshatraCompatibilityOmit
   siteSettings?: Prisma.SiteSettingsOmit
   adminAuditLog?: Prisma.AdminAuditLogOmit
+  passwordResetRequest?: Prisma.PasswordResetRequestOmit
   profileSentLog?: Prisma.ProfileSentLogOmit
+  casteLookup?: Prisma.CasteLookupOmit
+  shortlist?: Prisma.ShortlistOmit
 }
 
 /* Types for Logging */

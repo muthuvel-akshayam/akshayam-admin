@@ -12,6 +12,7 @@ import {
   activateUserAction,
   deleteUserAction,
   toggleUserFeaturedAction,
+  updateUserPasswordAction,
 } from '../../actions/admin/user.actions';
 import { removeAfterMatchAction } from '../../actions/admin/profile.actions';
 
@@ -21,8 +22,9 @@ export interface UsersTableProps {
   currentPage: number;
   itemsPerPage: number;
   onPageChange: (page: number) => void;
-  onFilterChange?: (search: string) => void;
+  onFilterChange?: (search: string, status: string, minAge?: number, maxAge?: number, nakshatras?: string, dosham?: string) => void;
   onRowClick?: (userId: string | number) => void;
+  currentStatus?: string;
 }
 
 export const UsersTable: React.FC<UsersTableProps> = ({
@@ -33,11 +35,21 @@ export const UsersTable: React.FC<UsersTableProps> = ({
   onPageChange,
   onFilterChange,
   onRowClick,
+  currentStatus = 'all',
 }) => {
   const { showToast } = useToast();
   const [loadingId, setLoadingId] = useState<number | null>(null);
   const [deleteConfirmUser, setDeleteConfirmUser] = useState<AdminUser | null>(null);
+  const [resetPasswordUser, setResetPasswordUser] = useState<AdminUser | null>(null);
+  const [newPassword, setNewPassword] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Advanced Filters
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [minAge, setMinAge] = useState<number | ''>('');
+  const [maxAge, setMaxAge] = useState<number | ''>('');
+  const [nakshatras, setNakshatras] = useState('');
+  const [dosham, setDosham] = useState('');
 
   const handleStatusToggle = async (e: React.MouseEvent, user: AdminUser) => {
     e.stopPropagation();
@@ -98,9 +110,36 @@ export const UsersTable: React.FC<UsersTableProps> = ({
     }
   };
 
+  const handleResetPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!resetPasswordUser || !newPassword) return;
+    
+    if (newPassword.length < 6) {
+      showToast('Password must be at least 6 characters long', 'error');
+      return;
+    }
+
+    const userId = Number(resetPasswordUser.id);
+    setLoadingId(userId);
+    try {
+      const res = await updateUserPasswordAction(resetPasswordUser.id, newPassword);
+      if (res.success) {
+        showToast(`Password updated for ${resetPasswordUser.name}`, 'success');
+        setResetPasswordUser(null);
+        setNewPassword('');
+      } else {
+        showToast(res.error || 'Failed to update password', 'error');
+      }
+    } catch (err: any) {
+      showToast(err.message, 'error');
+    } finally {
+      setLoadingId(null);
+    }
+  };
+
   const handleFilterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (onFilterChange) onFilterChange(searchQuery);
+    if (onFilterChange) onFilterChange(searchQuery, currentStatus, minAge || undefined, maxAge || undefined, nakshatras || undefined, dosham || undefined);
   };
 
   return (
@@ -121,7 +160,85 @@ export const UsersTable: React.FC<UsersTableProps> = ({
           </div>
           <Button type="submit" variant="secondary" size="sm">Search</Button>
         </form>
+        {onFilterChange && (
+          <div className="flex items-center gap-3">
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => setShowAdvanced(!showAdvanced)}
+              className="flex items-center gap-2"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+              </svg>
+              Advanced
+            </Button>
+            <select
+              value={currentStatus}
+              onChange={(e) => onFilterChange(searchQuery, e.target.value, minAge || undefined, maxAge || undefined, nakshatras || undefined, dosham || undefined)}
+              className="bg-white text-slate-700 px-3 py-2 rounded-xl text-sm border border-slate-200 focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 font-medium"
+            >
+              <option value="all">All Users</option>
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+              <option value="denied">Denied</option>
+              <option value="matched_removed">Matched / Removed</option>
+            </select>
+          </div>
+        )}
       </div>
+
+      {showAdvanced && onFilterChange && (
+        <div className="p-5 border-b border-slate-200 bg-slate-50 flex flex-wrap gap-4 items-end animate-fadeIn">
+          <div>
+            <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Age Range</label>
+            <div className="flex items-center gap-2">
+              <input 
+                type="number" 
+                placeholder="Min" 
+                value={minAge} 
+                onChange={(e) => setMinAge(e.target.value ? Number(e.target.value) : '')} 
+                className="w-20 bg-white text-slate-800 px-3 py-1.5 rounded-lg text-sm border border-slate-200 focus:border-emerald-600 focus:outline-none"
+              />
+              <span className="text-slate-400">-</span>
+              <input 
+                type="number" 
+                placeholder="Max" 
+                value={maxAge} 
+                onChange={(e) => setMaxAge(e.target.value ? Number(e.target.value) : '')} 
+                className="w-20 bg-white text-slate-800 px-3 py-1.5 rounded-lg text-sm border border-slate-200 focus:border-emerald-600 focus:outline-none"
+              />
+            </div>
+          </div>
+          <div>
+            <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Nakshatras (comma separated)</label>
+            <input 
+              type="text" 
+              placeholder="e.g. Ashwini, Bharani" 
+              value={nakshatras} 
+              onChange={(e) => setNakshatras(e.target.value)} 
+              className="w-48 bg-white text-slate-800 px-3 py-1.5 rounded-lg text-sm border border-slate-200 focus:border-emerald-600 focus:outline-none"
+            />
+          </div>
+          <div>
+            <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Thoosam / Dosham</label>
+            <input 
+              type="text" 
+              placeholder="e.g. Sevvai" 
+              value={dosham} 
+              onChange={(e) => setDosham(e.target.value)} 
+              className="w-40 bg-white text-slate-800 px-3 py-1.5 rounded-lg text-sm border border-slate-200 focus:border-emerald-600 focus:outline-none"
+            />
+          </div>
+          <Button 
+            variant="primary" 
+            size="sm" 
+            onClick={() => onFilterChange(searchQuery, currentStatus, minAge || undefined, maxAge || undefined, nakshatras || undefined, dosham || undefined)}
+          >
+            Apply Filters
+          </Button>
+        </div>
+      )}
 
       <div className="overflow-x-auto flex-1">
         <table className="w-full text-left text-xs sm:text-sm">
@@ -206,6 +323,19 @@ export const UsersTable: React.FC<UsersTableProps> = ({
                         >
                           {isSuspended ? 'Activate' : 'Suspend'}
                         </button>
+                        
+                        {/* Reset Password Button */}
+                        <button
+                          onClick={(e) => { e.stopPropagation(); setResetPasswordUser(user); setNewPassword(''); }}
+                          disabled={loadingId === user.id}
+                          className="p-1.5 rounded-lg text-amber-600 hover:bg-amber-50 hover:text-amber-700 transition-colors"
+                          title="Reset Password"
+                        >
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                          </svg>
+                        </button>
+
                         <button
                           onClick={(e) => { e.stopPropagation(); setDeleteConfirmUser(user); }}
                           disabled={loadingId === user.id}
@@ -244,6 +374,56 @@ export const UsersTable: React.FC<UsersTableProps> = ({
         variant="danger"
         isLoading={!!loadingId}
       />
+
+      {/* Reset Password Modal */}
+      {resetPasswordUser && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden" onClick={(e) => e.stopPropagation()}>
+            <div className="p-5 border-b border-slate-100 flex items-center justify-between">
+              <h3 className="text-lg font-bold text-slate-900">Reset Password</h3>
+              <button onClick={() => setResetPasswordUser(null)} className="text-slate-400 hover:text-slate-600">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            
+            <form onSubmit={handleResetPassword} className="p-5">
+              <p className="text-sm text-slate-600 mb-4">
+                Update the password for <strong>{resetPasswordUser.name}</strong>. They will be able to log in with this new password immediately.
+              </p>
+              
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">
+                    New Password <span className="text-rose-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    minLength={6}
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    className="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-xl px-4 py-2.5 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors"
+                    placeholder="Enter new password"
+                    autoComplete="off"
+                  />
+                  <p className="text-[10px] text-slate-500 mt-1.5">Minimum 6 characters.</p>
+                </div>
+              </div>
+              
+              <div className="mt-8 flex gap-3 justify-end">
+                <Button type="button" variant="secondary" onClick={() => setResetPasswordUser(null)}>
+                  Cancel
+                </Button>
+                <Button type="submit" variant="primary" isLoading={!!loadingId}>
+                  Update Password
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -106,3 +106,11 @@ export const ProfileSentStatus = {
 } as const
 
 export type ProfileSentStatus = (typeof ProfileSentStatus)[keyof typeof ProfileSentStatus]
+
+
+export const PasswordResetStatus = {
+  PENDING: 'PENDING',
+  RESOLVED: 'RESOLVED'
+} as const
+
+export type PasswordResetStatus = (typeof PasswordResetStatus)[keyof typeof PasswordResetStatus]

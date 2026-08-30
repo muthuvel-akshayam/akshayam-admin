@@ -14,6 +14,7 @@ import ConfirmDialog from './ui/ConfirmDialog';
 import { useToast } from './ui/Toast';
 import { AdminProfile, ProfileStatus } from '../../types/admin';
 import { approveProfileAction, removeAfterMatchAction, restoreProfileAction } from '@/actions/admin/profile.actions';
+import { searchCompatibilityAction } from '@/actions/admin/compatibility.actions';
 
 export interface ProfilesTableProps {
   profiles: AdminProfile[];
@@ -27,7 +28,15 @@ export interface ProfilesTableProps {
   showFilters?: boolean;
   currentStatus?: ProfileStatus | 'ALL';
   currentGender?: 'MALE' | 'FEMALE' | 'ALL';
-  onFilterChange?: (status: string, gender: string, search: string) => void;
+  onFilterChange?: (
+    status: string, 
+    gender: string, 
+    search: string,
+    minAge?: number,
+    maxAge?: number,
+    maritalStatus?: string,
+    nakshatras?: string[]
+  ) => void;
   onRefresh?: () => void;
 }
 
@@ -51,6 +60,13 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
   const [loadingId, setLoadingId] = useState<number | null>(null);
   const [deleteConfirmProfile, setDeleteConfirmProfile] = useState<AdminProfile | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  
+  // Advanced filters internal state
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+  const [advMinAge, setAdvMinAge] = useState<number | ''>('');
+  const [advMaxAge, setAdvMaxAge] = useState<number | ''>('');
+  const [advMaritalStatus, setAdvMaritalStatus] = useState<string>('ALL');
+  const [advNakshatras, setAdvNakshatras] = useState<string>('');
 
   const handleApprove = async (profile: AdminProfile) => {
     const profileId = Number(profile.id);
@@ -108,10 +124,62 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
     }
   };
 
+  const handleFindMatchesRow = async (e: React.MouseEvent, profile: AdminProfile) => {
+    e.stopPropagation();
+    const profileId = Number(profile.id);
+    setLoadingId(profileId);
+    try {
+      const oppositeGender = profile.gender === 'MALE' ? 'FEMALE' : 'MALE';
+      let minAge = 18;
+      let maxAge = 50;
+      
+      if (profile.gender === 'MALE') {
+        minAge = Math.max(18, profile.age - 7);
+        maxAge = profile.age;
+      } else {
+        minAge = profile.age;
+        maxAge = profile.age + 7;
+      }
+
+      const res = await searchCompatibilityAction(profile.nakshatra, profile.gender);
+      let nakshatras: string[] = [];
+      if (res.success && res.data) {
+        nakshatras = res.data
+          .filter(m => !m.compatibilityType.toLowerCase().includes('adhamam'))
+          .map(m => profile.gender === 'MALE' ? m.femaleNakshatra : m.maleNakshatra);
+      }
+      
+      const queryParams = new URLSearchParams();
+      queryParams.set('gender', oppositeGender);
+      queryParams.set('minAge', String(minAge));
+      queryParams.set('maxAge', String(maxAge));
+      queryParams.set('status', 'APPROVED');
+      
+      if (nakshatras.length > 0) {
+        queryParams.set('nakshatras', nakshatras.join(','));
+      }
+      
+      router.push(`/admin/profiles?${queryParams.toString()}`);
+    } catch (err: any) {
+      showToast(err.message || 'Error finding matches', 'error');
+    } finally {
+      setLoadingId(null);
+    }
+  };
+
   const handleFilterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (onFilterChange) {
-      onFilterChange(currentStatus, currentGender, searchQuery);
+      const nakshatraArr = advNakshatras ? advNakshatras.split(',').map(n => n.trim()).filter(Boolean) : undefined;
+      onFilterChange(
+        currentStatus, 
+        currentGender, 
+        searchQuery,
+        advMinAge !== '' ? advMinAge : undefined,
+        advMaxAge !== '' ? advMaxAge : undefined,
+        advMaritalStatus !== 'ALL' ? advMaritalStatus : undefined,
+        nakshatraArr
+      );
     }
   };
 
@@ -141,6 +209,16 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
             <Button type="submit" variant="secondary" size="sm">
               Filter
             </Button>
+            <button
+              type="button"
+              onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+              className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 flex items-center gap-1"
+            >
+              Advanced
+              <svg className={`w-3 h-3 transition-transform ${showAdvancedFilters ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
           </form>
 
           <div className="flex items-center gap-3 self-end md:self-auto">
@@ -164,6 +242,60 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
               <option value="APPROVED">Approved Only</option>
               <option value="REJECTED">Rejected Only</option>
             </select>
+          </div>
+        </div>
+      )}
+
+      {/* Advanced Filters Panel */}
+      {showFilters && showAdvancedFilters && (
+        <div className="p-4 border-b border-slate-200 bg-slate-50 flex flex-wrap gap-4 items-end">
+          <div>
+            <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Min Age</label>
+            <input
+              type="number"
+              value={advMinAge}
+              onChange={(e) => setAdvMinAge(e.target.value ? Number(e.target.value) : '')}
+              className="w-20 bg-white text-slate-800 px-3 py-1.5 rounded-lg text-xs border border-slate-200 focus:border-emerald-600 focus:outline-none"
+              placeholder="18"
+            />
+          </div>
+          <div>
+            <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Max Age</label>
+            <input
+              type="number"
+              value={advMaxAge}
+              onChange={(e) => setAdvMaxAge(e.target.value ? Number(e.target.value) : '')}
+              className="w-20 bg-white text-slate-800 px-3 py-1.5 rounded-lg text-xs border border-slate-200 focus:border-emerald-600 focus:outline-none"
+              placeholder="40"
+            />
+          </div>
+          <div>
+            <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Marital Status</label>
+            <select
+              value={advMaritalStatus}
+              onChange={(e) => setAdvMaritalStatus(e.target.value)}
+              className="bg-white text-slate-700 px-3 py-1.5 rounded-lg text-xs border border-slate-200 focus:outline-none focus:border-emerald-600"
+            >
+              <option value="ALL">Any Status</option>
+              <option value="NEVER_MARRIED">Never Married</option>
+              <option value="DIVORCED">Divorced</option>
+              <option value="WIDOWED">Widowed</option>
+            </select>
+          </div>
+          <div className="flex-1 min-w-[200px]">
+            <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Target Nakshatras (comma-separated)</label>
+            <input
+              type="text"
+              value={advNakshatras}
+              onChange={(e) => setAdvNakshatras(e.target.value)}
+              className="w-full bg-white text-slate-800 px-3 py-1.5 rounded-lg text-xs border border-slate-200 focus:border-emerald-600 focus:outline-none"
+              placeholder="Ashwini, Bharani, Krittika..."
+            />
+          </div>
+          <div>
+            <Button type="button" variant="primary" size="sm" onClick={handleFilterSubmit}>
+              Apply Filters
+            </Button>
           </div>
         </div>
       )}
@@ -230,9 +362,14 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
                         <div>
                           <Link
                             href={`/admin/profiles/${profile.id}`}
-                            className="font-bold text-slate-900  hover:text-emerald-700  transition-colors block leading-tight"
+                            className="font-bold text-slate-900  hover:text-emerald-700  transition-colors flex items-center gap-1.5 leading-tight"
                           >
                             {profile.name}
+                            {profile.isFeatured && (
+                              <svg className="w-3.5 h-3.5 text-amber-500 fill-amber-500" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                              </svg>
+                            )}
                           </Link>
                           <span className="text-[11px] text-slate-400  font-mono">
                             ID: {profile.userIndex ? `#${profile.userIndex}` : String(profile.id).substring(0, 8)}
@@ -286,6 +423,18 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
                     {/* Actions */}
                     <td className="px-5 py-3.5 whitespace-nowrap text-right">
                       <div className="flex items-center justify-end gap-1.5">
+                        {/* Find Matches Button */}
+                        <button
+                          onClick={(e) => handleFindMatchesRow(e, profile)}
+                          disabled={loadingId === profile.id}
+                          className="p-1.5 rounded-lg text-fuchsia-600 hover:text-fuchsia-700 hover:bg-fuchsia-50 transition-colors disabled:opacity-50"
+                          title="Find Matches for Profile"
+                        >
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                          </svg>
+                        </button>
+
                         {/* View Button */}
                         <button
                           onClick={(e) => {

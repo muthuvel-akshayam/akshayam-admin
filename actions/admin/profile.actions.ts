@@ -41,6 +41,10 @@ export async function approveProfileAction(
       session.user.id
     );
 
+    if (updated && updated.userId) {
+      await UserService.updateUserStatus(String(updated.userId), 'ACTIVE', session.user.id);
+    }
+
     revalidatePath('/admin');
     revalidatePath('/admin/profiles');
     revalidatePath('/admin/profiles/pending');
@@ -258,13 +262,21 @@ export async function getProfilesAction(
   limit = 10,
   status?: string,
   gender?: string,
-  search?: string
+  search?: string,
+  minAge?: number,
+  maxAge?: number,
+  maritalStatus?: string,
+  nakshatras?: string[]
 ) {
   return fetchProfilesAction(
     {
       status: status === 'ALL' ? undefined : (status as any),
       gender: gender === 'ALL' ? undefined : (gender as any),
       query: search || undefined,
+      minAge,
+      maxAge,
+      maritalStatus: maritalStatus === 'ALL' ? undefined : maritalStatus,
+      nakshatras,
     },
     page,
     limit

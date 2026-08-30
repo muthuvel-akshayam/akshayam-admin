@@ -49,6 +49,7 @@ export type FamilyMinAggregateOutputType = {
   vacantLand: string | null
   totalAssetValue: string | null
   assetComments: string | null
+  dowryDetails: string | null
 }
 
 export type FamilyMaxAggregateOutputType = {
@@ -76,6 +77,7 @@ export type FamilyMaxAggregateOutputType = {
   vacantLand: string | null
   totalAssetValue: string | null
   assetComments: string | null
+  dowryDetails: string | null
 }
 
 export type FamilyCountAggregateOutputType = {
@@ -103,6 +105,7 @@ export type FamilyCountAggregateOutputType = {
   vacantLand: number
   totalAssetValue: number
   assetComments: number
+  dowryDetails: number
   _all: number
 }
 
@@ -132,6 +135,7 @@ export type FamilyMinAggregateInputType = {
   vacantLand?: true
   totalAssetValue?: true
   assetComments?: true
+  dowryDetails?: true
 }
 
 export type FamilyMaxAggregateInputType = {
@@ -159,6 +163,7 @@ export type FamilyMaxAggregateInputType = {
   vacantLand?: true
   totalAssetValue?: true
   assetComments?: true
+  dowryDetails?: true
 }
 
 export type FamilyCountAggregateInputType = {
@@ -186,6 +191,7 @@ export type FamilyCountAggregateInputType = {
   vacantLand?: true
   totalAssetValue?: true
   assetComments?: true
+  dowryDetails?: true
   _all?: true
 }
 
@@ -286,6 +292,7 @@ export type FamilyGroupByOutputType = {
   vacantLand: string | null
   totalAssetValue: string | null
   assetComments: string | null
+  dowryDetails: string | null
   _count: FamilyCountAggregateOutputType | null
   _min: FamilyMinAggregateOutputType | null
   _max: FamilyMaxAggregateOutputType | null
@@ -334,6 +341,7 @@ export type FamilyWhereInput = {
   vacantLand?: Prisma.StringNullableFilter<"Family"> | string | null
   totalAssetValue?: Prisma.StringNullableFilter<"Family"> | string | null
   assetComments?: Prisma.StringNullableFilter<"Family"> | string | null
+  dowryDetails?: Prisma.StringNullableFilter<"Family"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   siblings?: Prisma.SiblingListRelationFilter
 }
@@ -363,6 +371,7 @@ export type FamilyOrderByWithRelationInput = {
   vacantLand?: Prisma.SortOrderInput | Prisma.SortOrder
   totalAssetValue?: Prisma.SortOrderInput | Prisma.SortOrder
   assetComments?: Prisma.SortOrderInput | Prisma.SortOrder
+  dowryDetails?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   siblings?: Prisma.SiblingOrderByRelationAggregateInput
 }
@@ -395,6 +404,7 @@ export type FamilyWhereUniqueInput = Prisma.AtLeast<{
   vacantLand?: Prisma.StringNullableFilter<"Family"> | string | null
   totalAssetValue?: Prisma.StringNullableFilter<"Family"> | string | null
   assetComments?: Prisma.StringNullableFilter<"Family"> | string | null
+  dowryDetails?: Prisma.StringNullableFilter<"Family"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   siblings?: Prisma.SiblingListRelationFilter
 }, "id" | "userId">
@@ -424,6 +434,7 @@ export type FamilyOrderByWithAggregationInput = {
   vacantLand?: Prisma.SortOrderInput | Prisma.SortOrder
   totalAssetValue?: Prisma.SortOrderInput | Prisma.SortOrder
   assetComments?: Prisma.SortOrderInput | Prisma.SortOrder
+  dowryDetails?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.FamilyCountOrderByAggregateInput
   _max?: Prisma.FamilyMaxOrderByAggregateInput
   _min?: Prisma.FamilyMinOrderByAggregateInput
@@ -457,6 +468,7 @@ export type FamilyScalarWhereWithAggregatesInput = {
   vacantLand?: Prisma.StringNullableWithAggregatesFilter<"Family"> | string | null
   totalAssetValue?: Prisma.StringNullableWithAggregatesFilter<"Family"> | string | null
   assetComments?: Prisma.StringNullableWithAggregatesFilter<"Family"> | string | null
+  dowryDetails?: Prisma.StringNullableWithAggregatesFilter<"Family"> | string | null
 }
 
 export type FamilyCreateInput = {
@@ -483,6 +495,7 @@ export type FamilyCreateInput = {
   vacantLand?: string | null
   totalAssetValue?: string | null
   assetComments?: string | null
+  dowryDetails?: string | null
   user: Prisma.UserCreateNestedOneWithoutFamilyInput
   siblings?: Prisma.SiblingCreateNestedManyWithoutFamilyInput
 }
@@ -512,6 +525,7 @@ export type FamilyUncheckedCreateInput = {
   vacantLand?: string | null
   totalAssetValue?: string | null
   assetComments?: string | null
+  dowryDetails?: string | null
   siblings?: Prisma.SiblingUncheckedCreateNestedManyWithoutFamilyInput
 }
 
@@ -539,6 +553,7 @@ export type FamilyUpdateInput = {
   vacantLand?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   totalAssetValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assetComments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dowryDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutFamilyNestedInput
   siblings?: Prisma.SiblingUpdateManyWithoutFamilyNestedInput
 }
@@ -568,6 +583,7 @@ export type FamilyUncheckedUpdateInput = {
   vacantLand?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   totalAssetValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assetComments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dowryDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   siblings?: Prisma.SiblingUncheckedUpdateManyWithoutFamilyNestedInput
 }
 
@@ -596,6 +612,7 @@ export type FamilyCreateManyInput = {
   vacantLand?: string | null
   totalAssetValue?: string | null
   assetComments?: string | null
+  dowryDetails?: string | null
 }
 
 export type FamilyUpdateManyMutationInput = {
@@ -622,6 +639,7 @@ export type FamilyUpdateManyMutationInput = {
   vacantLand?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   totalAssetValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assetComments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dowryDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type FamilyUncheckedUpdateManyInput = {
@@ -649,6 +667,7 @@ export type FamilyUncheckedUpdateManyInput = {
   vacantLand?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   totalAssetValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assetComments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dowryDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type FamilyNullableScalarRelationFilter = {
@@ -681,6 +700,7 @@ export type FamilyCountOrderByAggregateInput = {
   vacantLand?: Prisma.SortOrder
   totalAssetValue?: Prisma.SortOrder
   assetComments?: Prisma.SortOrder
+  dowryDetails?: Prisma.SortOrder
 }
 
 export type FamilyMaxOrderByAggregateInput = {
@@ -708,6 +728,7 @@ export type FamilyMaxOrderByAggregateInput = {
   vacantLand?: Prisma.SortOrder
   totalAssetValue?: Prisma.SortOrder
   assetComments?: Prisma.SortOrder
+  dowryDetails?: Prisma.SortOrder
 }
 
 export type FamilyMinOrderByAggregateInput = {
@@ -735,6 +756,7 @@ export type FamilyMinOrderByAggregateInput = {
   vacantLand?: Prisma.SortOrder
   totalAssetValue?: Prisma.SortOrder
   assetComments?: Prisma.SortOrder
+  dowryDetails?: Prisma.SortOrder
 }
 
 export type FamilyScalarRelationFilter = {
@@ -820,6 +842,7 @@ export type FamilyCreateWithoutUserInput = {
   vacantLand?: string | null
   totalAssetValue?: string | null
   assetComments?: string | null
+  dowryDetails?: string | null
   siblings?: Prisma.SiblingCreateNestedManyWithoutFamilyInput
 }
 
@@ -847,6 +870,7 @@ export type FamilyUncheckedCreateWithoutUserInput = {
   vacantLand?: string | null
   totalAssetValue?: string | null
   assetComments?: string | null
+  dowryDetails?: string | null
   siblings?: Prisma.SiblingUncheckedCreateNestedManyWithoutFamilyInput
 }
 
@@ -890,6 +914,7 @@ export type FamilyUpdateWithoutUserInput = {
   vacantLand?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   totalAssetValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assetComments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dowryDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   siblings?: Prisma.SiblingUpdateManyWithoutFamilyNestedInput
 }
 
@@ -917,6 +942,7 @@ export type FamilyUncheckedUpdateWithoutUserInput = {
   vacantLand?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   totalAssetValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assetComments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dowryDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   siblings?: Prisma.SiblingUncheckedUpdateManyWithoutFamilyNestedInput
 }
 
@@ -944,6 +970,7 @@ export type FamilyCreateWithoutSiblingsInput = {
   vacantLand?: string | null
   totalAssetValue?: string | null
   assetComments?: string | null
+  dowryDetails?: string | null
   user: Prisma.UserCreateNestedOneWithoutFamilyInput
 }
 
@@ -972,6 +999,7 @@ export type FamilyUncheckedCreateWithoutSiblingsInput = {
   vacantLand?: string | null
   totalAssetValue?: string | null
   assetComments?: string | null
+  dowryDetails?: string | null
 }
 
 export type FamilyCreateOrConnectWithoutSiblingsInput = {
@@ -1014,6 +1042,7 @@ export type FamilyUpdateWithoutSiblingsInput = {
   vacantLand?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   totalAssetValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assetComments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dowryDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutFamilyNestedInput
 }
 
@@ -1042,6 +1071,7 @@ export type FamilyUncheckedUpdateWithoutSiblingsInput = {
   vacantLand?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   totalAssetValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assetComments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dowryDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -1100,6 +1130,7 @@ export type FamilySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   vacantLand?: boolean
   totalAssetValue?: boolean
   assetComments?: boolean
+  dowryDetails?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   siblings?: boolean | Prisma.Family$siblingsArgs<ExtArgs>
   _count?: boolean | Prisma.FamilyCountOutputTypeDefaultArgs<ExtArgs>
@@ -1130,6 +1161,7 @@ export type FamilySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   vacantLand?: boolean
   totalAssetValue?: boolean
   assetComments?: boolean
+  dowryDetails?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["family"]>
 
@@ -1158,6 +1190,7 @@ export type FamilySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   vacantLand?: boolean
   totalAssetValue?: boolean
   assetComments?: boolean
+  dowryDetails?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["family"]>
 
@@ -1186,9 +1219,10 @@ export type FamilySelectScalar = {
   vacantLand?: boolean
   totalAssetValue?: boolean
   assetComments?: boolean
+  dowryDetails?: boolean
 }
 
-export type FamilyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "fatherName" | "fatherLivingStatus" | "fatherStatus" | "fatherMobile" | "motherName" | "motherLivingStatus" | "motherStatus" | "motherMobile" | "workNature" | "salary" | "organisation" | "designation" | "workingAddress" | "googleLocation" | "rentalIncome" | "houseType" | "houseSqFt" | "siteLand" | "thottam" | "vacantLand" | "totalAssetValue" | "assetComments", ExtArgs["result"]["family"]>
+export type FamilyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "fatherName" | "fatherLivingStatus" | "fatherStatus" | "fatherMobile" | "motherName" | "motherLivingStatus" | "motherStatus" | "motherMobile" | "workNature" | "salary" | "organisation" | "designation" | "workingAddress" | "googleLocation" | "rentalIncome" | "houseType" | "houseSqFt" | "siteLand" | "thottam" | "vacantLand" | "totalAssetValue" | "assetComments" | "dowryDetails", ExtArgs["result"]["family"]>
 export type FamilyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   siblings?: boolean | Prisma.Family$siblingsArgs<ExtArgs>
@@ -1232,6 +1266,7 @@ export type $FamilyPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     vacantLand: string | null
     totalAssetValue: string | null
     assetComments: string | null
+    dowryDetails: string | null
   }, ExtArgs["result"]["family"]>
   composites: {}
 }
@@ -1681,6 +1716,7 @@ export interface FamilyFieldRefs {
   readonly vacantLand: Prisma.FieldRef<"Family", 'String'>
   readonly totalAssetValue: Prisma.FieldRef<"Family", 'String'>
   readonly assetComments: Prisma.FieldRef<"Family", 'String'>
+  readonly dowryDetails: Prisma.FieldRef<"Family", 'String'>
 }
     
 

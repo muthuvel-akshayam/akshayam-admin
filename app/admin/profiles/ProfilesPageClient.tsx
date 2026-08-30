@@ -13,7 +13,7 @@ import RejectDialog from '@/components/admin/RejectDialog';
 import CreateProfileModal from '@/components/admin/CreateProfileModal';
 import { AdminProfile, ProfileStatus } from '@/types/admin';
 import { getProfilesAction } from '@/actions/admin/profile.actions';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export interface ProfilesPageClientProps {
   title: string;
@@ -31,15 +31,22 @@ export const ProfilesPageClient: React.FC<ProfilesPageClientProps> = ({
   fixedStatus = 'ALL',
 }) => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [profiles, setProfiles] = useState<AdminProfile[]>(initialProfiles);
   const [total, setTotal] = useState<number>(initialTotal);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 10;
 
   // Filters state
-  const [statusFilter, setStatusFilter] = useState<string>(fixedStatus);
-  const [genderFilter, setGenderFilter] = useState<string>('ALL');
-  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [statusFilter, setStatusFilter] = useState<string>(searchParams.get('status') || fixedStatus);
+  const [genderFilter, setGenderFilter] = useState<string>(searchParams.get('gender') || 'ALL');
+  const [searchQuery, setSearchQuery] = useState<string>(searchParams.get('query') || '');
+  
+  // Advanced Filters state
+  const [minAge, setMinAge] = useState<number | undefined>(searchParams.get('minAge') ? Number(searchParams.get('minAge')) : undefined);
+  const [maxAge, setMaxAge] = useState<number | undefined>(searchParams.get('maxAge') ? Number(searchParams.get('maxAge')) : undefined);
+  const [maritalStatus, setMaritalStatus] = useState<string>(searchParams.get('maritalStatus') || 'ALL');
+  const [nakshatras, setNakshatras] = useState<string[]>(searchParams.get('nakshatras') ? searchParams.get('nakshatras')!.split(',') : []);
 
   // Modals state
   const [selectedProfile, setSelectedProfile] = useState<AdminProfile | null>(null);
@@ -48,14 +55,49 @@ export const ProfilesPageClient: React.FC<ProfilesPageClientProps> = ({
   const [rejectModalOpen, setRejectModalOpen] = useState(false);
   const [createModalOpen, setCreateModalOpen] = useState(false);
 
-  const fetchFilteredProfiles = async (page: number, status: string, gender: string, query: string) => {
+  // When URL search params change, update state and fetch if this component is mounted and URL changes externally
+  useEffect(() => {
+    if (searchParams.get('gender')) setGenderFilter(searchParams.get('gender')!);
+    if (searchParams.get('nakshatras')) setNakshatras(searchParams.get('nakshatras')!.split(','));
+    if (searchParams.get('minAge')) setMinAge(Number(searchParams.get('minAge')));
+    if (searchParams.get('maxAge')) setMaxAge(Number(searchParams.get('maxAge')));
+    if (searchParams.get('status')) setStatusFilter(searchParams.get('status')!);
+    // Trigger initial fetch with URL params if any exist (since initialProfiles might not reflect these params)
+    if (searchParams.toString()) {
+      fetchFilteredProfiles(
+        1, 
+        searchParams.get('status') || fixedStatus, 
+        searchParams.get('gender') || 'ALL', 
+        searchParams.get('query') || '',
+        searchParams.get('minAge') ? Number(searchParams.get('minAge')) : undefined,
+        searchParams.get('maxAge') ? Number(searchParams.get('maxAge')) : undefined,
+        searchParams.get('maritalStatus') || 'ALL',
+        searchParams.get('nakshatras') ? searchParams.get('nakshatras')!.split(',') : []
+      );
+    }
+  }, [searchParams]);
+
+  const fetchFilteredProfiles = async (
+    page: number, 
+    status: string, 
+    gender: string, 
+    query: string,
+    minAgeParam?: number,
+    maxAgeParam?: number,
+    maritalStatusParam?: string,
+    nakshatrasParam?: string[]
+  ) => {
     try {
       const res = await getProfilesAction(
         page,
         itemsPerPage,
         status === 'ALL' ? undefined : (status as any),
         gender === 'ALL' ? undefined : (gender as any),
-        query || undefined
+        query || undefined,
+        minAgeParam,
+        maxAgeParam,
+        maritalStatusParam === 'ALL' ? undefined : maritalStatusParam,
+        nakshatrasParam
       );
       if (res.success && res.data) {
         setProfiles(res.data.data || []);
@@ -68,18 +110,40 @@ export const ProfilesPageClient: React.FC<ProfilesPageClientProps> = ({
   };
 
   const handlePageChange = (newPage: number) => {
-    fetchFilteredProfiles(newPage, statusFilter, genderFilter, searchQuery);
+    fetchFilteredProfiles(newPage, statusFilter, genderFilter, searchQuery, minAge, maxAge, maritalStatus, nakshatras);
   };
 
-  const handleFilterChange = (status: string, gender: string, search: string) => {
+  const handleFilterChange = (
+    status: string, 
+    gender: string, 
+    search: string,
+    newMinAge?: number,
+    newMaxAge?: number,
+    newMaritalStatus?: string,
+    newNakshatras?: string[]
+  ) => {
     setStatusFilter(status);
     setGenderFilter(gender);
     setSearchQuery(search);
-    fetchFilteredProfiles(1, status, gender, search);
+    if (newMinAge !== undefined) setMinAge(newMinAge);
+    if (newMaxAge !== undefined) setMaxAge(newMaxAge);
+    if (newMaritalStatus !== undefined) setMaritalStatus(newMaritalStatus);
+    if (newNakshatras !== undefined) setNakshatras(newNakshatras);
+    
+    fetchFilteredProfiles(
+      1, 
+      status, 
+      gender, 
+      search, 
+      newMinAge !== undefined ? newMinAge : minAge, 
+      newMaxAge !== undefined ? newMaxAge : maxAge, 
+      newMaritalStatus !== undefined ? newMaritalStatus : maritalStatus, 
+      newNakshatras !== undefined ? newNakshatras : nakshatras
+    );
   };
 
   const refreshList = () => {
-    fetchFilteredProfiles(currentPage, statusFilter, genderFilter, searchQuery);
+    fetchFilteredProfiles(currentPage, statusFilter, genderFilter, searchQuery, minAge, maxAge, maritalStatus, nakshatras);
     router.refresh();
   };
 
@@ -129,7 +193,7 @@ export const ProfilesPageClient: React.FC<ProfilesPageClientProps> = ({
         currentPage={currentPage}
         itemsPerPage={itemsPerPage}
         onPageChange={handlePageChange}
-        showFilters={fixedStatus === 'ALL'}
+        showFilters={true}
         currentStatus={statusFilter as any}
         currentGender={genderFilter as any}
         onFilterChange={handleFilterChange}

@@ -40,7 +40,15 @@ export async function POST(
       data: updateData,
     });
 
-    return NextResponse.json({ success: true, data: { ...user, profile } });
+    let updatedUser = user;
+    if (action === 'APPROVE') {
+      updatedUser = await (prisma as any).user.update({
+        where: { id: userId },
+        data: { status: 'ACTIVE' },
+      });
+    }
+
+    return NextResponse.json({ success: true, data: { ...updatedUser, profile } });
   } catch (error: any) {
     console.error('API /admin/users/[id]/review POST Error:', error);
     return NextResponse.json({ success: false, error: error.message || 'Profile review failed.' }, { status: 500 });

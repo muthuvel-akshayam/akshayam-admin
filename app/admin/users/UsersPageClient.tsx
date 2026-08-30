@@ -14,16 +14,36 @@ export default function UsersPageClient() {
   const itemsPerPage = 10;
   
   const searchParams = useSearchParams();
-  const activeTab = searchParams.get('status') || 'all';
+  const [activeTab, setActiveTab] = useState(searchParams.get('status') || 'all');
   const [searchQuery, setSearchQuery] = useState<string>('');
+  
+  // Advanced filters
+  const [minAge, setMinAge] = useState<number | undefined>();
+  const [maxAge, setMaxAge] = useState<number | undefined>();
+  const [nakshatras, setNakshatras] = useState<string | undefined>();
+  const [dosham, setDosham] = useState<string | undefined>();
   
   const [loading, setLoading] = useState(false);
   const [drawerUserId, setDrawerUserId] = useState<string | number | null>(null);
 
-  const fetchUsers = useCallback(async (page: number, statusTab: string, query: string) => {
+  const fetchUsers = useCallback(async (
+    page: number, 
+    statusTab: string, 
+    query: string, 
+    fMinAge?: number, 
+    fMaxAge?: number, 
+    fNakshatras?: string, 
+    fDosham?: string
+  ) => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/admin/users?page=${page}&limit=${itemsPerPage}&status=${statusTab}&search=${encodeURIComponent(query)}`);
+      let url = `/api/admin/users?page=${page}&limit=${itemsPerPage}&status=${statusTab}&search=${encodeURIComponent(query)}`;
+      if (fMinAge) url += `&minAge=${fMinAge}`;
+      if (fMaxAge) url += `&maxAge=${fMaxAge}`;
+      if (fNakshatras) url += `&nakshatras=${encodeURIComponent(fNakshatras)}`;
+      if (fDosham) url += `&dosham=${encodeURIComponent(fDosham)}`;
+
+      const res = await fetch(url);
       const data = await res.json();
       if (data.success) {
         setUsers(data.data);
@@ -38,19 +58,26 @@ export default function UsersPageClient() {
   }, [itemsPerPage]);
 
   useEffect(() => {
-    fetchUsers(1, activeTab, searchQuery);
+    fetchUsers(1, activeTab, searchQuery, minAge, maxAge, nakshatras, dosham);
   }, [activeTab, fetchUsers, searchQuery]);
 
   const handlePageChange = (newPage: number) => {
-    fetchUsers(newPage, activeTab, searchQuery);
+    fetchUsers(newPage, activeTab, searchQuery, minAge, maxAge, nakshatras, dosham);
   };
 
-  const handleFilterChange = (search: string) => {
+  const handleFilterChange = (search: string, status: string, newMinAge?: number, newMaxAge?: number, newNakshatras?: string, newDosham?: string) => {
     setSearchQuery(search);
+    setActiveTab(status);
+    if (newMinAge !== undefined) setMinAge(newMinAge);
+    if (newMaxAge !== undefined) setMaxAge(newMaxAge);
+    if (newNakshatras !== undefined) setNakshatras(newNakshatras);
+    if (newDosham !== undefined) setDosham(newDosham);
+    
+    fetchUsers(1, status, search, newMinAge !== undefined ? newMinAge : minAge, newMaxAge !== undefined ? newMaxAge : maxAge, newNakshatras !== undefined ? newNakshatras : nakshatras, newDosham !== undefined ? newDosham : dosham);
   };
 
   const refreshList = () => {
-    fetchUsers(currentPage, activeTab, searchQuery);
+    fetchUsers(currentPage, activeTab, searchQuery, minAge, maxAge, nakshatras, dosham);
   };
 
 
@@ -89,6 +116,7 @@ export default function UsersPageClient() {
         onPageChange={handlePageChange}
         onFilterChange={handleFilterChange}
         onRowClick={(id) => setDrawerUserId(id)}
+        currentStatus={activeTab}
       />
 
       {/* Profile Drawer */}

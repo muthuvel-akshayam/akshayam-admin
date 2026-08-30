@@ -61,7 +61,10 @@ export const ModelName = {
   NakshatraCompatibility: 'NakshatraCompatibility',
   SiteSettings: 'SiteSettings',
   AdminAuditLog: 'AdminAuditLog',
-  ProfileSentLog: 'ProfileSentLog'
+  PasswordResetRequest: 'PasswordResetRequest',
+  ProfileSentLog: 'ProfileSentLog',
+  CasteLookup: 'CasteLookup',
+  Shortlist: 'Shortlist'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -82,7 +85,6 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const UserScalarFieldEnum = {
   id: 'id',
-  userIndex: 'userIndex',
   email: 'email',
   mobile_no: 'mobile_no',
   password: 'password',
@@ -90,7 +92,10 @@ export const UserScalarFieldEnum = {
   status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  isFeatured: 'isFeatured'
+  userIndex: 'userIndex',
+  isFeatured: 'isFeatured',
+  userid: 'userid',
+  paymentScreenshot: 'paymentScreenshot'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -139,7 +144,13 @@ export const ProfileScalarFieldEnum = {
   dasaBalance: 'dasaBalance',
   hidePhoto: 'hidePhoto',
   houseAddress: 'houseAddress',
-  rasiGrid: 'rasiGrid'
+  rasiGrid: 'rasiGrid',
+  jathagamData: 'jathagamData',
+  idProofUrl: 'idProofUrl',
+  displayId: 'displayId',
+  houseLocation: 'houseLocation',
+  profileCreatedBy: 'profileCreatedBy',
+  reviewerId: 'reviewerId'
 } as const
 
 export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum]
@@ -180,7 +191,8 @@ export const FamilyScalarFieldEnum = {
   thottam: 'thottam',
   vacantLand: 'vacantLand',
   totalAssetValue: 'totalAssetValue',
-  assetComments: 'assetComments'
+  assetComments: 'assetComments',
+  dowryDetails: 'dowryDetails'
 } as const
 
 export type FamilyScalarFieldEnum = (typeof FamilyScalarFieldEnum)[keyof typeof FamilyScalarFieldEnum]
@@ -212,7 +224,8 @@ export const ExpectationsScalarFieldEnum = {
   vacantLand: 'vacantLand',
   preferredDistanceRadius: 'preferredDistanceRadius',
   city: 'city',
-  comments: 'comments'
+  comments: 'comments',
+  expectsVacantLand: 'expectsVacantLand'
 } as const
 
 export type ExpectationsScalarFieldEnum = (typeof ExpectationsScalarFieldEnum)[keyof typeof ExpectationsScalarFieldEnum]
@@ -271,6 +284,18 @@ export const AdminAuditLogScalarFieldEnum = {
 export type AdminAuditLogScalarFieldEnum = (typeof AdminAuditLogScalarFieldEnum)[keyof typeof AdminAuditLogScalarFieldEnum]
 
 
+export const PasswordResetRequestScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  status: 'status',
+  isRead: 'isRead',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PasswordResetRequestScalarFieldEnum = (typeof PasswordResetRequestScalarFieldEnum)[keyof typeof PasswordResetRequestScalarFieldEnum]
+
+
 export const ProfileSentLogScalarFieldEnum = {
   id: 'id',
   targetUserId: 'targetUserId',
@@ -281,6 +306,26 @@ export const ProfileSentLogScalarFieldEnum = {
 } as const
 
 export type ProfileSentLogScalarFieldEnum = (typeof ProfileSentLogScalarFieldEnum)[keyof typeof ProfileSentLogScalarFieldEnum]
+
+
+export const CasteLookupScalarFieldEnum = {
+  id: 'id',
+  religion: 'religion',
+  caste: 'caste',
+  subcaste: 'subcaste'
+} as const
+
+export type CasteLookupScalarFieldEnum = (typeof CasteLookupScalarFieldEnum)[keyof typeof CasteLookupScalarFieldEnum]
+
+
+export const ShortlistScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  targetId: 'targetId',
+  createdAt: 'createdAt'
+} as const
+
+export type ShortlistScalarFieldEnum = (typeof ShortlistScalarFieldEnum)[keyof typeof ShortlistScalarFieldEnum]
 
 
 export const SortOrder = {

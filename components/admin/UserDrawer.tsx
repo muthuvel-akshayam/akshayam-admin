@@ -6,6 +6,10 @@ import Badge from './ui/Badge';
 import { useToast } from './ui/Toast';
 import MatchTrackingModal from './MatchTrackingModal';
 import { NakshatraMatches } from './NakshatraMatches';
+import { useRouter } from 'next/navigation';
+import { searchCompatibilityAction } from '../../actions/admin/compatibility.actions';
+import { toggleUserFeaturedAction } from '../../actions/admin/user.actions';
+import MatchingProfilesModal from './MatchingProfilesModal';
 
 interface UserDrawerProps {
   userId: string | number | null;
@@ -38,6 +42,9 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
   const [newUserId, setNewUserId] = useState('');
   const [previewDocument, setPreviewDocument] = useState<{ url: string; label: string } | null>(null);
   const [matchTrackingTab, setMatchTrackingTab] = useState<'SENT' | 'NOT_MATCHED' | null>(null);
+  const [isFeatured, setIsFeatured] = useState(false);
+  const [isMatchesModalOpen, setIsMatchesModalOpen] = useState(false);
+  const router = useRouter();
   const { showToast } = useToast();
 
   useEffect(() => {
@@ -55,6 +62,7 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
         if (data.success) {
           setUserData(data.data);
           setNewUserId(String(data.data.id));
+          setIsFeatured(data.data.isFeatured || false);
         } else {
           showToast(data.error || 'Failed to load user', 'error');
         }
@@ -112,9 +120,16 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
       .filter((item): item is [string, string] => item[1] !== null);
   }, [userData]);
 
-  const documents = useMemo(() => profile ? [
-    ['Jathagam', profile.jathakamUrl], ['Profile photo', profile.photoUrl], ['Caste certificate', profile.casteCertificateUrl],
-  ].filter((item): item is [string, string] => Boolean(item[1])) : [] as Array<[string, string]>, [profile]);
+  const documents = useMemo(() => {
+    const docs = profile ? [
+      ['Jathagam', profile.jathakamUrl], ['Profile photo', profile.photoUrl], ['Caste certificate', profile.casteCertificateUrl],
+    ].filter((item): item is [string, string] => Boolean(item[1])) : [] as Array<[string, string]>;
+    
+    if (userData?.paymentScreenshot) {
+      docs.push(['Payment Screenshot', userData.paymentScreenshot]);
+    }
+    return docs;
+  }, [profile, userData]);
   const handleReview = async (action: 'APPROVE' | 'REJECT' | 'MATCHED_REMOVED') => {
     if (!userId) return;
     if (action === 'REJECT' && !reviewReason.trim()) {
@@ -190,6 +205,42 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
     }
   };
 
+  const handleFindMatches = () => {
+    if (!profile) return;
+    setIsMatchesModalOpen(true);
+  };
+
+  const handleShare = () => {
+    if (!profile) return;
+    const age = profile.dob ? Math.max(0, new Date().getFullYear() - new Date(profile.dob).getFullYear()) : 'N/A';
+    const education = userData?.educations?.[0]?.degreeName || 'N/A';
+    const shareText = `Profile: ${profile.name}\nAge: ${age}\nHeight: ${profile.height || 'N/A'} cm\nEducation: ${education}\nCity: ${profile.city}`;
+    navigator.clipboard.writeText(shareText);
+    showToast('Profile summary copied to clipboard', 'success');
+  };
+
+  const handleDownload = () => {
+    window.print();
+  };
+
+  const handleToggleImportant = async () => {
+    if (!userId) return;
+    setActionLoading(true);
+    try {
+      const res = await toggleUserFeaturedAction(userId as any, !isFeatured);
+      if (res.success) {
+        setIsFeatured(!isFeatured);
+        showToast(!isFeatured ? 'Profile marked as important/shortlisted' : 'Profile removed from important list', 'success');
+      } else {
+        showToast(res.error || 'Failed to update important status', 'error');
+      }
+    } catch (err: any) {
+      showToast(err.message, 'error');
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
   if (!isOpen) return null;
   const isPending = profile?.status === 'PENDING';
   const isApproved = profile?.status === 'APPROVED';
@@ -198,15 +249,62 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
     <>
       <div className="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-40" onClick={onClose} />
       <aside className="fixed top-16 bottom-0 right-0 w-full max-w-3xl bg-white shadow-2xl z-50 flex flex-col border-l border-slate-200 animate-slideInRight">
-        <header className="flex items-center gap-4 px-4 sm:px-6 py-4 border-b border-slate-200 bg-slate-50">
-          <button onClick={onClose} className="p-2 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-700 flex items-center gap-2 transition-colors text-xs font-bold">
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
-            Back
-          </button>
-          <div>
-            <h2 className="text-lg sm:text-xl font-bold text-slate-800">Registration Review</h2>
-            <p className="text-xs text-slate-500 hidden sm:block">Review all submitted details before deciding.</p>
+        <header className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-4 sm:px-6 py-4 border-b border-slate-200 bg-slate-50">
+          <div className="flex items-center gap-4">
+            <button onClick={onClose} className="p-2 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-700 flex items-center gap-2 transition-colors text-xs font-bold">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+              Back
+            </button>
+            <div>
+              <h2 className="text-lg sm:text-xl font-bold text-slate-800">Registration Review</h2>
+              <p className="text-xs text-slate-500 hidden sm:block">Review all submitted details before deciding.</p>
+            </div>
           </div>
+          
+          {profile && (
+            <div className="flex flex-wrap items-center gap-2 self-end sm:self-auto">
+              <button 
+                onClick={handleFindMatches}
+                className="p-2 rounded-lg bg-emerald-800/50 hover:bg-emerald-700 transition-colors text-white tooltip-trigger" 
+                title="Find Matches (Filter)"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                </svg>
+              </button>
+              
+              <button 
+                onClick={handleShare}
+                className="p-2 rounded-lg bg-emerald-800/50 hover:bg-emerald-700 transition-colors text-white tooltip-trigger" 
+                title="Copy Summary to Share"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                </svg>
+              </button>
+              
+              <button 
+                onClick={handleDownload}
+                className="p-2 rounded-lg bg-emerald-800/50 hover:bg-emerald-700 transition-colors text-white tooltip-trigger" 
+                title="Download / Print PDF"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+              </button>
+              
+              <button 
+                onClick={handleToggleImportant}
+                disabled={actionLoading}
+                className={`p-2 rounded-lg transition-colors text-white tooltip-trigger ${isFeatured ? 'bg-amber-500 hover:bg-amber-600' : 'bg-emerald-800/50 hover:bg-emerald-700'}`} 
+                title={isFeatured ? "Remove First Preference Badge" : "Mark as First Preference (Important)"}
+              >
+                <svg className="w-5 h-5" fill={isFeatured ? "currentColor" : "none"} viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                </svg>
+              </button>
+            </div>
+          )}
         </header>
 
         <main className="flex-1 overflow-y-auto p-6 space-y-6">
@@ -325,6 +423,11 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
           </div>
         </div>
       )}
+      <MatchingProfilesModal 
+        isOpen={isMatchesModalOpen} 
+        onClose={() => setIsMatchesModalOpen(false)} 
+        baseProfile={profile as any} 
+      />
       {matchTrackingTab && userId && (
         <MatchTrackingModal
           isOpen={!!matchTrackingTab}

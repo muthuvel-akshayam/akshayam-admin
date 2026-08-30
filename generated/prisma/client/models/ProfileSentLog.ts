@@ -224,8 +224,8 @@ export type ProfileSentLogWhereInput = {
   status?: Prisma.EnumProfileSentStatusFilter<"ProfileSentLog"> | $Enums.ProfileSentStatus
   createdAt?: Prisma.DateTimeFilter<"ProfileSentLog"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ProfileSentLog"> | Date | string
-  targetUser?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   recipientUser?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  targetUser?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type ProfileSentLogOrderByWithRelationInput = {
@@ -235,8 +235,8 @@ export type ProfileSentLogOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  targetUser?: Prisma.UserOrderByWithRelationInput
   recipientUser?: Prisma.UserOrderByWithRelationInput
+  targetUser?: Prisma.UserOrderByWithRelationInput
 }
 
 export type ProfileSentLogWhereUniqueInput = Prisma.AtLeast<{
@@ -250,8 +250,8 @@ export type ProfileSentLogWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.EnumProfileSentStatusFilter<"ProfileSentLog"> | $Enums.ProfileSentStatus
   createdAt?: Prisma.DateTimeFilter<"ProfileSentLog"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ProfileSentLog"> | Date | string
-  targetUser?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   recipientUser?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  targetUser?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "targetUserId_recipientUserId">
 
 export type ProfileSentLogOrderByWithAggregationInput = {
@@ -284,8 +284,8 @@ export type ProfileSentLogCreateInput = {
   status?: $Enums.ProfileSentStatus
   createdAt?: Date | string
   updatedAt?: Date | string
-  targetUser: Prisma.UserCreateNestedOneWithoutTargetUserSentLogsInput
   recipientUser: Prisma.UserCreateNestedOneWithoutRecipientUserSentLogsInput
+  targetUser: Prisma.UserCreateNestedOneWithoutTargetUserSentLogsInput
 }
 
 export type ProfileSentLogUncheckedCreateInput = {
@@ -301,8 +301,8 @@ export type ProfileSentLogUpdateInput = {
   status?: Prisma.EnumProfileSentStatusFieldUpdateOperationsInput | $Enums.ProfileSentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  targetUser?: Prisma.UserUpdateOneRequiredWithoutTargetUserSentLogsNestedInput
   recipientUser?: Prisma.UserUpdateOneRequiredWithoutRecipientUserSentLogsNestedInput
+  targetUser?: Prisma.UserUpdateOneRequiredWithoutTargetUserSentLogsNestedInput
 }
 
 export type ProfileSentLogUncheckedUpdateInput = {
@@ -388,13 +388,6 @@ export type ProfileSentLogSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
 }
 
-export type ProfileSentLogCreateNestedManyWithoutTargetUserInput = {
-  create?: Prisma.XOR<Prisma.ProfileSentLogCreateWithoutTargetUserInput, Prisma.ProfileSentLogUncheckedCreateWithoutTargetUserInput> | Prisma.ProfileSentLogCreateWithoutTargetUserInput[] | Prisma.ProfileSentLogUncheckedCreateWithoutTargetUserInput[]
-  connectOrCreate?: Prisma.ProfileSentLogCreateOrConnectWithoutTargetUserInput | Prisma.ProfileSentLogCreateOrConnectWithoutTargetUserInput[]
-  createMany?: Prisma.ProfileSentLogCreateManyTargetUserInputEnvelope
-  connect?: Prisma.ProfileSentLogWhereUniqueInput | Prisma.ProfileSentLogWhereUniqueInput[]
-}
-
 export type ProfileSentLogCreateNestedManyWithoutRecipientUserInput = {
   create?: Prisma.XOR<Prisma.ProfileSentLogCreateWithoutRecipientUserInput, Prisma.ProfileSentLogUncheckedCreateWithoutRecipientUserInput> | Prisma.ProfileSentLogCreateWithoutRecipientUserInput[] | Prisma.ProfileSentLogUncheckedCreateWithoutRecipientUserInput[]
   connectOrCreate?: Prisma.ProfileSentLogCreateOrConnectWithoutRecipientUserInput | Prisma.ProfileSentLogCreateOrConnectWithoutRecipientUserInput[]
@@ -402,7 +395,7 @@ export type ProfileSentLogCreateNestedManyWithoutRecipientUserInput = {
   connect?: Prisma.ProfileSentLogWhereUniqueInput | Prisma.ProfileSentLogWhereUniqueInput[]
 }
 
-export type ProfileSentLogUncheckedCreateNestedManyWithoutTargetUserInput = {
+export type ProfileSentLogCreateNestedManyWithoutTargetUserInput = {
   create?: Prisma.XOR<Prisma.ProfileSentLogCreateWithoutTargetUserInput, Prisma.ProfileSentLogUncheckedCreateWithoutTargetUserInput> | Prisma.ProfileSentLogCreateWithoutTargetUserInput[] | Prisma.ProfileSentLogUncheckedCreateWithoutTargetUserInput[]
   connectOrCreate?: Prisma.ProfileSentLogCreateOrConnectWithoutTargetUserInput | Prisma.ProfileSentLogCreateOrConnectWithoutTargetUserInput[]
   createMany?: Prisma.ProfileSentLogCreateManyTargetUserInputEnvelope
@@ -416,18 +409,11 @@ export type ProfileSentLogUncheckedCreateNestedManyWithoutRecipientUserInput = {
   connect?: Prisma.ProfileSentLogWhereUniqueInput | Prisma.ProfileSentLogWhereUniqueInput[]
 }
 
-export type ProfileSentLogUpdateManyWithoutTargetUserNestedInput = {
+export type ProfileSentLogUncheckedCreateNestedManyWithoutTargetUserInput = {
   create?: Prisma.XOR<Prisma.ProfileSentLogCreateWithoutTargetUserInput, Prisma.ProfileSentLogUncheckedCreateWithoutTargetUserInput> | Prisma.ProfileSentLogCreateWithoutTargetUserInput[] | Prisma.ProfileSentLogUncheckedCreateWithoutTargetUserInput[]
   connectOrCreate?: Prisma.ProfileSentLogCreateOrConnectWithoutTargetUserInput | Prisma.ProfileSentLogCreateOrConnectWithoutTargetUserInput[]
-  upsert?: Prisma.ProfileSentLogUpsertWithWhereUniqueWithoutTargetUserInput | Prisma.ProfileSentLogUpsertWithWhereUniqueWithoutTargetUserInput[]
   createMany?: Prisma.ProfileSentLogCreateManyTargetUserInputEnvelope
-  set?: Prisma.ProfileSentLogWhereUniqueInput | Prisma.ProfileSentLogWhereUniqueInput[]
-  disconnect?: Prisma.ProfileSentLogWhereUniqueInput | Prisma.ProfileSentLogWhereUniqueInput[]
-  delete?: Prisma.ProfileSentLogWhereUniqueInput | Prisma.ProfileSentLogWhereUniqueInput[]
   connect?: Prisma.ProfileSentLogWhereUniqueInput | Prisma.ProfileSentLogWhereUniqueInput[]
-  update?: Prisma.ProfileSentLogUpdateWithWhereUniqueWithoutTargetUserInput | Prisma.ProfileSentLogUpdateWithWhereUniqueWithoutTargetUserInput[]
-  updateMany?: Prisma.ProfileSentLogUpdateManyWithWhereWithoutTargetUserInput | Prisma.ProfileSentLogUpdateManyWithWhereWithoutTargetUserInput[]
-  deleteMany?: Prisma.ProfileSentLogScalarWhereInput | Prisma.ProfileSentLogScalarWhereInput[]
 }
 
 export type ProfileSentLogUpdateManyWithoutRecipientUserNestedInput = {
@@ -444,7 +430,7 @@ export type ProfileSentLogUpdateManyWithoutRecipientUserNestedInput = {
   deleteMany?: Prisma.ProfileSentLogScalarWhereInput | Prisma.ProfileSentLogScalarWhereInput[]
 }
 
-export type ProfileSentLogUncheckedUpdateManyWithoutTargetUserNestedInput = {
+export type ProfileSentLogUpdateManyWithoutTargetUserNestedInput = {
   create?: Prisma.XOR<Prisma.ProfileSentLogCreateWithoutTargetUserInput, Prisma.ProfileSentLogUncheckedCreateWithoutTargetUserInput> | Prisma.ProfileSentLogCreateWithoutTargetUserInput[] | Prisma.ProfileSentLogUncheckedCreateWithoutTargetUserInput[]
   connectOrCreate?: Prisma.ProfileSentLogCreateOrConnectWithoutTargetUserInput | Prisma.ProfileSentLogCreateOrConnectWithoutTargetUserInput[]
   upsert?: Prisma.ProfileSentLogUpsertWithWhereUniqueWithoutTargetUserInput | Prisma.ProfileSentLogUpsertWithWhereUniqueWithoutTargetUserInput[]
@@ -472,33 +458,22 @@ export type ProfileSentLogUncheckedUpdateManyWithoutRecipientUserNestedInput = {
   deleteMany?: Prisma.ProfileSentLogScalarWhereInput | Prisma.ProfileSentLogScalarWhereInput[]
 }
 
+export type ProfileSentLogUncheckedUpdateManyWithoutTargetUserNestedInput = {
+  create?: Prisma.XOR<Prisma.ProfileSentLogCreateWithoutTargetUserInput, Prisma.ProfileSentLogUncheckedCreateWithoutTargetUserInput> | Prisma.ProfileSentLogCreateWithoutTargetUserInput[] | Prisma.ProfileSentLogUncheckedCreateWithoutTargetUserInput[]
+  connectOrCreate?: Prisma.ProfileSentLogCreateOrConnectWithoutTargetUserInput | Prisma.ProfileSentLogCreateOrConnectWithoutTargetUserInput[]
+  upsert?: Prisma.ProfileSentLogUpsertWithWhereUniqueWithoutTargetUserInput | Prisma.ProfileSentLogUpsertWithWhereUniqueWithoutTargetUserInput[]
+  createMany?: Prisma.ProfileSentLogCreateManyTargetUserInputEnvelope
+  set?: Prisma.ProfileSentLogWhereUniqueInput | Prisma.ProfileSentLogWhereUniqueInput[]
+  disconnect?: Prisma.ProfileSentLogWhereUniqueInput | Prisma.ProfileSentLogWhereUniqueInput[]
+  delete?: Prisma.ProfileSentLogWhereUniqueInput | Prisma.ProfileSentLogWhereUniqueInput[]
+  connect?: Prisma.ProfileSentLogWhereUniqueInput | Prisma.ProfileSentLogWhereUniqueInput[]
+  update?: Prisma.ProfileSentLogUpdateWithWhereUniqueWithoutTargetUserInput | Prisma.ProfileSentLogUpdateWithWhereUniqueWithoutTargetUserInput[]
+  updateMany?: Prisma.ProfileSentLogUpdateManyWithWhereWithoutTargetUserInput | Prisma.ProfileSentLogUpdateManyWithWhereWithoutTargetUserInput[]
+  deleteMany?: Prisma.ProfileSentLogScalarWhereInput | Prisma.ProfileSentLogScalarWhereInput[]
+}
+
 export type EnumProfileSentStatusFieldUpdateOperationsInput = {
   set?: $Enums.ProfileSentStatus
-}
-
-export type ProfileSentLogCreateWithoutTargetUserInput = {
-  status?: $Enums.ProfileSentStatus
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  recipientUser: Prisma.UserCreateNestedOneWithoutRecipientUserSentLogsInput
-}
-
-export type ProfileSentLogUncheckedCreateWithoutTargetUserInput = {
-  id?: number
-  recipientUserId: string
-  status?: $Enums.ProfileSentStatus
-  createdAt?: Date | string
-  updatedAt?: Date | string
-}
-
-export type ProfileSentLogCreateOrConnectWithoutTargetUserInput = {
-  where: Prisma.ProfileSentLogWhereUniqueInput
-  create: Prisma.XOR<Prisma.ProfileSentLogCreateWithoutTargetUserInput, Prisma.ProfileSentLogUncheckedCreateWithoutTargetUserInput>
-}
-
-export type ProfileSentLogCreateManyTargetUserInputEnvelope = {
-  data: Prisma.ProfileSentLogCreateManyTargetUserInput | Prisma.ProfileSentLogCreateManyTargetUserInput[]
-  skipDuplicates?: boolean
 }
 
 export type ProfileSentLogCreateWithoutRecipientUserInput = {
@@ -526,32 +501,29 @@ export type ProfileSentLogCreateManyRecipientUserInputEnvelope = {
   skipDuplicates?: boolean
 }
 
-export type ProfileSentLogUpsertWithWhereUniqueWithoutTargetUserInput = {
+export type ProfileSentLogCreateWithoutTargetUserInput = {
+  status?: $Enums.ProfileSentStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  recipientUser: Prisma.UserCreateNestedOneWithoutRecipientUserSentLogsInput
+}
+
+export type ProfileSentLogUncheckedCreateWithoutTargetUserInput = {
+  id?: number
+  recipientUserId: string
+  status?: $Enums.ProfileSentStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ProfileSentLogCreateOrConnectWithoutTargetUserInput = {
   where: Prisma.ProfileSentLogWhereUniqueInput
-  update: Prisma.XOR<Prisma.ProfileSentLogUpdateWithoutTargetUserInput, Prisma.ProfileSentLogUncheckedUpdateWithoutTargetUserInput>
   create: Prisma.XOR<Prisma.ProfileSentLogCreateWithoutTargetUserInput, Prisma.ProfileSentLogUncheckedCreateWithoutTargetUserInput>
 }
 
-export type ProfileSentLogUpdateWithWhereUniqueWithoutTargetUserInput = {
-  where: Prisma.ProfileSentLogWhereUniqueInput
-  data: Prisma.XOR<Prisma.ProfileSentLogUpdateWithoutTargetUserInput, Prisma.ProfileSentLogUncheckedUpdateWithoutTargetUserInput>
-}
-
-export type ProfileSentLogUpdateManyWithWhereWithoutTargetUserInput = {
-  where: Prisma.ProfileSentLogScalarWhereInput
-  data: Prisma.XOR<Prisma.ProfileSentLogUpdateManyMutationInput, Prisma.ProfileSentLogUncheckedUpdateManyWithoutTargetUserInput>
-}
-
-export type ProfileSentLogScalarWhereInput = {
-  AND?: Prisma.ProfileSentLogScalarWhereInput | Prisma.ProfileSentLogScalarWhereInput[]
-  OR?: Prisma.ProfileSentLogScalarWhereInput[]
-  NOT?: Prisma.ProfileSentLogScalarWhereInput | Prisma.ProfileSentLogScalarWhereInput[]
-  id?: Prisma.IntFilter<"ProfileSentLog"> | number
-  targetUserId?: Prisma.StringFilter<"ProfileSentLog"> | string
-  recipientUserId?: Prisma.StringFilter<"ProfileSentLog"> | string
-  status?: Prisma.EnumProfileSentStatusFilter<"ProfileSentLog"> | $Enums.ProfileSentStatus
-  createdAt?: Prisma.DateTimeFilter<"ProfileSentLog"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"ProfileSentLog"> | Date | string
+export type ProfileSentLogCreateManyTargetUserInputEnvelope = {
+  data: Prisma.ProfileSentLogCreateManyTargetUserInput | Prisma.ProfileSentLogCreateManyTargetUserInput[]
+  skipDuplicates?: boolean
 }
 
 export type ProfileSentLogUpsertWithWhereUniqueWithoutRecipientUserInput = {
@@ -570,12 +542,32 @@ export type ProfileSentLogUpdateManyWithWhereWithoutRecipientUserInput = {
   data: Prisma.XOR<Prisma.ProfileSentLogUpdateManyMutationInput, Prisma.ProfileSentLogUncheckedUpdateManyWithoutRecipientUserInput>
 }
 
-export type ProfileSentLogCreateManyTargetUserInput = {
-  id?: number
-  recipientUserId: string
-  status?: $Enums.ProfileSentStatus
-  createdAt?: Date | string
-  updatedAt?: Date | string
+export type ProfileSentLogScalarWhereInput = {
+  AND?: Prisma.ProfileSentLogScalarWhereInput | Prisma.ProfileSentLogScalarWhereInput[]
+  OR?: Prisma.ProfileSentLogScalarWhereInput[]
+  NOT?: Prisma.ProfileSentLogScalarWhereInput | Prisma.ProfileSentLogScalarWhereInput[]
+  id?: Prisma.IntFilter<"ProfileSentLog"> | number
+  targetUserId?: Prisma.StringFilter<"ProfileSentLog"> | string
+  recipientUserId?: Prisma.StringFilter<"ProfileSentLog"> | string
+  status?: Prisma.EnumProfileSentStatusFilter<"ProfileSentLog"> | $Enums.ProfileSentStatus
+  createdAt?: Prisma.DateTimeFilter<"ProfileSentLog"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ProfileSentLog"> | Date | string
+}
+
+export type ProfileSentLogUpsertWithWhereUniqueWithoutTargetUserInput = {
+  where: Prisma.ProfileSentLogWhereUniqueInput
+  update: Prisma.XOR<Prisma.ProfileSentLogUpdateWithoutTargetUserInput, Prisma.ProfileSentLogUncheckedUpdateWithoutTargetUserInput>
+  create: Prisma.XOR<Prisma.ProfileSentLogCreateWithoutTargetUserInput, Prisma.ProfileSentLogUncheckedCreateWithoutTargetUserInput>
+}
+
+export type ProfileSentLogUpdateWithWhereUniqueWithoutTargetUserInput = {
+  where: Prisma.ProfileSentLogWhereUniqueInput
+  data: Prisma.XOR<Prisma.ProfileSentLogUpdateWithoutTargetUserInput, Prisma.ProfileSentLogUncheckedUpdateWithoutTargetUserInput>
+}
+
+export type ProfileSentLogUpdateManyWithWhereWithoutTargetUserInput = {
+  where: Prisma.ProfileSentLogScalarWhereInput
+  data: Prisma.XOR<Prisma.ProfileSentLogUpdateManyMutationInput, Prisma.ProfileSentLogUncheckedUpdateManyWithoutTargetUserInput>
 }
 
 export type ProfileSentLogCreateManyRecipientUserInput = {
@@ -586,27 +578,12 @@ export type ProfileSentLogCreateManyRecipientUserInput = {
   updatedAt?: Date | string
 }
 
-export type ProfileSentLogUpdateWithoutTargetUserInput = {
-  status?: Prisma.EnumProfileSentStatusFieldUpdateOperationsInput | $Enums.ProfileSentStatus
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  recipientUser?: Prisma.UserUpdateOneRequiredWithoutRecipientUserSentLogsNestedInput
-}
-
-export type ProfileSentLogUncheckedUpdateWithoutTargetUserInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  recipientUserId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumProfileSentStatusFieldUpdateOperationsInput | $Enums.ProfileSentStatus
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type ProfileSentLogUncheckedUpdateManyWithoutTargetUserInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  recipientUserId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumProfileSentStatusFieldUpdateOperationsInput | $Enums.ProfileSentStatus
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+export type ProfileSentLogCreateManyTargetUserInput = {
+  id?: number
+  recipientUserId: string
+  status?: $Enums.ProfileSentStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ProfileSentLogUpdateWithoutRecipientUserInput = {
@@ -632,6 +609,29 @@ export type ProfileSentLogUncheckedUpdateManyWithoutRecipientUserInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type ProfileSentLogUpdateWithoutTargetUserInput = {
+  status?: Prisma.EnumProfileSentStatusFieldUpdateOperationsInput | $Enums.ProfileSentStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recipientUser?: Prisma.UserUpdateOneRequiredWithoutRecipientUserSentLogsNestedInput
+}
+
+export type ProfileSentLogUncheckedUpdateWithoutTargetUserInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  recipientUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumProfileSentStatusFieldUpdateOperationsInput | $Enums.ProfileSentStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ProfileSentLogUncheckedUpdateManyWithoutTargetUserInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  recipientUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumProfileSentStatusFieldUpdateOperationsInput | $Enums.ProfileSentStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 
 
 export type ProfileSentLogSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -641,8 +641,8 @@ export type ProfileSentLogSelect<ExtArgs extends runtime.Types.Extensions.Intern
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  targetUser?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   recipientUser?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  targetUser?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["profileSentLog"]>
 
 export type ProfileSentLogSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -652,8 +652,8 @@ export type ProfileSentLogSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  targetUser?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   recipientUser?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  targetUser?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["profileSentLog"]>
 
 export type ProfileSentLogSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -663,8 +663,8 @@ export type ProfileSentLogSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  targetUser?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   recipientUser?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  targetUser?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["profileSentLog"]>
 
 export type ProfileSentLogSelectScalar = {
@@ -678,23 +678,23 @@ export type ProfileSentLogSelectScalar = {
 
 export type ProfileSentLogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "targetUserId" | "recipientUserId" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["profileSentLog"]>
 export type ProfileSentLogInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  targetUser?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   recipientUser?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  targetUser?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type ProfileSentLogIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  targetUser?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   recipientUser?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  targetUser?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type ProfileSentLogIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  targetUser?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   recipientUser?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  targetUser?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $ProfileSentLogPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ProfileSentLog"
   objects: {
-    targetUser: Prisma.$UserPayload<ExtArgs>
     recipientUser: Prisma.$UserPayload<ExtArgs>
+    targetUser: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1097,8 +1097,8 @@ readonly fields: ProfileSentLogFieldRefs;
  */
 export interface Prisma__ProfileSentLogClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  targetUser<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   recipientUser<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  targetUser<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

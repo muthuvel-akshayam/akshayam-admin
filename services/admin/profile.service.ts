@@ -114,12 +114,32 @@ export class ProfileService {
       if (filters.gender && filters.gender !== 'ALL') {
         where.gender = filters.gender;
       }
+      if (filters.maritalStatus && filters.maritalStatus !== 'ALL') {
+        where.maritalStatus = filters.maritalStatus;
+      }
       if (filters.religion) {
         where.religion = { contains: filters.religion, mode: 'insensitive' };
       }
       if (filters.caste) {
         where.caste = { contains: filters.caste, mode: 'insensitive' };
       }
+      if (filters.nakshatras && filters.nakshatras.length > 0) {
+        where.nakshatra = { in: filters.nakshatras };
+      }
+
+      // Age filter by dob
+      if (filters.minAge || filters.maxAge) {
+        const today = new Date();
+        const minDate = filters.maxAge ? new Date(today.getFullYear() - filters.maxAge - 1, today.getMonth(), today.getDate()) : undefined;
+        const maxDate = filters.minAge ? new Date(today.getFullYear() - filters.minAge, today.getMonth(), today.getDate()) : undefined;
+        
+        if (minDate || maxDate) {
+          where.dob = {};
+          if (minDate) where.dob.gte = minDate;
+          if (maxDate) where.dob.lte = maxDate;
+        }
+      }
+
       if (filters.query) {
         where.OR = [
           { name: { contains: filters.query, mode: 'insensitive' } },
@@ -372,6 +392,7 @@ export class ProfileService {
       approvedBy: raw.approvedBy || null,
       rejectedReason: raw.rejectedReason || null,
       isLive: raw.isLive ?? false,
+      isFeatured: raw.user?.isFeatured ?? false,
       registeredDate: raw.createdAt || raw.registeredDate || new Date().toISOString(),
       photos: raw.photos || (raw.photoUrl ? [{ id: 'photo-1', url: raw.photoUrl, isPrimary: true }] : []),
       family: raw.family || (raw.user?.family ? {

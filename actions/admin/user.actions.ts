@@ -126,6 +126,31 @@ export async function activateUserAction(
 }
 
 /**
+ * Updates a user's password
+ */
+export async function updateUserPasswordAction(
+  userId: string | number,
+  newPassword: string
+): Promise<ServerActionResponse<AdminUser>> {
+  try {
+    const session = await requireAdmin();
+    if (!newPassword || newPassword.length < 6) {
+      return { success: false, error: 'Password must be at least 6 characters long.' };
+    }
+    
+    const updated = await UserService.updateUserPassword(userId, newPassword, session.user.id);
+    
+    return {
+      success: true,
+      data: updated,
+      message: `Password updated successfully for ${updated.name}.`,
+    };
+  } catch (error: any) {
+    return { success: false, error: error.message || 'Failed to update user password.' };
+  }
+}
+
+/**
  * Toggles the featured status of a user
  */
 export async function toggleUserFeaturedAction(

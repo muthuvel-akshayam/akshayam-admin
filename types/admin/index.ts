@@ -21,10 +21,11 @@ export interface AdminUser {
   email: string;
   phone?: string;
   role: UserRole;
-  status: 'ACTIVE' | 'SUSPENDED' | 'DELETED';
+  status: 'ACTIVE' | 'SUSPENDED' | 'DELETED' | 'PENDING';
   registeredDate: string | Date;
   profileId?: number;
   isFeatured?: boolean;
+  paymentScreenshot?: string | null;
 }
 
 export interface PhotoItem {
@@ -114,6 +115,7 @@ export interface AdminProfile {
   approvedBy?: number | null;
   rejectedReason?: string | null;
   isLive: boolean;
+  isFeatured?: boolean;
   registeredDate: string | Date;
 }
 
@@ -183,6 +185,10 @@ export interface FilterParams {
   gender?: 'MALE' | 'FEMALE' | 'ALL' | string;
   religion?: string;
   caste?: string;
+  minAge?: number;
+  maxAge?: number;
+  maritalStatus?: string;
+  nakshatras?: string[];
   page?: number;
   limit?: number;
   sortBy?: 'registeredDate' | 'name' | 'age';
