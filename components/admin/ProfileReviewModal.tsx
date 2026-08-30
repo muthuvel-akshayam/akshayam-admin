@@ -108,13 +108,43 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
   const handleShare = (e: React.MouseEvent) => {
     e.stopPropagation();
     const shareText = `Profile: ${profile.name}\nAge: ${profile.age}\nHeight: ${profile.height}\nEducation: ${profile.educationOccupation?.highestEducation || 'N/A'}\nCity: ${profile.city}`;
+    
+    // Open in WhatsApp
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+    window.open(whatsappUrl, '_blank');
+    
+    // Fallback to clipboard
     navigator.clipboard.writeText(shareText);
-    showToast('Profile summary copied to clipboard', 'success');
   };
 
-  const handleDownload = (e: React.MouseEvent) => {
+  const handleDownload = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    window.print();
+    if (!profile?.jathagamUrl) {
+      showToast('No Jathagam available to download', 'error');
+      return;
+    }
+    
+    const fullUrl = profile.jathagamUrl.startsWith('http') 
+      ? profile.jathagamUrl 
+      : `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/user-documents/${profile.jathagamUrl}`;
+    
+    try {
+      const response = await fetch(fullUrl);
+      if (!response.ok) throw new Error('Network response was not ok');
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${profile.name.replace(/\s+/g, '_')}_Jathagam.jpg`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      a.remove();
+      showToast('Jathagam downloaded successfully', 'success');
+    } catch (err) {
+      // Fallback: Open in new tab
+      window.open(fullUrl, '_blank');
+    }
   };
 
   const handleToggleImportant = async (e: React.MouseEvent) => {

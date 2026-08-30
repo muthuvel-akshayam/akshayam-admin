@@ -9,13 +9,18 @@ import { PrismaClient } from '../../generated/prisma/client/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import pg from 'pg';
 
-const connectionString = process.env.DIRECT_URL || process.env.DATABASE_URL || '';
+const connectionString = process.env.DATABASE_URL || process.env.DIRECT_URL || '';
 
 const prismaClientSingleton = () => {
   if (!connectionString) {
     console.warn("DATABASE_URL is not set");
   }
-  const pool = new pg.Pool({ connectionString });
+  const pool = new pg.Pool({ 
+    connectionString,
+    max: 5, // Limit connections per hot-reload to prevent exhaustion
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 5000,
+  });
   const adapter = new PrismaPg(pool);
   return new PrismaClient({ adapter });
 };

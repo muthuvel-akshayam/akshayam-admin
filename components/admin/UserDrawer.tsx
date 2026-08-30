@@ -215,12 +215,40 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
     const age = profile.dob ? Math.max(0, new Date().getFullYear() - new Date(profile.dob).getFullYear()) : 'N/A';
     const education = userData?.educations?.[0]?.degreeName || 'N/A';
     const shareText = `Profile: ${profile.name}\nAge: ${age}\nHeight: ${profile.height || 'N/A'} cm\nEducation: ${education}\nCity: ${profile.city}`;
+    
+    // Open in WhatsApp
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+    window.open(whatsappUrl, '_blank');
+    
+    // Fallback to clipboard
     navigator.clipboard.writeText(shareText);
-    showToast('Profile summary copied to clipboard', 'success');
   };
 
-  const handleDownload = () => {
-    window.print();
+  const handleDownload = async () => {
+    if (!profile?.jathakamUrl) {
+      showToast('No Jathagam available to download', 'error');
+      return;
+    }
+    
+    const fullUrl = getFullUrl(profile.jathakamUrl, 'Jathagam');
+    
+    try {
+      const response = await fetch(fullUrl);
+      if (!response.ok) throw new Error('Network response was not ok');
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${profile.name.replace(/\s+/g, '_')}_Jathagam.jpg`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      a.remove();
+      showToast('Jathagam downloaded successfully', 'success');
+    } catch (err) {
+      // Fallback: Open in new tab
+      window.open(fullUrl, '_blank');
+    }
   };
 
   const handleToggleImportant = async () => {
