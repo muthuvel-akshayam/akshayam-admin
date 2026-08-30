@@ -140,20 +140,20 @@ export async function requireAdminRedirect(): Promise<AdminSession> {
  * Audit log helper to record administrative actions in the database.
  */
 export async function logAdminAction(
-  adminId: number,
+  adminId: string | number,
   action: string,
   targetId?: number | string,
   details?: any
 ): Promise<void> {
   try {
     const adminRecord = await (prisma as any).user.findUnique({
-      where: { id: adminId },
+      where: { id: String(adminId) },
       select: { name: true, email: true },
     });
 
     await (prisma as any).adminAuditLog.create({
       data: {
-        adminId,
+        adminId: String(adminId),
         adminName: adminRecord?.name || adminRecord?.email || 'Admin',
         action,
         targetId: targetId ? String(targetId) : null,
