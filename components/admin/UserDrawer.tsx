@@ -222,7 +222,9 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
     window.open(whatsappUrl, '_blank');
     
     // Fallback to clipboard
-    navigator.clipboard.writeText(shareText);
+    navigator.clipboard.writeText(shareText).catch(err => {
+      console.warn('Failed to copy to clipboard (permission denied):', err);
+    });
   };
 
   const handleDownload = async () => {
