@@ -15,6 +15,8 @@ import { approveProfileAction, deleteProfileAction } from '../../actions/admin/p
 import { searchCompatibilityAction } from '../../actions/admin/compatibility.actions';
 import { toggleUserFeaturedAction } from '../../actions/admin/user.actions';
 import MatchingProfilesModal from './MatchingProfilesModal';
+import JathagamPDFTemplate from './pdf/JathagamPDFTemplate';
+import { downloadBioDataPdf } from '../../lib/admin/generatePdf';
 import { useRouter } from 'next/navigation';
 
 const mapAstrologyGridToPlacements = (gridData: any): PlanetPlacement[] => {
@@ -109,7 +111,7 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
     e.stopPropagation();
     const education = profile.educationOccupation?.highestEducation || 'N/A';
     const kulam = profile.koottam || profile.caste || profile.subCaste || 'N/A';
-    const profileUrl = `https://www.akshayammatrimony.com/profiles/${profile.displayId || profile.userId || profile.id}`;
+    const profileUrl = `https://www.akshayamtamilmatrimony.com/profiles/${profile.displayId || profile.userId || profile.id}`;
     const shareText = `பெயர் :${profile.name} படிப்பு :${education} குலம் : ${kulam} - மேலும் விபரங்களுக்கு லிங்க்கை கிளிக் செய்யவும்\n${profileUrl}`;
     
     // Open in WhatsApp
@@ -124,31 +126,15 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
 
   const handleDownload = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!profile?.jathagamUrl) {
-      showToast('No Jathagam available to download', 'error');
-      return;
-    }
-    
-    const fullUrl = profile.jathagamUrl.startsWith('http') 
-      ? profile.jathagamUrl 
-      : `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/user-documents/${profile.jathagamUrl}`;
-    
+    if (!profile) return;
     try {
-      const response = await fetch(fullUrl);
-      if (!response.ok) throw new Error('Network response was not ok');
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${profile.name.replace(/\s+/g, '_')}_Jathagam.jpg`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      a.remove();
-      showToast('Jathagam downloaded successfully', 'success');
+      const profileIdStr = String(profile.displayId || profile.userId || profile.id);
+      const templateId = `pdf-template-${profileIdStr}`;
+      await downloadBioDataPdf(templateId, profileIdStr);
+      showToast('Bio-Data PDF downloaded successfully', 'success');
     } catch (err) {
-      // Fallback: Open in new tab
-      window.open(fullUrl, '_blank');
+      console.error('Error generating PDF:', err);
+      showToast('Failed to generate Bio-Data PDF', 'error');
     }
   };
 
@@ -684,6 +670,16 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
         onClose={() => setIsMatchesModalOpen(false)} 
         baseProfile={profile as any} 
       />
+      {/* Hidden container for PDF rendering */}
+      <div style={{ position: 'absolute', left: '-9999px', top: 0, opacity: 0, pointerEvents: 'none', zIndex: -1 }}>
+        <JathagamPDFTemplate 
+          profile={profile} 
+          profileId={String(profile.displayId || profile.userId || profile.id)}
+          family={profile.family}
+          userIndex={profile.userIndex}
+          userCreatedAt={profile.registeredDate}
+        />
+      </div>
     </Modal>
   );
 };

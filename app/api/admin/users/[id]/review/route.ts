@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/admin/auth';
 import prisma from '@/lib/admin/db';
+import { supabaseAdmin } from '@/lib/admin/supabase';
+import { addWatermarkToImage } from '@/lib/admin/watermark';
 
 export async function POST(
   request: NextRequest,
@@ -29,6 +31,40 @@ export async function POST(
     let updateData: any = {};
     if (action === 'APPROVE') {
       updateData = { status: 'APPROVED', isLive: true, approvedAt: new Date(), approvedBy: String(session.user.id), rejectedReason: null };
+      
+      // Add watermark to profile photo
+      if (user.profile.photoUrl) {
+        try {
+          const photoResponse = await fetch(user.profile.photoUrl);
+          if (photoResponse.ok) {
+            const arrayBuffer = await photoResponse.arrayBuffer();
+            const buffer = Buffer.from(arrayBuffer);
+            
+            // Generate watermark
+            const watermarkedBuffer = await addWatermarkToImage(buffer, 'AKSHAYAM');
+            
+            // Extract the path from the URL
+            // e.g., https://.../profile-photos/abc-123.jpg -> abc-123.jpg
+            const urlParts = user.profile.photoUrl.split('/');
+            const filename = urlParts[urlParts.length - 1];
+            
+            // Upload to same bucket under watermarked/ prefix
+            const { error: uploadError } = await supabaseAdmin
+              .storage
+              .from('profile-photos')
+              .upload(`watermarked/${filename}`, watermarkedBuffer, {
+                upsert: true,
+                contentType: photoResponse.headers.get('content-type') || 'image/jpeg'
+              });
+              
+            if (uploadError) {
+              console.error('Error uploading watermarked photo:', uploadError);
+            }
+          }
+        } catch (watermarkError) {
+          console.error('Error during watermarking process:', watermarkError);
+        }
+      }
     } else if (action === 'REJECT') {
       updateData = { status: 'REJECTED', isLive: false, approvedAt: null, approvedBy: null, rejectedReason: String(reason).trim() };
     } else if (action === 'MATCHED_REMOVED') {

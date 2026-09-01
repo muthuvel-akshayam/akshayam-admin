@@ -10,6 +10,8 @@ import { useRouter } from 'next/navigation';
 import { searchCompatibilityAction } from '../../actions/admin/compatibility.actions';
 import { toggleUserFeaturedAction } from '../../actions/admin/user.actions';
 import MatchingProfilesModal from './MatchingProfilesModal';
+import JathagamPDFTemplate from './pdf/JathagamPDFTemplate';
+import { downloadBioDataPdf } from '../../lib/admin/generatePdf';
 
 interface UserDrawerProps {
   userId: string | number | null;
@@ -214,7 +216,7 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
     if (!profile) return;
     const education = userData?.educations?.[0]?.degreeName || 'N/A';
     const kulam = profile.koottam || profile.caste || profile.subCaste || 'N/A';
-    const profileUrl = `https://www.akshayammatrimony.com/profiles/${profile.displayId || profile.userId || profile.id}`;
+    const profileUrl = `https://www.akshayamtamilmatrimony.com/profiles/${profile.displayId || profile.userId || profile.id}`;
     const shareText = `பெயர் :${profile.name} படிப்பு :${education} குலம் : ${kulam} - மேலும் விபரங்களுக்கு லிங்க்கை கிளிக் செய்யவும்\n${profileUrl}`;
     
     // Open in WhatsApp
@@ -228,29 +230,15 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
   };
 
   const handleDownload = async () => {
-    if (!profile?.jathakamUrl) {
-      showToast('No Jathagam available to download', 'error');
-      return;
-    }
-    
-    const fullUrl = getFullUrl(profile.jathakamUrl, 'Jathagam');
-    
+    if (!profile) return;
     try {
-      const response = await fetch(fullUrl);
-      if (!response.ok) throw new Error('Network response was not ok');
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${profile.name.replace(/\s+/g, '_')}_Jathagam.jpg`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      a.remove();
-      showToast('Jathagam downloaded successfully', 'success');
+      const profileIdStr = String(profile.displayId || profile.userId || profile.id);
+      const templateId = `pdf-template-${profileIdStr}`;
+      await downloadBioDataPdf(templateId, profileIdStr);
+      showToast('Bio-Data PDF downloaded successfully', 'success');
     } catch (err) {
-      // Fallback: Open in new tab
-      window.open(fullUrl, '_blank');
+      console.error('Error generating PDF:', err);
+      showToast('Failed to generate Bio-Data PDF', 'error');
     }
   };
 
@@ -466,6 +454,19 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
           targetUserId={String(userId)}
           initialTab={matchTrackingTab}
         />
+      )}
+      
+      {/* Hidden container for PDF rendering */}
+      {profile && (
+        <div style={{ position: 'absolute', left: '-9999px', top: 0, opacity: 0, pointerEvents: 'none', zIndex: -1 }}>
+          <JathagamPDFTemplate 
+            profile={{ ...userData, ...profile }} 
+            profileId={String(profile.displayId || profile.userId || profile.id)}
+            family={userData?.family}
+            userIndex={userData?.userIndex}
+            userCreatedAt={userData?.createdAt}
+          />
+        </div>
       )}
     </>
   );
