@@ -111,8 +111,9 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
     e.stopPropagation();
     const education = profile.educationOccupation?.highestEducation || 'N/A';
     const kulam = profile.koottam || profile.caste || profile.subCaste || 'N/A';
+    const dosham = profile.dosham || 'N/A';
     const profileUrl = `https://www.akshayamtamilmatrimony.com/profiles/${profile.displayId || profile.userId || profile.id}`;
-    const shareText = `பெயர் :${profile.name} படிப்பு :${education} குலம் : ${kulam} - மேலும் விபரங்களுக்கு லிங்க்கை கிளிக் செய்யவும்\n${profileUrl}`;
+    const shareText = `பெயர் :${profile.name} தோஷம் :${dosham} குலம் : ${kulam} - மேலும் விபரங்களுக்கு லிங்க்கை கிளிக் செய்யவும்\n${profileUrl}`;
     
     // Open in WhatsApp
     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
