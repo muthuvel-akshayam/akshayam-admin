@@ -263,10 +263,11 @@ export default function JathagamPDFTemplate({ profile, profileId, family: family
   const placeOfBirth = translateToTamil(jData.placeOfBirth || jData.nativePlace || profile.placeOfBirth || profile.lob || profile.city, { 'coimbatore': 'கோயம்புத்தூர்', 'chennai': 'சென்னை', 'tiruppur': 'திருப்பூர்', 'erode': 'ஈரோடு', 'salem': 'சேலம்', 'karur': 'கரூர்', 'namakkal': 'நாமக்கல்' }) || 'குறிப்பிடப்படவில்லை';
   const dasaBalance = jData.dasaBalance || profile.dasaBalance || profile.birthDetails || 'தசா இருப்பு விவரம் பார்க்கவும்';
   
-  const kovil = jData.kovil || profile.houseLocation || 'குலதெய்வம் குறிப்பிடப்படவில்லை';
   const kulam = profile.koottam || jData.kulam || profile.subCaste || 'குறிப்பிடப்படவில்லை';
-  const fatherStatus = mapParentStatus(jData.fatherName || family.fatherStatus);
-  const motherStatus = mapParentStatus(jData.motherName || family.motherStatus);
+  const fatherName = family.fatherName || jData.fatherName || '-';
+  const motherName = family.motherName || jData.motherName || '-';
+  const fatherStatus = mapParentStatus(family.fatherStatus || jData.fatherStatus);
+  const motherStatus = mapParentStatus(family.motherStatus || jData.motherStatus);
   
   const formatSiblings = (siblingsStr: any) => {
     if (!siblingsStr || typeof siblingsStr !== 'string') return siblingsStr;
@@ -415,36 +416,38 @@ export default function JathagamPDFTemplate({ profile, profileId, family: family
             <FieldItem label="குலம்" value={kulam} />
             
             <FieldItem label="பாலினம்" value={profile.gender === 'MALE' ? 'ஆண்' : 'பெண்'} />
-            <FieldItem label="தாய் நிலை" value={motherStatus} />
-            
-            <FieldItem label="வயது" value={`${calculateAge(dob)} வருடம்`} />
-            <FieldItem label="சமூக நிலை" value={translateToTamil(profile.familyStatus, familyStatusMap)} />
-            
-            <FieldItem label="திருமண நிலை" value={translateToTamil(profile.maritalStatus, maritalStatusMap)} />
             <FieldItem label="பிறந்த தேதி" value={formatSafeDate(dob)} />
             
-            <FieldItem label="பதிவு செய்தவர்" value={profile.profileCreatedBy || "உறவினர்"} />
+            <FieldItem label="வயது" value={`${calculateAge(dob)} வருடம்`} />
             <FieldItem label="பிறந்த நேரம்" value={tob} />
             
-            <FieldItem label="நிறம்" value={translateToTamil(profile.skinColour, colorMap)} />
+            <FieldItem label="திருமண நிலை" value={translateToTamil(profile.maritalStatus, maritalStatusMap)} />
             <FieldItem label="பிறந்த கிழமை" value={dayOfBirth} />
             
-            <FieldItem label="உயரம்" value={heightStr} />
+            <FieldItem label="பதிவு செய்தவர்" value={profile.profileCreatedBy || "உறவினர்"} />
             <FieldItem label="பிறந்த ஊர்" value={placeOfBirth} />
             
-            <FieldItem label="எடை" value={`${profile.weight} கிலோ`} />
-            <FieldItem label="கோவில்" value={kovil} />
-            
+            <FieldItem label="நிறம்" value={translateToTamil(profile.skinColour, colorMap)} />
             <FieldItem label="சாதி" value={casteDisplay} />
+            
+            <FieldItem label="உயரம்" value={heightStr} />
+            <FieldItem label="சமூக நிலை" value={translateToTamil(profile.familyStatus, familyStatusMap)} />
+            
+            <FieldItem label="எடை" value={`${profile.weight} கிலோ`} />
+            <FieldItem label="உடன் பிறந்தோர்" value={siblingsDisplay} />
+            
+            <FieldItem label="தந்தை பெயர்" value={fatherName} />
             <FieldItem label="தந்தை நிலை" value={fatherStatus} />
             
-            <FieldItem label="உடன் பிறந்தோர்" value={siblingsDisplay} />
-            <FieldItem label="பாதம்" value={padam} />
+            <FieldItem label="தாய் பெயர்" value={motherName} />
+            <FieldItem label="தாய் நிலை" value={motherStatus} />
             
             <FieldItem label="நட்சத்திரம்" value={nakshatra} />
-            <FieldItem label="ராசி" value={rasi} />
+            <FieldItem label="பாதம்" value={padam} />
             
+            <FieldItem label="ராசி" value={rasi} />
             <FieldItem label="லக்னம்" value={lagnam} />
+            
             <FieldItem label="ஜாதகம்" value={dosham} />
           </div>
 

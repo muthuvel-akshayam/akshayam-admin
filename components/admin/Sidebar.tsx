@@ -29,6 +29,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, pendingCount 
       case 'Remove After Match': return 'removeAfterMatch';
       case 'Users': return 'users';
       case 'Nakshatra Compatibility': return 'nakshatraCompatibility';
+      case 'Carousel': return 'carousel';
       case 'Analytics': return 'analytics';
       case 'Settings': return 'settings';
       default: return 'dashboard';

@@ -50,6 +50,11 @@ export const ADMIN_NAV_ITEMS: NavItem[] = [
     iconName: 'bar-chart-3',
   },
   {
+    title: 'Carousel',
+    href: '/admin/carousel',
+    iconName: 'sparkles',
+  },
+  {
     title: 'Settings',
     href: '/admin/settings',
     iconName: 'settings',

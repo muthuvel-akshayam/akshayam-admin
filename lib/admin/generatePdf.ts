@@ -1,7 +1,7 @@
 import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
 
-export async function downloadBioDataPdf(elementId: string, profileId: string) {
+export async function downloadBioDataPdf(elementId: string, filename: string) {
   const templateElement = document.getElementById(elementId);
   if (!templateElement) return;
 
@@ -26,7 +26,7 @@ export async function downloadBioDataPdf(elementId: string, profileId: string) {
     });
 
     pdf.addImage(dataUrl, "JPEG", 0, 0, 210, 297);
-    pdf.save(`Akshayam_BioData_${profileId}.pdf`);
+    pdf.save(`${filename}.pdf`);
   } catch (error) {
     console.error("PDF Generation failed:", error);
     alert("Failed to generate PDF. Please try again.");

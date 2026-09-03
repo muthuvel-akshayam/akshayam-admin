@@ -131,7 +131,7 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
     try {
       const profileIdStr = String(profile.displayId || profile.userId || profile.id);
       const templateId = `pdf-template-${profileIdStr}`;
-      await downloadBioDataPdf(templateId, profileIdStr);
+      await downloadBioDataPdf(templateId, `${profileIdStr} - ${profile.name}`);
       showToast('Bio-Data PDF downloaded successfully', 'success');
     } catch (err) {
       console.error('Error generating PDF:', err);
