@@ -38,6 +38,7 @@ export type UserMinAggregateOutputType = {
   id: string | null
   email: string | null
   mobile_no: string | null
+  whatsappProfileDeliveryNumber: string | null
   password: string | null
   role: $Enums.UserRole | null
   status: string | null
@@ -53,6 +54,7 @@ export type UserMaxAggregateOutputType = {
   id: string | null
   email: string | null
   mobile_no: string | null
+  whatsappProfileDeliveryNumber: string | null
   password: string | null
   role: $Enums.UserRole | null
   status: string | null
@@ -68,6 +70,7 @@ export type UserCountAggregateOutputType = {
   id: number
   email: number
   mobile_no: number
+  whatsappProfileDeliveryNumber: number
   password: number
   role: number
   status: number
@@ -93,6 +96,7 @@ export type UserMinAggregateInputType = {
   id?: true
   email?: true
   mobile_no?: true
+  whatsappProfileDeliveryNumber?: true
   password?: true
   role?: true
   status?: true
@@ -108,6 +112,7 @@ export type UserMaxAggregateInputType = {
   id?: true
   email?: true
   mobile_no?: true
+  whatsappProfileDeliveryNumber?: true
   password?: true
   role?: true
   status?: true
@@ -123,6 +128,7 @@ export type UserCountAggregateInputType = {
   id?: true
   email?: true
   mobile_no?: true
+  whatsappProfileDeliveryNumber?: true
   password?: true
   role?: true
   status?: true
@@ -225,6 +231,7 @@ export type UserGroupByOutputType = {
   id: string
   email: string | null
   mobile_no: string | null
+  whatsappProfileDeliveryNumber: string | null
   password: string | null
   role: $Enums.UserRole
   status: string
@@ -263,6 +270,7 @@ export type UserWhereInput = {
   id?: Prisma.StringFilter<"User"> | string
   email?: Prisma.StringNullableFilter<"User"> | string | null
   mobile_no?: Prisma.StringNullableFilter<"User"> | string | null
+  whatsappProfileDeliveryNumber?: Prisma.StringNullableFilter<"User"> | string | null
   password?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole
   status?: Prisma.StringFilter<"User"> | string
@@ -288,6 +296,7 @@ export type UserOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrderInput | Prisma.SortOrder
   mobile_no?: Prisma.SortOrderInput | Prisma.SortOrder
+  whatsappProfileDeliveryNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   password?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -317,6 +326,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
+  whatsappProfileDeliveryNumber?: Prisma.StringNullableFilter<"User"> | string | null
   password?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole
   status?: Prisma.StringFilter<"User"> | string
@@ -341,6 +351,7 @@ export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrderInput | Prisma.SortOrder
   mobile_no?: Prisma.SortOrderInput | Prisma.SortOrder
+  whatsappProfileDeliveryNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   password?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -364,6 +375,7 @@ export type UserScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"User"> | string
   email?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   mobile_no?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  whatsappProfileDeliveryNumber?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   password?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   role?: Prisma.EnumUserRoleWithAggregatesFilter<"User"> | $Enums.UserRole
   status?: Prisma.StringWithAggregatesFilter<"User"> | string
@@ -379,6 +391,7 @@ export type UserCreateInput = {
   id: string
   email?: string | null
   mobile_no?: string | null
+  whatsappProfileDeliveryNumber?: string | null
   password?: string | null
   role?: $Enums.UserRole
   status?: string
@@ -404,6 +417,7 @@ export type UserUncheckedCreateInput = {
   id: string
   email?: string | null
   mobile_no?: string | null
+  whatsappProfileDeliveryNumber?: string | null
   password?: string | null
   role?: $Enums.UserRole
   status?: string
@@ -429,6 +443,7 @@ export type UserUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappProfileDeliveryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -454,6 +469,7 @@ export type UserUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappProfileDeliveryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -479,6 +495,7 @@ export type UserCreateManyInput = {
   id: string
   email?: string | null
   mobile_no?: string | null
+  whatsappProfileDeliveryNumber?: string | null
   password?: string | null
   role?: $Enums.UserRole
   status?: string
@@ -494,6 +511,7 @@ export type UserUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappProfileDeliveryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -509,6 +527,7 @@ export type UserUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappProfileDeliveryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -524,6 +543,7 @@ export type UserCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   mobile_no?: Prisma.SortOrder
+  whatsappProfileDeliveryNumber?: Prisma.SortOrder
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -543,6 +563,7 @@ export type UserMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   mobile_no?: Prisma.SortOrder
+  whatsappProfileDeliveryNumber?: Prisma.SortOrder
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -558,6 +579,7 @@ export type UserMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   mobile_no?: Prisma.SortOrder
+  whatsappProfileDeliveryNumber?: Prisma.SortOrder
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -750,6 +772,7 @@ export type UserCreateWithoutProfileInput = {
   id: string
   email?: string | null
   mobile_no?: string | null
+  whatsappProfileDeliveryNumber?: string | null
   password?: string | null
   role?: $Enums.UserRole
   status?: string
@@ -774,6 +797,7 @@ export type UserUncheckedCreateWithoutProfileInput = {
   id: string
   email?: string | null
   mobile_no?: string | null
+  whatsappProfileDeliveryNumber?: string | null
   password?: string | null
   role?: $Enums.UserRole
   status?: string
@@ -814,6 +838,7 @@ export type UserUpdateWithoutProfileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappProfileDeliveryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -838,6 +863,7 @@ export type UserUncheckedUpdateWithoutProfileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappProfileDeliveryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -862,6 +888,7 @@ export type UserCreateWithoutFamilyInput = {
   id: string
   email?: string | null
   mobile_no?: string | null
+  whatsappProfileDeliveryNumber?: string | null
   password?: string | null
   role?: $Enums.UserRole
   status?: string
@@ -886,6 +913,7 @@ export type UserUncheckedCreateWithoutFamilyInput = {
   id: string
   email?: string | null
   mobile_no?: string | null
+  whatsappProfileDeliveryNumber?: string | null
   password?: string | null
   role?: $Enums.UserRole
   status?: string
@@ -926,6 +954,7 @@ export type UserUpdateWithoutFamilyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappProfileDeliveryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -950,6 +979,7 @@ export type UserUncheckedUpdateWithoutFamilyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappProfileDeliveryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -974,6 +1004,7 @@ export type UserCreateWithoutExpectationsInput = {
   id: string
   email?: string | null
   mobile_no?: string | null
+  whatsappProfileDeliveryNumber?: string | null
   password?: string | null
   role?: $Enums.UserRole
   status?: string
@@ -998,6 +1029,7 @@ export type UserUncheckedCreateWithoutExpectationsInput = {
   id: string
   email?: string | null
   mobile_no?: string | null
+  whatsappProfileDeliveryNumber?: string | null
   password?: string | null
   role?: $Enums.UserRole
   status?: string
@@ -1038,6 +1070,7 @@ export type UserUpdateWithoutExpectationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappProfileDeliveryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1062,6 +1095,7 @@ export type UserUncheckedUpdateWithoutExpectationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappProfileDeliveryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1086,6 +1120,7 @@ export type UserCreateWithoutReceivedRequestsInput = {
   id: string
   email?: string | null
   mobile_no?: string | null
+  whatsappProfileDeliveryNumber?: string | null
   password?: string | null
   role?: $Enums.UserRole
   status?: string
@@ -1110,6 +1145,7 @@ export type UserUncheckedCreateWithoutReceivedRequestsInput = {
   id: string
   email?: string | null
   mobile_no?: string | null
+  whatsappProfileDeliveryNumber?: string | null
   password?: string | null
   role?: $Enums.UserRole
   status?: string
@@ -1139,6 +1175,7 @@ export type UserCreateWithoutSentRequestsInput = {
   id: string
   email?: string | null
   mobile_no?: string | null
+  whatsappProfileDeliveryNumber?: string | null
   password?: string | null
   role?: $Enums.UserRole
   status?: string
@@ -1163,6 +1200,7 @@ export type UserUncheckedCreateWithoutSentRequestsInput = {
   id: string
   email?: string | null
   mobile_no?: string | null
+  whatsappProfileDeliveryNumber?: string | null
   password?: string | null
   role?: $Enums.UserRole
   status?: string
@@ -1203,6 +1241,7 @@ export type UserUpdateWithoutReceivedRequestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappProfileDeliveryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1227,6 +1266,7 @@ export type UserUncheckedUpdateWithoutReceivedRequestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappProfileDeliveryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1262,6 +1302,7 @@ export type UserUpdateWithoutSentRequestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappProfileDeliveryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1286,6 +1327,7 @@ export type UserUncheckedUpdateWithoutSentRequestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappProfileDeliveryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1310,6 +1352,7 @@ export type UserCreateWithoutPasswordResetRequestsInput = {
   id: string
   email?: string | null
   mobile_no?: string | null
+  whatsappProfileDeliveryNumber?: string | null
   password?: string | null
   role?: $Enums.UserRole
   status?: string
@@ -1334,6 +1377,7 @@ export type UserUncheckedCreateWithoutPasswordResetRequestsInput = {
   id: string
   email?: string | null
   mobile_no?: string | null
+  whatsappProfileDeliveryNumber?: string | null
   password?: string | null
   role?: $Enums.UserRole
   status?: string
@@ -1374,6 +1418,7 @@ export type UserUpdateWithoutPasswordResetRequestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappProfileDeliveryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1398,6 +1443,7 @@ export type UserUncheckedUpdateWithoutPasswordResetRequestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappProfileDeliveryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1422,6 +1468,7 @@ export type UserCreateWithoutRecipientUserSentLogsInput = {
   id: string
   email?: string | null
   mobile_no?: string | null
+  whatsappProfileDeliveryNumber?: string | null
   password?: string | null
   role?: $Enums.UserRole
   status?: string
@@ -1446,6 +1493,7 @@ export type UserUncheckedCreateWithoutRecipientUserSentLogsInput = {
   id: string
   email?: string | null
   mobile_no?: string | null
+  whatsappProfileDeliveryNumber?: string | null
   password?: string | null
   role?: $Enums.UserRole
   status?: string
@@ -1475,6 +1523,7 @@ export type UserCreateWithoutTargetUserSentLogsInput = {
   id: string
   email?: string | null
   mobile_no?: string | null
+  whatsappProfileDeliveryNumber?: string | null
   password?: string | null
   role?: $Enums.UserRole
   status?: string
@@ -1499,6 +1548,7 @@ export type UserUncheckedCreateWithoutTargetUserSentLogsInput = {
   id: string
   email?: string | null
   mobile_no?: string | null
+  whatsappProfileDeliveryNumber?: string | null
   password?: string | null
   role?: $Enums.UserRole
   status?: string
@@ -1539,6 +1589,7 @@ export type UserUpdateWithoutRecipientUserSentLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappProfileDeliveryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1563,6 +1614,7 @@ export type UserUncheckedUpdateWithoutRecipientUserSentLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappProfileDeliveryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1598,6 +1650,7 @@ export type UserUpdateWithoutTargetUserSentLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappProfileDeliveryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1622,6 +1675,7 @@ export type UserUncheckedUpdateWithoutTargetUserSentLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappProfileDeliveryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1646,6 +1700,7 @@ export type UserCreateWithoutShortlist_Shortlist_targetIdToUserInput = {
   id: string
   email?: string | null
   mobile_no?: string | null
+  whatsappProfileDeliveryNumber?: string | null
   password?: string | null
   role?: $Enums.UserRole
   status?: string
@@ -1670,6 +1725,7 @@ export type UserUncheckedCreateWithoutShortlist_Shortlist_targetIdToUserInput = 
   id: string
   email?: string | null
   mobile_no?: string | null
+  whatsappProfileDeliveryNumber?: string | null
   password?: string | null
   role?: $Enums.UserRole
   status?: string
@@ -1699,6 +1755,7 @@ export type UserCreateWithoutShortlist_Shortlist_userIdToUserInput = {
   id: string
   email?: string | null
   mobile_no?: string | null
+  whatsappProfileDeliveryNumber?: string | null
   password?: string | null
   role?: $Enums.UserRole
   status?: string
@@ -1723,6 +1780,7 @@ export type UserUncheckedCreateWithoutShortlist_Shortlist_userIdToUserInput = {
   id: string
   email?: string | null
   mobile_no?: string | null
+  whatsappProfileDeliveryNumber?: string | null
   password?: string | null
   role?: $Enums.UserRole
   status?: string
@@ -1763,6 +1821,7 @@ export type UserUpdateWithoutShortlist_Shortlist_targetIdToUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappProfileDeliveryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1787,6 +1846,7 @@ export type UserUncheckedUpdateWithoutShortlist_Shortlist_targetIdToUserInput = 
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappProfileDeliveryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1822,6 +1882,7 @@ export type UserUpdateWithoutShortlist_Shortlist_userIdToUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappProfileDeliveryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1846,6 +1907,7 @@ export type UserUncheckedUpdateWithoutShortlist_Shortlist_userIdToUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mobile_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappProfileDeliveryNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   status?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1955,6 +2017,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   id?: boolean
   email?: boolean
   mobile_no?: boolean
+  whatsappProfileDeliveryNumber?: boolean
   password?: boolean
   role?: boolean
   status?: boolean
@@ -1981,6 +2044,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   id?: boolean
   email?: boolean
   mobile_no?: boolean
+  whatsappProfileDeliveryNumber?: boolean
   password?: boolean
   role?: boolean
   status?: boolean
@@ -1996,6 +2060,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   id?: boolean
   email?: boolean
   mobile_no?: boolean
+  whatsappProfileDeliveryNumber?: boolean
   password?: boolean
   role?: boolean
   status?: boolean
@@ -2011,6 +2076,7 @@ export type UserSelectScalar = {
   id?: boolean
   email?: boolean
   mobile_no?: boolean
+  whatsappProfileDeliveryNumber?: boolean
   password?: boolean
   role?: boolean
   status?: boolean
@@ -2022,7 +2088,7 @@ export type UserSelectScalar = {
   paymentScreenshot?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "mobile_no" | "password" | "role" | "status" | "createdAt" | "updatedAt" | "userIndex" | "isFeatured" | "userid" | "paymentScreenshot", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "mobile_no" | "whatsappProfileDeliveryNumber" | "password" | "role" | "status" | "createdAt" | "updatedAt" | "userIndex" | "isFeatured" | "userid" | "paymentScreenshot", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   receivedRequests?: boolean | Prisma.User$receivedRequestsArgs<ExtArgs>
   sentRequests?: boolean | Prisma.User$sentRequestsArgs<ExtArgs>
@@ -2057,6 +2123,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     id: string
     email: string | null
     mobile_no: string | null
+    whatsappProfileDeliveryNumber: string | null
     password: string | null
     role: $Enums.UserRole
     status: string
@@ -2502,6 +2569,7 @@ export interface UserFieldRefs {
   readonly id: Prisma.FieldRef<"User", 'String'>
   readonly email: Prisma.FieldRef<"User", 'String'>
   readonly mobile_no: Prisma.FieldRef<"User", 'String'>
+  readonly whatsappProfileDeliveryNumber: Prisma.FieldRef<"User", 'String'>
   readonly password: Prisma.FieldRef<"User", 'String'>
   readonly role: Prisma.FieldRef<"User", 'UserRole'>
   readonly status: Prisma.FieldRef<"User", 'String'>

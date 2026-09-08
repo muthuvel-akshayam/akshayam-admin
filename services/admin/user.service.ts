@@ -341,6 +341,7 @@ export class UserService {
       name: raw.profile?.name || raw.name || raw.email?.split('@')[0] || 'User',
       email: raw.email || 'noemail@akshayam.com',
       phone: raw.mobile_no || raw.phone || '+91 00000 00000',
+      whatsappProfileDeliveryNumber: raw.whatsappProfileDeliveryNumber,
       role: (raw.role as UserRole) || UserRole.USER,
       status: raw.status || 'ACTIVE',
       registeredDate: raw.createdAt || raw.registeredDate || new Date().toISOString(),

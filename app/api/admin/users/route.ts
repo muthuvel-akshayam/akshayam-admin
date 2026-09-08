@@ -12,10 +12,24 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get('page') || '1', 10);
     const limit = parseInt(searchParams.get('limit') || '10', 10);
     const search = searchParams.get('search')?.trim();
+    
+    // The 12 advanced filters
     const minAge = searchParams.get('minAge');
     const maxAge = searchParams.get('maxAge');
+    const maritalStatus = searchParams.get('maritalStatus');
     const nakshatras = searchParams.get('nakshatras');
+    const rasi = searchParams.get('rasi');
     const dosham = searchParams.get('dosham');
+    const propertyValue = searchParams.get('propertyValue');
+    const minPavan = searchParams.get('minPavan');
+    const maxPavan = searchParams.get('maxPavan');
+    const skinColour = searchParams.get('skinColour');
+    const minHeight = searchParams.get('minHeight');
+    const maxHeight = searchParams.get('maxHeight');
+    const workLocations = searchParams.get('workLocations');
+    const preferredCities = searchParams.get('preferredCities');
+    const preferredProfessions = searchParams.get('preferredProfessions');
+    
     const skip = (page - 1) * limit;
 
     let where: any = {};
@@ -48,12 +62,30 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    if (nakshatras) {
-      profileFilter.nakshatra = { in: nakshatras.split(',') };
+    if (nakshatras) profileFilter.nakshatra = { in: nakshatras.split(',') };
+    if (rasi) profileFilter.rasi = { contains: rasi, mode: 'insensitive' };
+    if (dosham) profileFilter.dosham = { contains: dosham, mode: 'insensitive' };
+    if (maritalStatus && maritalStatus !== 'ALL') profileFilter.maritalStatus = maritalStatus;
+    if (propertyValue) profileFilter.propertyValue = { contains: propertyValue, mode: 'insensitive' };
+    if (skinColour) profileFilter.skinColour = { contains: skinColour, mode: 'insensitive' };
+    
+    if (minHeight || maxHeight) {
+      profileFilter.height = {};
+      if (minHeight) profileFilter.height.gte = Number(minHeight);
+      if (maxHeight) profileFilter.height.lte = Number(maxHeight);
+    }
+    
+    if (minPavan || maxPavan) {
+      // NOTE: We might need to check if expectPavan exists on Profile or Expectations.
+      // Usually Pavan is on Profile, e.g., pavanOffered. Assuming it's `pavanOffered` or `pavan`.
+      // The exact field name depends on schema. We will assume `pavanOffered`.
+      profileFilter.pavanOffered = {};
+      if (minPavan) profileFilter.pavanOffered.gte = Number(minPavan);
+      if (maxPavan) profileFilter.pavanOffered.lte = Number(maxPavan);
     }
 
-    if (dosham) {
-      profileFilter.dosham = { contains: dosham, mode: 'insensitive' };
+    if (workLocations) {
+      profileFilter.state = { in: workLocations.split(',') };
     }
 
     if (Object.keys(profileFilter).length > 0) {
@@ -106,6 +138,8 @@ export async function GET(request: NextRequest) {
       profileId: u.profile?.id,
       isFeatured: u.isFeatured || false,
       paymentScreenshot: u.paymentScreenshot,
+      userid: u.userid,
+      userIndex: u.userIndex,
     }));
 
     return NextResponse.json({

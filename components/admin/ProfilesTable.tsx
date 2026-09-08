@@ -38,6 +38,7 @@ export interface ProfilesTableProps {
     nakshatras?: string[]
   ) => void;
   onRefresh?: () => void;
+  onOpenFilters?: () => void;
 }
 
 export const ProfilesTable: React.FC<ProfilesTableProps> = ({
@@ -54,19 +55,13 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
   currentGender = 'ALL',
   onFilterChange,
   onRefresh,
+  onOpenFilters,
 }) => {
   const router = useRouter();
   const { showToast } = useToast();
   const [loadingId, setLoadingId] = useState<number | null>(null);
   const [deleteConfirmProfile, setDeleteConfirmProfile] = useState<AdminProfile | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  
-  // Advanced filters internal state
-  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
-  const [advMinAge, setAdvMinAge] = useState<number | ''>('');
-  const [advMaxAge, setAdvMaxAge] = useState<number | ''>('');
-  const [advMaritalStatus, setAdvMaritalStatus] = useState<string>('ALL');
-  const [advNakshatras, setAdvNakshatras] = useState<string>('');
 
   const handleApprove = async (profile: AdminProfile) => {
     const profileId = Number(profile.id);
@@ -170,16 +165,7 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
   const handleFilterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (onFilterChange) {
-      const nakshatraArr = advNakshatras ? advNakshatras.split(',').map(n => n.trim()).filter(Boolean) : undefined;
-      onFilterChange(
-        currentStatus, 
-        currentGender, 
-        searchQuery,
-        advMinAge !== '' ? advMinAge : undefined,
-        advMaxAge !== '' ? advMaxAge : undefined,
-        advMaritalStatus !== 'ALL' ? advMaritalStatus : undefined,
-        nakshatraArr
-      );
+      onFilterChange(currentStatus, currentGender, searchQuery);
     }
   };
 
@@ -211,12 +197,12 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
             </Button>
             <button
               type="button"
-              onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+              onClick={onOpenFilters}
               className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 flex items-center gap-1"
             >
-              Advanced
-              <svg className={`w-3 h-3 transition-transform ${showAdvancedFilters ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              Advanced Filters
+              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
               </svg>
             </button>
           </form>
@@ -242,60 +228,6 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
               <option value="APPROVED">Approved Only</option>
               <option value="REJECTED">Rejected Only</option>
             </select>
-          </div>
-        </div>
-      )}
-
-      {/* Advanced Filters Panel */}
-      {showFilters && showAdvancedFilters && (
-        <div className="p-4 border-b border-slate-200 bg-slate-50 flex flex-wrap gap-4 items-end">
-          <div>
-            <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Min Age</label>
-            <input
-              type="number"
-              value={advMinAge}
-              onChange={(e) => setAdvMinAge(e.target.value ? Number(e.target.value) : '')}
-              className="w-20 bg-white text-slate-800 px-3 py-1.5 rounded-lg text-xs border border-slate-200 focus:border-emerald-600 focus:outline-none"
-              placeholder="18"
-            />
-          </div>
-          <div>
-            <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Max Age</label>
-            <input
-              type="number"
-              value={advMaxAge}
-              onChange={(e) => setAdvMaxAge(e.target.value ? Number(e.target.value) : '')}
-              className="w-20 bg-white text-slate-800 px-3 py-1.5 rounded-lg text-xs border border-slate-200 focus:border-emerald-600 focus:outline-none"
-              placeholder="40"
-            />
-          </div>
-          <div>
-            <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Marital Status</label>
-            <select
-              value={advMaritalStatus}
-              onChange={(e) => setAdvMaritalStatus(e.target.value)}
-              className="bg-white text-slate-700 px-3 py-1.5 rounded-lg text-xs border border-slate-200 focus:outline-none focus:border-emerald-600"
-            >
-              <option value="ALL">Any Status</option>
-              <option value="NEVER_MARRIED">Never Married</option>
-              <option value="DIVORCED">Divorced</option>
-              <option value="WIDOWED">Widowed</option>
-            </select>
-          </div>
-          <div className="flex-1 min-w-[200px]">
-            <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Target Nakshatras (comma-separated)</label>
-            <input
-              type="text"
-              value={advNakshatras}
-              onChange={(e) => setAdvNakshatras(e.target.value)}
-              className="w-full bg-white text-slate-800 px-3 py-1.5 rounded-lg text-xs border border-slate-200 focus:border-emerald-600 focus:outline-none"
-              placeholder="Ashwini, Bharani, Krittika..."
-            />
-          </div>
-          <div>
-            <Button type="button" variant="primary" size="sm" onClick={handleFilterSubmit}>
-              Apply Filters
-            </Button>
           </div>
         </div>
       )}

@@ -17,9 +17,11 @@ export enum ProfileStatus {
 export interface AdminUser {
   id: string | number; // allowing string since DB uses UUID string
   userIndex?: number;
+  userid?: string;
   name: string;
   email: string;
   phone?: string;
+  whatsappProfileDeliveryNumber?: string;
   role: UserRole;
   status: 'ACTIVE' | 'SUSPENDED' | 'DELETED' | 'PENDING';
   registeredDate: string | Date;
@@ -79,6 +81,7 @@ export interface AdminProfile {
   userId: string | number;
   userIndex?: number;
   name: string;
+  whatsappProfileDeliveryNumber?: string;
   gender: 'MALE' | 'FEMALE';
   age: number;
   dateOfBirth?: string | Date;
@@ -191,6 +194,17 @@ export interface FilterParams {
   maxAge?: number;
   maritalStatus?: string;
   nakshatras?: string[];
+  rasi?: string;
+  dosham?: string;
+  minHeight?: number;
+  maxHeight?: number;
+  propertyValue?: string;
+  minPavan?: number;
+  maxPavan?: number;
+  skinColour?: string;
+  workLocations?: string[];
+  preferredCities?: string[];
+  preferredProfessions?: string[];
   page?: number;
   limit?: number;
   sortBy?: 'registeredDate' | 'name' | 'age';

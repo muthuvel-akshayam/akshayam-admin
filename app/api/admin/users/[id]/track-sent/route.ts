@@ -28,11 +28,29 @@ export async function POST(
       return NextResponse.json({ success: false, error: 'Missing recipientUserId' }, { status: 400 });
     }
 
+    const isNumeric = /^\d+$/.test(recipientUserId);
+    const targetRecipient = await (prisma as any).user.findFirst({
+      where: isNumeric ? {
+        OR: [
+          { id: recipientUserId },
+          { userIndex: parseInt(recipientUserId, 10) }
+        ]
+      } : {
+        id: recipientUserId
+      }
+    });
+
+    if (!targetRecipient) {
+      return NextResponse.json({ success: false, error: 'Candidate user not found.' }, { status: 404 });
+    }
+
+    const finalRecipientUserId = targetRecipient.id;
+
     const logEntry = await prisma.profileSentLog.upsert({
       where: {
         targetUserId_recipientUserId: {
           targetUserId: userId,
-          recipientUserId: recipientUserId,
+          recipientUserId: finalRecipientUserId,
         }
       },
       update: {
@@ -40,7 +58,7 @@ export async function POST(
       },
       create: {
         targetUserId: userId,
-        recipientUserId: recipientUserId,
+        recipientUserId: finalRecipientUserId,
         status: status as ProfileSentStatus,
       }
     });

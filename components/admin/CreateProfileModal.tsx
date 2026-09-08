@@ -83,7 +83,7 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
       isOpen={isOpen}
       onClose={() => !isLoading && onClose()}
       title="Create New Profile"
-      subtitle="Direct admin registration (Bypasses verification queue as APPROVED & LIVE)"
+      subtitle="Direct admin registration (Goes to Pending queue for final approval)"
       maxWidth="2xl"
       footer={
         <div className="flex justify-end gap-3 w-full">
@@ -91,15 +91,15 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
             Cancel
           </Button>
           <Button variant="success" onClick={handleSubmit} isLoading={isLoading}>
-            Create Approved Profile
+            Create Profile
           </Button>
         </div>
       }
     >
       <form onSubmit={handleSubmit} className="space-y-4 text-xs sm:text-sm">
-        <div className="p-3 rounded-xl bg-emerald-50  border border-emerald-200  text-emerald-800  text-xs mb-4 flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
-          <span>Profiles created by administrators are immediately published to live public search.</span>
+        <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs mb-4 flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-amber-500 shrink-0" />
+          <span>Profiles created by administrators will be placed in the Pending queue and must be approved before going live.</span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

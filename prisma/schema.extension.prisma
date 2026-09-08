@@ -55,6 +55,9 @@ model Profile {
 model User {
   // ... your existing fields ...
 
+  email                 String?           @unique
+  mobile_no             String?           @unique
+  whatsappProfileDeliveryNumber String?
   role            UserRole      @default(USER)
   status          String        @default("ACTIVE") // ACTIVE, SUSPENDED, DELETED
 

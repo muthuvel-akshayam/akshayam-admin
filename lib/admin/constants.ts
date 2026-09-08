@@ -19,14 +19,14 @@ export const ADMIN_NAV_ITEMS: NavItem[] = [
   },
   {
     title: 'Pending',
-    href: '/admin/users?status=pending',
+    href: '/admin/profiles/pending',
     iconName: 'clock',
     badgeKey: 'pendingProfiles',
   },
 
   {
     title: 'Denied',
-    href: '/admin/users?status=denied',
+    href: '/admin/profiles/rejected',
     iconName: 'x-circle',
   },
   {
@@ -53,11 +53,6 @@ export const ADMIN_NAV_ITEMS: NavItem[] = [
     title: 'Carousel',
     href: '/admin/carousel',
     iconName: 'sparkles',
-  },
-  {
-    title: 'Settings',
-    href: '/admin/settings',
-    iconName: 'settings',
   },
 ];
 

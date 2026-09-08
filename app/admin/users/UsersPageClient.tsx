@@ -4,8 +4,9 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Button from '@/components/admin/ui/Button';
 import UsersTable from '@/components/admin/UsersTable';
 import UserDrawer from '@/components/admin/UserDrawer';
-import { AdminUser } from '@/types/admin';
-import { useSearchParams } from 'next/navigation';
+import AmazonFiltersSidebar from '@/components/admin/AmazonFiltersSidebar';
+import { AdminUser, FilterParams } from '@/types/admin';
+import { useSearchParams, useRouter } from 'next/navigation';
 
 export default function UsersPageClient() {
   const [users, setUsers] = useState<AdminUser[]>([]);
@@ -14,34 +15,37 @@ export default function UsersPageClient() {
   const itemsPerPage = 10;
   
   const searchParams = useSearchParams();
-  const [activeTab, setActiveTab] = useState(searchParams.get('status') || 'all');
-  const [searchQuery, setSearchQuery] = useState<string>('');
+  const router = useRouter();
   
-  // Advanced filters
-  const [minAge, setMinAge] = useState<number | undefined>();
-  const [maxAge, setMaxAge] = useState<number | undefined>();
-  const [nakshatras, setNakshatras] = useState<string | undefined>();
-  const [dosham, setDosham] = useState<string | undefined>();
+  const [filters, setFilters] = useState<Partial<FilterParams>>({
+    status: searchParams.get('status') || 'all',
+    query: searchParams.get('query') || '',
+  });
   
   const [loading, setLoading] = useState(false);
   const [drawerUserId, setDrawerUserId] = useState<string | number | null>(null);
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
-  const fetchUsers = useCallback(async (
-    page: number, 
-    statusTab: string, 
-    query: string, 
-    fMinAge?: number, 
-    fMaxAge?: number, 
-    fNakshatras?: string, 
-    fDosham?: string
-  ) => {
+  const fetchUsers = useCallback(async (page: number, currentFilters: Partial<FilterParams>) => {
     setLoading(true);
     try {
-      let url = `/api/admin/users?page=${page}&limit=${itemsPerPage}&status=${statusTab}&search=${encodeURIComponent(query)}`;
-      if (fMinAge) url += `&minAge=${fMinAge}`;
-      if (fMaxAge) url += `&maxAge=${fMaxAge}`;
-      if (fNakshatras) url += `&nakshatras=${encodeURIComponent(fNakshatras)}`;
-      if (fDosham) url += `&dosham=${encodeURIComponent(fDosham)}`;
+      let url = `/api/admin/users?page=${page}&limit=${itemsPerPage}&status=${currentFilters.status || 'all'}`;
+      if (currentFilters.query) url += `&search=${encodeURIComponent(currentFilters.query)}`;
+      if (currentFilters.minAge) url += `&minAge=${currentFilters.minAge}`;
+      if (currentFilters.maxAge) url += `&maxAge=${currentFilters.maxAge}`;
+      if (currentFilters.maritalStatus && currentFilters.maritalStatus !== 'ALL') url += `&maritalStatus=${currentFilters.maritalStatus}`;
+      if (currentFilters.nakshatras && currentFilters.nakshatras.length > 0) url += `&nakshatras=${encodeURIComponent(currentFilters.nakshatras.join(','))}`;
+      if (currentFilters.rasi) url += `&rasi=${encodeURIComponent(currentFilters.rasi)}`;
+      if (currentFilters.dosham) url += `&dosham=${encodeURIComponent(currentFilters.dosham)}`;
+      if (currentFilters.propertyValue) url += `&propertyValue=${encodeURIComponent(currentFilters.propertyValue)}`;
+      if (currentFilters.minPavan) url += `&minPavan=${currentFilters.minPavan}`;
+      if (currentFilters.maxPavan) url += `&maxPavan=${currentFilters.maxPavan}`;
+      if (currentFilters.skinColour) url += `&skinColour=${encodeURIComponent(currentFilters.skinColour)}`;
+      if (currentFilters.minHeight) url += `&minHeight=${currentFilters.minHeight}`;
+      if (currentFilters.maxHeight) url += `&maxHeight=${currentFilters.maxHeight}`;
+      if (currentFilters.workLocations && currentFilters.workLocations.length > 0) url += `&workLocations=${encodeURIComponent(currentFilters.workLocations.join(','))}`;
+      if (currentFilters.preferredCities && currentFilters.preferredCities.length > 0) url += `&preferredCities=${encodeURIComponent(currentFilters.preferredCities.join(','))}`;
+      if (currentFilters.preferredProfessions && currentFilters.preferredProfessions.length > 0) url += `&preferredProfessions=${encodeURIComponent(currentFilters.preferredProfessions.join(','))}`;
 
       const res = await fetch(url);
       const data = await res.json();
@@ -58,66 +62,112 @@ export default function UsersPageClient() {
   }, [itemsPerPage]);
 
   useEffect(() => {
-    fetchUsers(1, activeTab, searchQuery, minAge, maxAge, nakshatras, dosham);
-  }, [activeTab, fetchUsers, searchQuery]);
+    fetchUsers(1, filters);
+  }, [fetchUsers]); // Intentionally not including filters directly here if we want manual apply, but we'll fetch on filter change.
+
+  const urlStatus = searchParams.get('status') || 'all';
+  const urlQuery = searchParams.get('query') || '';
+
+  useEffect(() => {
+    setFilters(prev => {
+      if (prev.status !== urlStatus || prev.query !== urlQuery) {
+        const newFilters = { ...prev, status: urlStatus, query: urlQuery };
+        fetchUsers(1, newFilters);
+        return newFilters;
+      }
+      return prev;
+    });
+  }, [urlStatus, urlQuery, fetchUsers]);
 
   const handlePageChange = (newPage: number) => {
-    fetchUsers(newPage, activeTab, searchQuery, minAge, maxAge, nakshatras, dosham);
+    fetchUsers(newPage, filters);
   };
 
-  const handleFilterChange = (search: string, status: string, newMinAge?: number, newMaxAge?: number, newNakshatras?: string, newDosham?: string) => {
-    setSearchQuery(search);
-    setActiveTab(status);
-    if (newMinAge !== undefined) setMinAge(newMinAge);
-    if (newMaxAge !== undefined) setMaxAge(newMaxAge);
-    if (newNakshatras !== undefined) setNakshatras(newNakshatras);
-    if (newDosham !== undefined) setDosham(newDosham);
-    
-    fetchUsers(1, status, search, newMinAge !== undefined ? newMinAge : minAge, newMaxAge !== undefined ? newMaxAge : maxAge, newNakshatras !== undefined ? newNakshatras : nakshatras, newDosham !== undefined ? newDosham : dosham);
+  const handleFilterChange = (search: string, status: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('status', status);
+    if (search) params.set('query', search);
+    else params.delete('query');
+    router.push(`/admin/users?${params.toString()}`);
+  };
+
+  const handleSidebarFilterChange = (newFilters: Partial<FilterParams>) => {
+    setFilters(newFilters);
+    fetchUsers(1, newFilters);
   };
 
   const refreshList = () => {
-    fetchUsers(currentPage, activeTab, searchQuery, minAge, maxAge, nakshatras, dosham);
+    fetchUsers(currentPage, filters);
   };
 
 
 
   return (
-    <div className="space-y-6 pb-12 bg-[#F8FAFC] min-h-screen">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[#E2E8F0]">
+    <div className="pb-12 bg-[#F8FAFC] min-h-screen">
+      {/* Header - Made more compact */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-4 mb-4 border-b border-[#E2E8F0] bg-white px-4 shadow-sm">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0F172A] tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-extrabold text-[#0F172A] tracking-tight">
             User Directory & Moderation
           </h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-xs text-slate-500 mt-0.5">
             Manage matrimonial profiles, approve registrations, and track matchmaking process.
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center justify-end gap-3 w-full sm:w-auto mt-2 sm:mt-0">
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => setIsMobileFilterOpen(true)}
+            className="lg:hidden flex-1 sm:flex-none"
+            leftIcon={
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+              </svg>
+            }
+          >
+            Filters
+          </Button>
           <Button
             variant="secondary"
             size="sm"
             onClick={refreshList}
             disabled={loading}
+            className="flex-1 sm:flex-none"
+            leftIcon={
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+            }
           >
-            {loading ? 'Refreshing...' : 'Refresh Users'}
+            Refresh
           </Button>
         </div>
       </div>
 
+      <div className="px-4 flex flex-col lg:flex-row gap-6 max-w-[1600px] mx-auto">
+        {/* Left Sidebar */}
+        <AmazonFiltersSidebar
+          filters={filters}
+          onChange={handleSidebarFilterChange}
+          isMobileOpen={isMobileFilterOpen}
+          onCloseMobile={() => setIsMobileFilterOpen(false)}
+        />
 
-      {/* Table */}
-      <UsersTable
-        users={users}
-        total={total}
-        currentPage={currentPage}
-        itemsPerPage={itemsPerPage}
-        onPageChange={handlePageChange}
-        onFilterChange={handleFilterChange}
-        onRowClick={(id) => setDrawerUserId(id)}
-        currentStatus={activeTab}
-      />
+        {/* Main Content */}
+        <div className="flex-1 min-w-0">
+          <UsersTable
+            users={users}
+            total={total}
+            currentPage={currentPage}
+            itemsPerPage={itemsPerPage}
+            onPageChange={handlePageChange}
+            onFilterChange={handleFilterChange}
+            onRowClick={(id) => setDrawerUserId(id)}
+            currentStatus={filters.status as string}
+          />
+        </div>
+      </div>
 
       {/* Profile Drawer */}
       <UserDrawer

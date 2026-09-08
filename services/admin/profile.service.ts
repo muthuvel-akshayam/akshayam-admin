@@ -126,6 +126,21 @@ export class ProfileService {
       if (filters.nakshatras && filters.nakshatras.length > 0) {
         where.nakshatra = { in: filters.nakshatras };
       }
+      if (filters.rasi) {
+        where.rasi = { equals: filters.rasi };
+      }
+      if (filters.dosham) {
+        where.dosham = { equals: filters.dosham };
+      }
+      if (filters.skinColour) {
+        where.skinColour = { equals: filters.skinColour };
+      }
+
+      if (filters.minHeight || filters.maxHeight) {
+        where.height = {};
+        if (filters.minHeight) where.height.gte = filters.minHeight;
+        if (filters.maxHeight) where.height.lte = filters.maxHeight;
+      }
 
       // Age filter by dob
       if (filters.minAge || filters.maxAge) {
@@ -138,6 +153,42 @@ export class ProfileService {
           if (minDate) where.dob.gte = minDate;
           if (maxDate) where.dob.lte = maxDate;
         }
+      }
+
+      // Relations filtering
+      let hasUserFilter = false;
+      const userWhere: any = {};
+      const expectationsWhere: any = {};
+      const familyWhere: any = {};
+
+      if (filters.preferredCities && filters.preferredCities.length > 0) {
+        expectationsWhere.preferredLocations = { hasSome: filters.preferredCities };
+        hasUserFilter = true;
+      }
+      
+      if (filters.preferredProfessions && filters.preferredProfessions.length > 0) {
+        expectationsWhere.preferredSectors = { hasSome: filters.preferredProfessions };
+        hasUserFilter = true;
+      }
+
+      if (filters.workLocations && filters.workLocations.length > 0) {
+        // Since workingAddress is a string, we map to multiple contains using OR, but Prisma inside relation is tricky.
+        // If exact match is okay or if we use string equals. Let's use OR for multiple locations.
+        familyWhere.OR = filters.workLocations.map(loc => ({
+          workingAddress: { contains: loc, mode: 'insensitive' }
+        }));
+        hasUserFilter = true;
+      }
+
+      if (Object.keys(expectationsWhere).length > 0) {
+        userWhere.expectations = expectationsWhere;
+      }
+      if (Object.keys(familyWhere).length > 0) {
+        userWhere.family = familyWhere;
+      }
+
+      if (hasUserFilter) {
+        where.user = userWhere;
       }
 
       if (filters.query) {
@@ -153,19 +204,75 @@ export class ProfileService {
       const sortOrder = filters.sortOrder || 'desc';
 
       if (db.profile) {
-        const [rawProfiles, total] = await Promise.all([
-          db.profile.findMany({
+        // Handle in-memory filtering for text-based financial fields if they are requested
+        const requiresMemoryFilter = !!(filters.propertyValue || filters.minPavan || filters.maxPavan);
+        
+        let rawProfiles = [];
+        let total = 0;
+
+        if (requiresMemoryFilter) {
+          // Fetch all matching basic where clause to filter in memory
+          const allMatching = await db.profile.findMany({
             where,
-            skip,
-            take: limit,
             orderBy: { [sortField]: sortOrder },
             include: {
               user: { include: { family: { include: { siblings: true } } } },
               educations: true,
             },
-          }),
-          db.profile.count({ where }),
-        ]);
+          });
+
+          // Memory filter
+          const extractNum = (str: string) => {
+            if (!str) return 0;
+            const match = str.match(/\d+(\.\d+)?/);
+            return match ? parseFloat(match[0]) : 0;
+          };
+
+          const filtered = allMatching.filter((p: any) => {
+            const family = p.user?.family;
+            if (!family) return false;
+
+            if (filters.propertyValue) {
+              const val = family.totalAssetValue || '';
+              // Example logic for "Below X Cr" or "X+ Cr"
+              if (filters.propertyValue.includes('Below')) {
+                const max = extractNum(filters.propertyValue);
+                if (extractNum(val) > max) return false;
+              } else if (filters.propertyValue.includes('+')) {
+                const min = extractNum(filters.propertyValue);
+                if (extractNum(val) < min) return false;
+              } else {
+                if (!val.toLowerCase().includes(filters.propertyValue.toLowerCase())) return false;
+              }
+            }
+
+            if (filters.minPavan || filters.maxPavan) {
+              const pavan = extractNum(family.dowryDetails);
+              if (filters.minPavan && pavan < filters.minPavan) return false;
+              if (filters.maxPavan && pavan > filters.maxPavan) return false;
+            }
+
+            return true;
+          });
+
+          total = filtered.length;
+          rawProfiles = filtered.slice(skip, skip + limit);
+        } else {
+          // Standard DB pagination
+          [rawProfiles, total] = await Promise.all([
+            db.profile.findMany({
+              where,
+              skip,
+              take: limit,
+              orderBy: { [sortField]: sortOrder },
+              include: {
+                user: { include: { family: { include: { siblings: true } } } },
+                educations: true,
+              },
+            }),
+            db.profile.count({ where }),
+          ]);
+        }
 
         if (rawProfiles.length > 0 || total > 0) {
           return {
@@ -295,10 +402,8 @@ export class ProfileService {
         const created = await db.profile.create({
           data: {
             ...data,
-            status: ProfileStatus.APPROVED,
-            isLive: true,
-            approvedAt: new Date(),
-            approvedBy: adminId,
+            status: ProfileStatus.PENDING,
+            isLive: false,
           },
         });
         await logAdminAction(adminId, 'CREATE_PROFILE', created.id);
@@ -320,11 +425,11 @@ export class ProfileService {
       city: data.city || 'Chennai',
       state: data.state || 'Tamil Nadu',
       country: data.country || 'India',
-      status: ProfileStatus.APPROVED,
-      isLive: true,
+      status: ProfileStatus.PENDING,
+      isLive: false,
       registeredDate: new Date().toISOString(),
-      approvedAt: new Date().toISOString(),
-      approvedBy: adminId,
+      approvedAt: null,
+      approvedBy: null,
     };
     return newProf;
   }
@@ -368,6 +473,7 @@ export class ProfileService {
       userId: raw.userId || 0,
       userIndex: raw.user?.userIndex || raw.userIndex,
       name: raw.name || '',
+      whatsappProfileDeliveryNumber: raw.user?.whatsappProfileDeliveryNumber || undefined,
       gender: raw.gender === 'MALE' ? 'MALE' : 'FEMALE',
       age: raw.age || (raw.dob ? new Date().getFullYear() - new Date(raw.dob).getFullYear() : 0),
       dateOfBirth: raw.dateOfBirth || raw.dob,

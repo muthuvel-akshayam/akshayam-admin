@@ -374,7 +374,24 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
                   </div>
                 </div>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm mt-5"><div><span className="block text-slate-500">Phone</span><strong>{userData.mobile_no || 'N/A'}</strong></div><div><span className="block text-slate-500">Account status</span><Badge status={userData.status} /></div><div><span className="block text-slate-500">Profile status</span><Badge status={profile?.status || 'PENDING'} /></div></div>
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 text-sm mt-5">
+                <div>
+                  <span className="block text-slate-500">Phone</span>
+                  <strong>{userData.mobile_no || userData.phone || 'N/A'}</strong>
+                </div>
+                <div>
+                  <span className="block text-slate-500">WhatsApp (for profiles)</span>
+                  <strong>{userData.whatsappProfileDeliveryNumber || 'N/A'}</strong>
+                </div>
+                <div>
+                  <span className="block text-slate-500">Account status</span>
+                  <Badge status={userData.status} />
+                </div>
+                <div>
+                  <span className="block text-slate-500">Profile status</span>
+                  <Badge status={profile?.status || 'PENDING'} />
+                </div>
+              </div>
             </section>
 
             {profile && <section><h4 className="font-bold text-slate-800 mb-3 border-b border-slate-200 pb-2">Submitted Profile Details</h4><div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 border border-slate-200 rounded-xl p-4">{profileFields.map(([label, fieldValue]) => <div key={label}><span className="block text-slate-400 text-xs uppercase tracking-wider mb-1">{label}</span><span className="font-medium text-slate-800 break-words">{fieldValue}</span></div>)}</div></section>}

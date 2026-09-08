@@ -266,7 +266,18 @@ export async function getProfilesAction(
   minAge?: number,
   maxAge?: number,
   maritalStatus?: string,
-  nakshatras?: string[]
+  nakshatras?: string[],
+  rasi?: string,
+  dosham?: string,
+  minHeight?: number,
+  maxHeight?: number,
+  propertyValue?: string,
+  minPavan?: number,
+  maxPavan?: number,
+  skinColour?: string,
+  workLocations?: string[],
+  preferredCities?: string[],
+  preferredProfessions?: string[]
 ) {
   return fetchProfilesAction(
     {
@@ -277,6 +288,17 @@ export async function getProfilesAction(
       maxAge,
       maritalStatus: maritalStatus === 'ALL' ? undefined : maritalStatus,
       nakshatras,
+      rasi,
+      dosham,
+      minHeight,
+      maxHeight,
+      propertyValue,
+      minPavan,
+      maxPavan,
+      skinColour,
+      workLocations,
+      preferredCities,
+      preferredProfessions
     },
     page,
     limit

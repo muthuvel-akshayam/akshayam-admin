@@ -15,6 +15,7 @@ import {
   updateUserPasswordAction,
 } from '../../actions/admin/user.actions';
 import { removeAfterMatchAction } from '../../actions/admin/profile.actions';
+import { NAKSHATRAS_LIST } from '../../lib/admin/constants';
 
 export interface UsersTableProps {
   users: AdminUser[];
@@ -22,7 +23,7 @@ export interface UsersTableProps {
   currentPage: number;
   itemsPerPage: number;
   onPageChange: (page: number) => void;
-  onFilterChange?: (search: string, status: string, minAge?: number, maxAge?: number, nakshatras?: string, dosham?: string) => void;
+  onFilterChange?: (search: string, status: string) => void;
   onRowClick?: (userId: string | number) => void;
   currentStatus?: string;
 }
@@ -43,13 +44,6 @@ export const UsersTable: React.FC<UsersTableProps> = ({
   const [resetPasswordUser, setResetPasswordUser] = useState<AdminUser | null>(null);
   const [newPassword, setNewPassword] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
-
-  // Advanced Filters
-  const [showAdvanced, setShowAdvanced] = useState(false);
-  const [minAge, setMinAge] = useState<number | ''>('');
-  const [maxAge, setMaxAge] = useState<number | ''>('');
-  const [nakshatras, setNakshatras] = useState('');
-  const [dosham, setDosham] = useState('');
 
   const handleStatusToggle = async (e: React.MouseEvent, user: AdminUser) => {
     e.stopPropagation();
@@ -139,13 +133,13 @@ export const UsersTable: React.FC<UsersTableProps> = ({
 
   const handleFilterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (onFilterChange) onFilterChange(searchQuery, currentStatus, minAge || undefined, maxAge || undefined, nakshatras || undefined, dosham || undefined);
+    if (onFilterChange) onFilterChange(searchQuery, currentStatus);
   };
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
-      <div className="p-5 border-b border-slate-200 bg-slate-50/50 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
-        <form onSubmit={handleFilterSubmit} className="flex-1 flex items-center gap-3 max-w-md">
+      <div className="p-4 border-b border-slate-200 bg-slate-50 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+        <form onSubmit={handleFilterSubmit} className="flex-1 flex items-center gap-2">
           <div className="relative flex-1">
             <input
               type="text"
@@ -158,25 +152,14 @@ export const UsersTable: React.FC<UsersTableProps> = ({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
-          <Button type="submit" variant="secondary" size="sm">Search</Button>
+          <Button type="submit" variant="secondary" size="sm" className="shrink-0 h-9">Search</Button>
         </form>
         {onFilterChange && (
-          <div className="flex items-center gap-3">
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => setShowAdvanced(!showAdvanced)}
-              className="flex items-center gap-2"
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-              </svg>
-              Advanced
-            </Button>
+          <div className="w-full sm:w-auto">
             <select
               value={currentStatus}
-              onChange={(e) => onFilterChange(searchQuery, e.target.value, minAge || undefined, maxAge || undefined, nakshatras || undefined, dosham || undefined)}
-              className="bg-white text-slate-700 px-3 py-2 rounded-xl text-sm border border-slate-200 focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 font-medium"
+              onChange={(e) => onFilterChange(searchQuery, e.target.value)}
+              className="w-full sm:w-auto bg-white text-slate-700 px-3 py-2 rounded-xl text-sm border border-slate-200 focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 font-medium"
             >
               <option value="all">All Users</option>
               <option value="pending">Pending</option>
@@ -188,57 +171,6 @@ export const UsersTable: React.FC<UsersTableProps> = ({
         )}
       </div>
 
-      {showAdvanced && onFilterChange && (
-        <div className="p-5 border-b border-slate-200 bg-slate-50 flex flex-wrap gap-4 items-end animate-fadeIn">
-          <div>
-            <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Age Range</label>
-            <div className="flex items-center gap-2">
-              <input 
-                type="number" 
-                placeholder="Min" 
-                value={minAge} 
-                onChange={(e) => setMinAge(e.target.value ? Number(e.target.value) : '')} 
-                className="w-20 bg-white text-slate-800 px-3 py-1.5 rounded-lg text-sm border border-slate-200 focus:border-emerald-600 focus:outline-none"
-              />
-              <span className="text-slate-400">-</span>
-              <input 
-                type="number" 
-                placeholder="Max" 
-                value={maxAge} 
-                onChange={(e) => setMaxAge(e.target.value ? Number(e.target.value) : '')} 
-                className="w-20 bg-white text-slate-800 px-3 py-1.5 rounded-lg text-sm border border-slate-200 focus:border-emerald-600 focus:outline-none"
-              />
-            </div>
-          </div>
-          <div>
-            <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Nakshatras (comma separated)</label>
-            <input 
-              type="text" 
-              placeholder="e.g. Ashwini, Bharani" 
-              value={nakshatras} 
-              onChange={(e) => setNakshatras(e.target.value)} 
-              className="w-48 bg-white text-slate-800 px-3 py-1.5 rounded-lg text-sm border border-slate-200 focus:border-emerald-600 focus:outline-none"
-            />
-          </div>
-          <div>
-            <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Thoosam / Dosham</label>
-            <input 
-              type="text" 
-              placeholder="e.g. Sevvai" 
-              value={dosham} 
-              onChange={(e) => setDosham(e.target.value)} 
-              className="w-40 bg-white text-slate-800 px-3 py-1.5 rounded-lg text-sm border border-slate-200 focus:border-emerald-600 focus:outline-none"
-            />
-          </div>
-          <Button 
-            variant="primary" 
-            size="sm" 
-            onClick={() => onFilterChange(searchQuery, currentStatus, minAge || undefined, maxAge || undefined, nakshatras || undefined, dosham || undefined)}
-          >
-            Apply Filters
-          </Button>
-        </div>
-      )}
 
       <div className="overflow-x-auto flex-1">
         <table className="w-full text-left text-xs sm:text-sm">
@@ -280,7 +212,7 @@ export const UsersTable: React.FC<UsersTableProps> = ({
                         </div>
                         <div>
                           <div className="font-bold text-slate-900 leading-tight flex items-center gap-2">
-                            {user.name} <span className="text-[10px] text-slate-500 font-semibold bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200">#{user.userIndex || '-'}</span>
+                            {user.name} <span className="text-[10px] text-slate-500 font-semibold bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200">#{user.userid || user.userIndex || user.id}</span>
                           </div>
                         </div>
                       </div>

@@ -1509,6 +1509,7 @@ export const UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
   mobile_no: 'mobile_no',
+  whatsappProfileDeliveryNumber: 'whatsappProfileDeliveryNumber',
   password: 'password',
   role: 'role',
   status: 'status',
