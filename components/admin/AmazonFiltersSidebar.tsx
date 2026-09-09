@@ -12,10 +12,7 @@ const DOSHAMS = [
   { label: 'சுத்தம் (No Dosham)', value: 'No Dosham' },
   { label: 'செவ்வாய் (Chevvai)', value: 'Chevvai' },
   { label: 'ராகு கேது (Rahu Ketu)', value: 'Rahu Ketu' },
-  { label: 'ராகு கேது செவ்வாய் (Rahu Ketu Chevvai)', value: 'Rahu Ketu Chevvai' },
-  { label: 'Sarpa', value: 'Sarpa' },
-  { label: 'Kala Sarpa', value: 'Kala Sarpa' },
-  { label: 'Kalathra', value: 'Kalathra' }
+  { label: 'ராகு கேது செவ்வாய் (Rahu Ketu Chevvai)', value: 'Rahu Ketu Chevvai' }
 ];
 
 const PROPERTY_VALUES = [
@@ -314,6 +311,17 @@ export const AmazonFiltersSidebar: React.FC<AmazonFiltersSidebarProps> = ({ filt
         </div>
 
       </div>
+      
+      {/* Mobile Sticky Apply Button */}
+      <div className="lg:hidden sticky -bottom-4 -mx-4 px-4 py-4 mt-8 bg-white border-t border-slate-200 z-10">
+        <button 
+          onClick={onCloseMobile}
+          className="w-full bg-emerald-600 text-white text-[13px] font-bold py-3 rounded-lg hover:bg-emerald-700 transition-colors shadow-sm"
+        >
+          Apply Filters
+        </button>
+      </div>
+
     </div>
     </>
   );

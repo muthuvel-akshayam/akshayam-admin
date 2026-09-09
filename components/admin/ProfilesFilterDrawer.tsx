@@ -16,10 +16,7 @@ const DOSHAMS = [
   { label: 'சுத்தம் (No Dosham)', value: 'No Dosham' },
   { label: 'செவ்வாய் (Chevvai)', value: 'Chevvai' },
   { label: 'ராகு கேது (Rahu Ketu)', value: 'Rahu Ketu' },
-  { label: 'ராகு கேது செவ்வாய் (Rahu Ketu Chevvai)', value: 'Rahu Ketu Chevvai' },
-  { label: 'Sarpa', value: 'Sarpa' },
-  { label: 'Kala Sarpa', value: 'Kala Sarpa' },
-  { label: 'Kalathra', value: 'Kalathra' }
+  { label: 'ராகு கேது செவ்வாய் (Rahu Ketu Chevvai)', value: 'Rahu Ketu Chevvai' }
 ];
 
 const PROPERTY_VALUES = [
