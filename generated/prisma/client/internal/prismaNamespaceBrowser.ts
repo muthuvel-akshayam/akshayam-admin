@@ -96,7 +96,8 @@ export const UserScalarFieldEnum = {
   userIndex: 'userIndex',
   isFeatured: 'isFeatured',
   userid: 'userid',
-  paymentScreenshot: 'paymentScreenshot'
+  paymentScreenshot: 'paymentScreenshot',
+  paymentDone: 'paymentDone'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -148,6 +149,12 @@ export const ProfileScalarFieldEnum = {
   rasiGrid: 'rasiGrid',
   jathagamData: 'jathagamData',
   idProofUrl: 'idProofUrl',
+  yearOfMarriage: 'yearOfMarriage',
+  yearOfDivorce: 'yearOfDivorce',
+  haveChildren: 'haveChildren',
+  numberOfChildren: 'numberOfChildren',
+  childrenGender: 'childrenGender',
+  childrenAge: 'childrenAge',
   displayId: 'displayId',
   houseLocation: 'houseLocation',
   profileCreatedBy: 'profileCreatedBy',
@@ -226,7 +233,8 @@ export const ExpectationsScalarFieldEnum = {
   preferredDistanceRadius: 'preferredDistanceRadius',
   city: 'city',
   comments: 'comments',
-  expectsVacantLand: 'expectsVacantLand'
+  expectsVacantLand: 'expectsVacantLand',
+  acceptsDivorced: 'acceptsDivorced'
 } as const
 
 export type ExpectationsScalarFieldEnum = (typeof ExpectationsScalarFieldEnum)[keyof typeof ExpectationsScalarFieldEnum]

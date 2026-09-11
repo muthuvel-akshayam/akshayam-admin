@@ -6,6 +6,8 @@
 
 import { revalidatePath } from 'next/cache';
 import { requireAdmin } from '../../lib/admin/auth';
+import { addWatermarkToImage } from '../../lib/admin/watermark';
+import { supabaseAdmin } from '../../lib/admin/supabase';
 import { ProfileService } from '../../services/admin/profile.service';
 import { UserService } from '../../services/admin/user.service';
 import {
@@ -182,8 +184,34 @@ export async function createProfileAction(
 ): Promise<ServerActionResponse<AdminProfile>> {
   try {
     const session = await requireAdmin();
-    if (!formData.name || !formData.gender || !formData.religion) {
-      return { success: false, error: 'Name, gender, and religion are required fields.' };
+
+    if (formData.photoUrl) {
+      try {
+        const photoResponse = await fetch(formData.photoUrl);
+        if (photoResponse.ok) {
+          const arrayBuffer = await photoResponse.arrayBuffer();
+          const buffer = Buffer.from(arrayBuffer);
+          const watermarkedBuffer = await addWatermarkToImage(buffer, 'AKSHAYAM');
+          
+          const urlParts = formData.photoUrl.split('/');
+          const filename = urlParts[urlParts.length - 1];
+          
+          const { error: uploadError } = await supabaseAdmin
+            .storage
+            .from('profile-photos')
+            .upload(`watermarked/${filename}`, watermarkedBuffer, {
+              upsert: true,
+              contentType: photoResponse.headers.get('content-type') || 'image/jpeg'
+            });
+            
+          if (!uploadError) {
+            const { data } = supabaseAdmin.storage.from('profile-photos').getPublicUrl(`watermarked/${filename}`);
+            formData.photoUrl = data.publicUrl;
+          }
+        }
+      } catch (err) {
+        console.error('Failed to add watermark during profile creation:', err);
+      }
     }
 
     const created = await ProfileService.createProfile(formData, session.user.id);

@@ -37,9 +37,9 @@ export interface ProfileReviewModalProps {
   profile: AdminProfile | null;
   isOpen: boolean;
   onClose?: () => void;
-  onReject?: (profile: AdminProfile) => void;
-  onEdit?: (profile: AdminProfile) => void;
-  onDeleted?: (id: number) => void;
+  onநிராகரி?: (profile: AdminProfile) => void;
+  onதிருத்து?: (profile: AdminProfile) => void;
+  onநீக்குd?: (id: number) => void;
   isStandalonePage?: boolean;
 }
 
@@ -47,9 +47,9 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
   profile,
   isOpen,
   onClose,
-  onReject,
-  onEdit,
-  onDeleted,
+  onநிராகரி,
+  onதிருத்து,
+  onநீக்குd,
   isStandalonePage = false,
 }) => {
   const { showToast } = useToast();
@@ -60,54 +60,54 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
   const [jathagamImgError, setJathagamImgError] = useState(false);
   const [newUserId, setNewUserId] = useState(String(profile?.userId || ''));
   const [isFeatured, setIsFeatured] = useState(profile?.isFeatured || false);
-  const [isMatchesModalOpen, setIsMatchesModalOpen] = useState(false);
+  const [isபொருத்தங்கள்ModalOpen, setIsபொருத்தங்கள்ModalOpen] = useState(false);
   const router = useRouter();
 
   if (!profile) return null;
 
-  const handleApprove = async () => {
+  const handleஅங்கீகரி = async () => {
     setIsLoading(true);
     try {
       const profileId = Number(profile.id) || (profile.id as any);
       const res = await approveProfileAction(profileId, newUserId !== String(profile.userId) ? newUserId : undefined);
       if (res.success) {
-        showToast(res.message || 'Profile approved successfully!', 'success');
+        showToast(res.message || 'சுயவிவரம் வெற்றிகரமாக அங்கீகரிக்கப்பட்டது!', 'success');
         if (!isStandalonePage) onClose?.();
       } else {
-        showToast(res.error || 'Approval failed', 'error');
+        showToast(res.error || 'அங்கீகரிப்பதில் பிழை', 'error');
       }
     } catch (err: any) {
-      showToast(err.message || 'Error executing approval', 'error');
+      showToast(err.message || 'அங்கீகரிப்பதில் பிழை', 'error');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleDelete = async () => {
-    if (!confirm(`Are you sure you want to permanently delete profile for ${profile.name}?`)) return;
+  const handleநீக்கு = async () => {
+    if (!confirm(`${profile.name} சுயவிவரத்தை நிரந்தரமாக நீக்க விரும்புகிறீர்களா?`)) return;
     setIsLoading(true);
     try {
       const profileId = Number(profile.id);
       const res = await deleteProfileAction(profileId);
       if (res.success) {
-        showToast('Profile deleted successfully', 'success');
-        if (onDeleted) onDeleted(profileId);
+        showToast('சுயவிவரம் வெற்றிகரமாக நீக்கப்பட்டது', 'success');
+        if (onநீக்குd) onநீக்குd(profileId);
         if (!isStandalonePage) onClose?.();
       } else {
-        showToast(res.error || 'Deletion failed', 'error');
+        showToast(res.error || 'நீக்குவதில் பிழை', 'error');
       }
     } catch (err: any) {
-      showToast(err.message || 'Error deleting profile', 'error');
+      showToast(err.message || 'சுயவிவரத்தை நீக்குவதில் பிழை', 'error');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleFindMatches = () => {
-    setIsMatchesModalOpen(true);
+  const handleFindபொருத்தங்கள் = () => {
+    setIsபொருத்தங்கள்ModalOpen(true);
   };
 
-  const handleShare = (e: React.MouseEvent) => {
+  const handleபகிர் = (e: React.MouseEvent) => {
     e.stopPropagation();
     const education = profile.educationOccupation?.highestEducation || 'N/A';
     const kulam = profile.koottam || profile.caste || profile.subCaste || 'N/A';
@@ -132,10 +132,10 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
       const profileIdStr = String(profile.displayId || profile.userId || profile.id);
       const templateId = `pdf-template-${profileIdStr}`;
       await downloadBioDataPdf(templateId, `${profileIdStr} - ${profile.name}`);
-      showToast('Bio-Data PDF downloaded successfully', 'success');
+      showToast('பயோடேட்டா PDF வெற்றிகரமாக பதிவிறக்கம் செய்யப்பட்டது', 'success');
     } catch (err) {
       console.error('Error generating PDF:', err);
-      showToast('Failed to generate Bio-Data PDF', 'error');
+      showToast('பயோடேட்டா PDF உருவாக்குவதில் பிழை', 'error');
     }
   };
 
@@ -146,7 +146,7 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
       const res = await toggleUserFeaturedAction(profile.userId, !isFeatured);
       if (res.success) {
         setIsFeatured(!isFeatured);
-        showToast(!isFeatured ? 'Profile marked as important/shortlisted' : 'Profile removed from important list', 'success');
+        showToast(!isFeatured ? 'சுயவிவரம் முக்கியமானதாக குறிக்கப்பட்டது' : 'முக்கிய பட்டியலில் இருந்து நீக்கப்பட்டது', 'success');
       } else {
         showToast(res.error || 'Failed to update important status', 'error');
       }
@@ -193,9 +193,9 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
         {/* Action Panel in Header */}
         <div className="flex flex-wrap items-center gap-2 self-end sm:self-auto">
           <button 
-            onClick={handleShare}
+            onClick={handleபகிர்}
             className="p-2 rounded-lg bg-emerald-800/50 hover:bg-emerald-700 transition-colors text-white tooltip-trigger" 
-            title="Copy Summary to Share"
+            title="Copy Summary to பகிர்"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
@@ -226,7 +226,7 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
           <Button
             variant="secondary"
             size="sm"
-            onClick={handleFindMatches}
+            onClick={handleFindபொருத்தங்கள்}
             isLoading={isLoading}
             leftIcon={
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -234,7 +234,7 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
               </svg>
             }
           >
-            Find Matches
+            Find பொருத்தங்கள்
           </Button>
 
           {profile.status !== ProfileStatus.APPROVED && (
@@ -250,7 +250,7 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
               <Button
                 variant="success"
                 size="sm"
-                onClick={handleApprove}
+                onClick={handleஅங்கீகரி}
                 isLoading={isLoading}
                 leftIcon={
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -258,7 +258,7 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
                   </svg>
                 }
               >
-                Approve
+                அங்கீகரி
               </Button>
             </div>
           )}
@@ -268,7 +268,7 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
               variant="danger"
               size="sm"
               onClick={() => {
-                if (onReject) onReject(profile);
+                if (onநிராகரி) onநிராகரி(profile);
               }}
               leftIcon={
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -276,29 +276,29 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
                 </svg>
               }
             >
-              Reject
+              நிராகரி
             </Button>
           )}
 
-          {onEdit && (
+          {onதிருத்து && (
             <Button
               variant="secondary"
               size="sm"
-              onClick={() => onEdit(profile)}
+              onClick={() => onதிருத்து(profile)}
               leftIcon={
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                 </svg>
               }
             >
-              Edit
+              திருத்து
             </Button>
           )}
 
           <button
-            onClick={handleDelete}
+            onClick={handleநீக்கு}
             className="p-2 rounded-lg bg-rose-900/40 text-rose-300 hover:bg-rose-900/80 transition-colors"
-            title="Delete Profile"
+            title="நீக்கு Profile"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -307,14 +307,14 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
         </div>
       </div>
 
-      {/* Rejection Reason Notice (if rejected) */}
+      {/* நிராகரிion Reason Notice (if rejected) */}
       {profile.status === ProfileStatus.REJECTED && profile.rejectedReason && (
         <div className="mb-6 p-4 rounded-xl bg-rose-50  border border-rose-200  flex items-start gap-3">
           <svg className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
           <div>
-            <p className="text-xs font-bold text-rose-800  uppercase">Rejection Reason</p>
+            <p className="text-xs font-bold text-rose-800  uppercase">நிராகரிion Reason</p>
             <p className="text-sm text-rose-700  mt-1">{profile.rejectedReason}</p>
           </div>
         </div>
@@ -596,13 +596,13 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
               </div>
               {profile.approvedAt && (
                 <div className="flex justify-between text-emerald-700  font-bold">
-                  <span>Approved At:</span>
+                  <span>அங்கீகரிd At:</span>
                   <span>{new Date(profile.approvedAt).toLocaleString()} (by {profile.approvedBy || 'Admin'})</span>
                 </div>
               )}
               {profile.rejectedReason && (
                 <div className="flex justify-between text-rose-600  font-bold">
-                  <span>Rejected Reason:</span>
+                  <span>நிராகரிed Reason:</span>
                   <span>{profile.rejectedReason}</span>
                 </div>
               )}
@@ -667,8 +667,8 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
     >
       {content}
       <MatchingProfilesModal 
-        isOpen={isMatchesModalOpen} 
-        onClose={() => setIsMatchesModalOpen(false)} 
+        isOpen={isபொருத்தங்கள்ModalOpen} 
+        onClose={() => setIsபொருத்தங்கள்ModalOpen(false)} 
         baseProfile={profile as any} 
       />
       {/* Hidden container for PDF rendering */}

@@ -48,6 +48,7 @@ export type UserMinAggregateOutputType = {
   isFeatured: boolean | null
   userid: string | null
   paymentScreenshot: string | null
+  paymentDone: boolean | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -64,6 +65,7 @@ export type UserMaxAggregateOutputType = {
   isFeatured: boolean | null
   userid: string | null
   paymentScreenshot: string | null
+  paymentDone: boolean | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -80,6 +82,7 @@ export type UserCountAggregateOutputType = {
   isFeatured: number
   userid: number
   paymentScreenshot: number
+  paymentDone: number
   _all: number
 }
 
@@ -106,6 +109,7 @@ export type UserMinAggregateInputType = {
   isFeatured?: true
   userid?: true
   paymentScreenshot?: true
+  paymentDone?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -122,6 +126,7 @@ export type UserMaxAggregateInputType = {
   isFeatured?: true
   userid?: true
   paymentScreenshot?: true
+  paymentDone?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -138,6 +143,7 @@ export type UserCountAggregateInputType = {
   isFeatured?: true
   userid?: true
   paymentScreenshot?: true
+  paymentDone?: true
   _all?: true
 }
 
@@ -241,6 +247,7 @@ export type UserGroupByOutputType = {
   isFeatured: boolean
   userid: string | null
   paymentScreenshot: string | null
+  paymentDone: boolean
   _count: UserCountAggregateOutputType | null
   _avg: UserAvgAggregateOutputType | null
   _sum: UserSumAggregateOutputType | null
@@ -280,6 +287,7 @@ export type UserWhereInput = {
   isFeatured?: Prisma.BoolFilter<"User"> | boolean
   userid?: Prisma.StringNullableFilter<"User"> | string | null
   paymentScreenshot?: Prisma.StringNullableFilter<"User"> | string | null
+  paymentDone?: Prisma.BoolFilter<"User"> | boolean
   receivedRequests?: Prisma.ContactApprovalListRelationFilter
   sentRequests?: Prisma.ContactApprovalListRelationFilter
   expectations?: Prisma.XOR<Prisma.ExpectationsNullableScalarRelationFilter, Prisma.ExpectationsWhereInput> | null
@@ -306,6 +314,7 @@ export type UserOrderByWithRelationInput = {
   isFeatured?: Prisma.SortOrder
   userid?: Prisma.SortOrderInput | Prisma.SortOrder
   paymentScreenshot?: Prisma.SortOrderInput | Prisma.SortOrder
+  paymentDone?: Prisma.SortOrder
   receivedRequests?: Prisma.ContactApprovalOrderByRelationAggregateInput
   sentRequests?: Prisma.ContactApprovalOrderByRelationAggregateInput
   expectations?: Prisma.ExpectationsOrderByWithRelationInput
@@ -335,6 +344,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   userIndex?: Prisma.IntNullableFilter<"User"> | number | null
   isFeatured?: Prisma.BoolFilter<"User"> | boolean
   paymentScreenshot?: Prisma.StringNullableFilter<"User"> | string | null
+  paymentDone?: Prisma.BoolFilter<"User"> | boolean
   receivedRequests?: Prisma.ContactApprovalListRelationFilter
   sentRequests?: Prisma.ContactApprovalListRelationFilter
   expectations?: Prisma.XOR<Prisma.ExpectationsNullableScalarRelationFilter, Prisma.ExpectationsWhereInput> | null
@@ -361,6 +371,7 @@ export type UserOrderByWithAggregationInput = {
   isFeatured?: Prisma.SortOrder
   userid?: Prisma.SortOrderInput | Prisma.SortOrder
   paymentScreenshot?: Prisma.SortOrderInput | Prisma.SortOrder
+  paymentDone?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
@@ -385,6 +396,7 @@ export type UserScalarWhereWithAggregatesInput = {
   isFeatured?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   userid?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   paymentScreenshot?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  paymentDone?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
 }
 
 export type UserCreateInput = {
@@ -401,6 +413,7 @@ export type UserCreateInput = {
   isFeatured?: boolean
   userid?: string | null
   paymentScreenshot?: string | null
+  paymentDone?: boolean
   receivedRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRequesterInput
   expectations?: Prisma.ExpectationsCreateNestedOneWithoutUserInput
@@ -427,6 +440,7 @@ export type UserUncheckedCreateInput = {
   isFeatured?: boolean
   userid?: string | null
   paymentScreenshot?: string | null
+  paymentDone?: boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRequesterInput
   expectations?: Prisma.ExpectationsUncheckedCreateNestedOneWithoutUserInput
@@ -453,6 +467,7 @@ export type UserUpdateInput = {
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentDone?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUpdateManyWithoutRequesterNestedInput
   expectations?: Prisma.ExpectationsUpdateOneWithoutUserNestedInput
@@ -479,6 +494,7 @@ export type UserUncheckedUpdateInput = {
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentDone?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRequesterNestedInput
   expectations?: Prisma.ExpectationsUncheckedUpdateOneWithoutUserNestedInput
@@ -505,6 +521,7 @@ export type UserCreateManyInput = {
   isFeatured?: boolean
   userid?: string | null
   paymentScreenshot?: string | null
+  paymentDone?: boolean
 }
 
 export type UserUpdateManyMutationInput = {
@@ -521,6 +538,7 @@ export type UserUpdateManyMutationInput = {
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentDone?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -537,6 +555,7 @@ export type UserUncheckedUpdateManyInput = {
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentDone?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -553,6 +572,7 @@ export type UserCountOrderByAggregateInput = {
   isFeatured?: Prisma.SortOrder
   userid?: Prisma.SortOrder
   paymentScreenshot?: Prisma.SortOrder
+  paymentDone?: Prisma.SortOrder
 }
 
 export type UserAvgOrderByAggregateInput = {
@@ -573,6 +593,7 @@ export type UserMaxOrderByAggregateInput = {
   isFeatured?: Prisma.SortOrder
   userid?: Prisma.SortOrder
   paymentScreenshot?: Prisma.SortOrder
+  paymentDone?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -589,6 +610,7 @@ export type UserMinOrderByAggregateInput = {
   isFeatured?: Prisma.SortOrder
   userid?: Prisma.SortOrder
   paymentScreenshot?: Prisma.SortOrder
+  paymentDone?: Prisma.SortOrder
 }
 
 export type UserSumOrderByAggregateInput = {
@@ -782,6 +804,7 @@ export type UserCreateWithoutProfileInput = {
   isFeatured?: boolean
   userid?: string | null
   paymentScreenshot?: string | null
+  paymentDone?: boolean
   receivedRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRequesterInput
   expectations?: Prisma.ExpectationsCreateNestedOneWithoutUserInput
@@ -807,6 +830,7 @@ export type UserUncheckedCreateWithoutProfileInput = {
   isFeatured?: boolean
   userid?: string | null
   paymentScreenshot?: string | null
+  paymentDone?: boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRequesterInput
   expectations?: Prisma.ExpectationsUncheckedCreateNestedOneWithoutUserInput
@@ -848,6 +872,7 @@ export type UserUpdateWithoutProfileInput = {
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentDone?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUpdateManyWithoutRequesterNestedInput
   expectations?: Prisma.ExpectationsUpdateOneWithoutUserNestedInput
@@ -873,6 +898,7 @@ export type UserUncheckedUpdateWithoutProfileInput = {
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentDone?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRequesterNestedInput
   expectations?: Prisma.ExpectationsUncheckedUpdateOneWithoutUserNestedInput
@@ -898,6 +924,7 @@ export type UserCreateWithoutFamilyInput = {
   isFeatured?: boolean
   userid?: string | null
   paymentScreenshot?: string | null
+  paymentDone?: boolean
   receivedRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRequesterInput
   expectations?: Prisma.ExpectationsCreateNestedOneWithoutUserInput
@@ -923,6 +950,7 @@ export type UserUncheckedCreateWithoutFamilyInput = {
   isFeatured?: boolean
   userid?: string | null
   paymentScreenshot?: string | null
+  paymentDone?: boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRequesterInput
   expectations?: Prisma.ExpectationsUncheckedCreateNestedOneWithoutUserInput
@@ -964,6 +992,7 @@ export type UserUpdateWithoutFamilyInput = {
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentDone?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUpdateManyWithoutRequesterNestedInput
   expectations?: Prisma.ExpectationsUpdateOneWithoutUserNestedInput
@@ -989,6 +1018,7 @@ export type UserUncheckedUpdateWithoutFamilyInput = {
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentDone?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRequesterNestedInput
   expectations?: Prisma.ExpectationsUncheckedUpdateOneWithoutUserNestedInput
@@ -1014,6 +1044,7 @@ export type UserCreateWithoutExpectationsInput = {
   isFeatured?: boolean
   userid?: string | null
   paymentScreenshot?: string | null
+  paymentDone?: boolean
   receivedRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRequesterInput
   family?: Prisma.FamilyCreateNestedOneWithoutUserInput
@@ -1039,6 +1070,7 @@ export type UserUncheckedCreateWithoutExpectationsInput = {
   isFeatured?: boolean
   userid?: string | null
   paymentScreenshot?: string | null
+  paymentDone?: boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRequesterInput
   family?: Prisma.FamilyUncheckedCreateNestedOneWithoutUserInput
@@ -1080,6 +1112,7 @@ export type UserUpdateWithoutExpectationsInput = {
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentDone?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUpdateManyWithoutRequesterNestedInput
   family?: Prisma.FamilyUpdateOneWithoutUserNestedInput
@@ -1105,6 +1138,7 @@ export type UserUncheckedUpdateWithoutExpectationsInput = {
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentDone?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRequesterNestedInput
   family?: Prisma.FamilyUncheckedUpdateOneWithoutUserNestedInput
@@ -1130,6 +1164,7 @@ export type UserCreateWithoutReceivedRequestsInput = {
   isFeatured?: boolean
   userid?: string | null
   paymentScreenshot?: string | null
+  paymentDone?: boolean
   sentRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRequesterInput
   expectations?: Prisma.ExpectationsCreateNestedOneWithoutUserInput
   family?: Prisma.FamilyCreateNestedOneWithoutUserInput
@@ -1155,6 +1190,7 @@ export type UserUncheckedCreateWithoutReceivedRequestsInput = {
   isFeatured?: boolean
   userid?: string | null
   paymentScreenshot?: string | null
+  paymentDone?: boolean
   sentRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRequesterInput
   expectations?: Prisma.ExpectationsUncheckedCreateNestedOneWithoutUserInput
   family?: Prisma.FamilyUncheckedCreateNestedOneWithoutUserInput
@@ -1185,6 +1221,7 @@ export type UserCreateWithoutSentRequestsInput = {
   isFeatured?: boolean
   userid?: string | null
   paymentScreenshot?: string | null
+  paymentDone?: boolean
   receivedRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRecipientInput
   expectations?: Prisma.ExpectationsCreateNestedOneWithoutUserInput
   family?: Prisma.FamilyCreateNestedOneWithoutUserInput
@@ -1210,6 +1247,7 @@ export type UserUncheckedCreateWithoutSentRequestsInput = {
   isFeatured?: boolean
   userid?: string | null
   paymentScreenshot?: string | null
+  paymentDone?: boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRecipientInput
   expectations?: Prisma.ExpectationsUncheckedCreateNestedOneWithoutUserInput
   family?: Prisma.FamilyUncheckedCreateNestedOneWithoutUserInput
@@ -1251,6 +1289,7 @@ export type UserUpdateWithoutReceivedRequestsInput = {
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentDone?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sentRequests?: Prisma.ContactApprovalUpdateManyWithoutRequesterNestedInput
   expectations?: Prisma.ExpectationsUpdateOneWithoutUserNestedInput
   family?: Prisma.FamilyUpdateOneWithoutUserNestedInput
@@ -1276,6 +1315,7 @@ export type UserUncheckedUpdateWithoutReceivedRequestsInput = {
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentDone?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sentRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRequesterNestedInput
   expectations?: Prisma.ExpectationsUncheckedUpdateOneWithoutUserNestedInput
   family?: Prisma.FamilyUncheckedUpdateOneWithoutUserNestedInput
@@ -1312,6 +1352,7 @@ export type UserUpdateWithoutSentRequestsInput = {
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentDone?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUpdateManyWithoutRecipientNestedInput
   expectations?: Prisma.ExpectationsUpdateOneWithoutUserNestedInput
   family?: Prisma.FamilyUpdateOneWithoutUserNestedInput
@@ -1337,6 +1378,7 @@ export type UserUncheckedUpdateWithoutSentRequestsInput = {
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentDone?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRecipientNestedInput
   expectations?: Prisma.ExpectationsUncheckedUpdateOneWithoutUserNestedInput
   family?: Prisma.FamilyUncheckedUpdateOneWithoutUserNestedInput
@@ -1362,6 +1404,7 @@ export type UserCreateWithoutPasswordResetRequestsInput = {
   isFeatured?: boolean
   userid?: string | null
   paymentScreenshot?: string | null
+  paymentDone?: boolean
   receivedRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRequesterInput
   expectations?: Prisma.ExpectationsCreateNestedOneWithoutUserInput
@@ -1387,6 +1430,7 @@ export type UserUncheckedCreateWithoutPasswordResetRequestsInput = {
   isFeatured?: boolean
   userid?: string | null
   paymentScreenshot?: string | null
+  paymentDone?: boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRequesterInput
   expectations?: Prisma.ExpectationsUncheckedCreateNestedOneWithoutUserInput
@@ -1428,6 +1472,7 @@ export type UserUpdateWithoutPasswordResetRequestsInput = {
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentDone?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUpdateManyWithoutRequesterNestedInput
   expectations?: Prisma.ExpectationsUpdateOneWithoutUserNestedInput
@@ -1453,6 +1498,7 @@ export type UserUncheckedUpdateWithoutPasswordResetRequestsInput = {
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentDone?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRequesterNestedInput
   expectations?: Prisma.ExpectationsUncheckedUpdateOneWithoutUserNestedInput
@@ -1478,6 +1524,7 @@ export type UserCreateWithoutRecipientUserSentLogsInput = {
   isFeatured?: boolean
   userid?: string | null
   paymentScreenshot?: string | null
+  paymentDone?: boolean
   receivedRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRequesterInput
   expectations?: Prisma.ExpectationsCreateNestedOneWithoutUserInput
@@ -1503,6 +1550,7 @@ export type UserUncheckedCreateWithoutRecipientUserSentLogsInput = {
   isFeatured?: boolean
   userid?: string | null
   paymentScreenshot?: string | null
+  paymentDone?: boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRequesterInput
   expectations?: Prisma.ExpectationsUncheckedCreateNestedOneWithoutUserInput
@@ -1533,6 +1581,7 @@ export type UserCreateWithoutTargetUserSentLogsInput = {
   isFeatured?: boolean
   userid?: string | null
   paymentScreenshot?: string | null
+  paymentDone?: boolean
   receivedRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRequesterInput
   expectations?: Prisma.ExpectationsCreateNestedOneWithoutUserInput
@@ -1558,6 +1607,7 @@ export type UserUncheckedCreateWithoutTargetUserSentLogsInput = {
   isFeatured?: boolean
   userid?: string | null
   paymentScreenshot?: string | null
+  paymentDone?: boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRequesterInput
   expectations?: Prisma.ExpectationsUncheckedCreateNestedOneWithoutUserInput
@@ -1599,6 +1649,7 @@ export type UserUpdateWithoutRecipientUserSentLogsInput = {
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentDone?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUpdateManyWithoutRequesterNestedInput
   expectations?: Prisma.ExpectationsUpdateOneWithoutUserNestedInput
@@ -1624,6 +1675,7 @@ export type UserUncheckedUpdateWithoutRecipientUserSentLogsInput = {
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentDone?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRequesterNestedInput
   expectations?: Prisma.ExpectationsUncheckedUpdateOneWithoutUserNestedInput
@@ -1660,6 +1712,7 @@ export type UserUpdateWithoutTargetUserSentLogsInput = {
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentDone?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUpdateManyWithoutRequesterNestedInput
   expectations?: Prisma.ExpectationsUpdateOneWithoutUserNestedInput
@@ -1685,6 +1738,7 @@ export type UserUncheckedUpdateWithoutTargetUserSentLogsInput = {
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentDone?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRequesterNestedInput
   expectations?: Prisma.ExpectationsUncheckedUpdateOneWithoutUserNestedInput
@@ -1710,6 +1764,7 @@ export type UserCreateWithoutShortlist_Shortlist_targetIdToUserInput = {
   isFeatured?: boolean
   userid?: string | null
   paymentScreenshot?: string | null
+  paymentDone?: boolean
   receivedRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRequesterInput
   expectations?: Prisma.ExpectationsCreateNestedOneWithoutUserInput
@@ -1735,6 +1790,7 @@ export type UserUncheckedCreateWithoutShortlist_Shortlist_targetIdToUserInput = 
   isFeatured?: boolean
   userid?: string | null
   paymentScreenshot?: string | null
+  paymentDone?: boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRequesterInput
   expectations?: Prisma.ExpectationsUncheckedCreateNestedOneWithoutUserInput
@@ -1765,6 +1821,7 @@ export type UserCreateWithoutShortlist_Shortlist_userIdToUserInput = {
   isFeatured?: boolean
   userid?: string | null
   paymentScreenshot?: string | null
+  paymentDone?: boolean
   receivedRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalCreateNestedManyWithoutRequesterInput
   expectations?: Prisma.ExpectationsCreateNestedOneWithoutUserInput
@@ -1790,6 +1847,7 @@ export type UserUncheckedCreateWithoutShortlist_Shortlist_userIdToUserInput = {
   isFeatured?: boolean
   userid?: string | null
   paymentScreenshot?: string | null
+  paymentDone?: boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRecipientInput
   sentRequests?: Prisma.ContactApprovalUncheckedCreateNestedManyWithoutRequesterInput
   expectations?: Prisma.ExpectationsUncheckedCreateNestedOneWithoutUserInput
@@ -1831,6 +1889,7 @@ export type UserUpdateWithoutShortlist_Shortlist_targetIdToUserInput = {
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentDone?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUpdateManyWithoutRequesterNestedInput
   expectations?: Prisma.ExpectationsUpdateOneWithoutUserNestedInput
@@ -1856,6 +1915,7 @@ export type UserUncheckedUpdateWithoutShortlist_Shortlist_targetIdToUserInput = 
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentDone?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRequesterNestedInput
   expectations?: Prisma.ExpectationsUncheckedUpdateOneWithoutUserNestedInput
@@ -1892,6 +1952,7 @@ export type UserUpdateWithoutShortlist_Shortlist_userIdToUserInput = {
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentDone?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUpdateManyWithoutRequesterNestedInput
   expectations?: Prisma.ExpectationsUpdateOneWithoutUserNestedInput
@@ -1917,6 +1978,7 @@ export type UserUncheckedUpdateWithoutShortlist_Shortlist_userIdToUserInput = {
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentScreenshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentDone?: Prisma.BoolFieldUpdateOperationsInput | boolean
   receivedRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRecipientNestedInput
   sentRequests?: Prisma.ContactApprovalUncheckedUpdateManyWithoutRequesterNestedInput
   expectations?: Prisma.ExpectationsUncheckedUpdateOneWithoutUserNestedInput
@@ -2027,6 +2089,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   isFeatured?: boolean
   userid?: boolean
   paymentScreenshot?: boolean
+  paymentDone?: boolean
   receivedRequests?: boolean | Prisma.User$receivedRequestsArgs<ExtArgs>
   sentRequests?: boolean | Prisma.User$sentRequestsArgs<ExtArgs>
   expectations?: boolean | Prisma.User$expectationsArgs<ExtArgs>
@@ -2054,6 +2117,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   isFeatured?: boolean
   userid?: boolean
   paymentScreenshot?: boolean
+  paymentDone?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -2070,6 +2134,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   isFeatured?: boolean
   userid?: boolean
   paymentScreenshot?: boolean
+  paymentDone?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -2086,9 +2151,10 @@ export type UserSelectScalar = {
   isFeatured?: boolean
   userid?: boolean
   paymentScreenshot?: boolean
+  paymentDone?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "mobile_no" | "whatsappProfileDeliveryNumber" | "password" | "role" | "status" | "createdAt" | "updatedAt" | "userIndex" | "isFeatured" | "userid" | "paymentScreenshot", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "mobile_no" | "whatsappProfileDeliveryNumber" | "password" | "role" | "status" | "createdAt" | "updatedAt" | "userIndex" | "isFeatured" | "userid" | "paymentScreenshot" | "paymentDone", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   receivedRequests?: boolean | Prisma.User$receivedRequestsArgs<ExtArgs>
   sentRequests?: boolean | Prisma.User$sentRequestsArgs<ExtArgs>
@@ -2133,6 +2199,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     isFeatured: boolean
     userid: string | null
     paymentScreenshot: string | null
+    paymentDone: boolean
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -2579,6 +2646,7 @@ export interface UserFieldRefs {
   readonly isFeatured: Prisma.FieldRef<"User", 'Boolean'>
   readonly userid: Prisma.FieldRef<"User", 'String'>
   readonly paymentScreenshot: Prisma.FieldRef<"User", 'String'>
+  readonly paymentDone: Prisma.FieldRef<"User", 'Boolean'>
 }
     
 

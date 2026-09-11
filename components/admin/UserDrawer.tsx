@@ -29,7 +29,7 @@ const getFullUrl = (url: string, label: string) => {
   if (!url) return '';
   if (url.startsWith('http')) return url;
   
-  if (label === 'Jathagam' || label === 'Caste certificate') {
+  if (label === 'ஜாதகம்' || label === 'ஜாதி சான்றிதழ்') {
     return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/user-documents/${url}`;
   }
   
@@ -66,7 +66,7 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
           setNewUserId(String(data.data.id));
           setIsFeatured(data.data.isFeatured || false);
         } else {
-          showToast(data.error || 'Failed to load user', 'error');
+          showToast(data.error || 'பயனரை ஏற்றுவதில் பிழை', 'error');
         }
       })
       .catch((error) => showToast(error.message, 'error'))
@@ -78,17 +78,17 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
     if (!profile) return [] as Array<[string, string]>;
     const age = profile.dob ? Math.max(0, new Date().getFullYear() - new Date(profile.dob).getFullYear()) : null;
     return [
-      ['Full name', profile.name], ['Gender', profile.gender],
-      ['Date of birth', profile.dob ? `${new Date(profile.dob).toLocaleDateString()}${age !== null ? ` (${age} years)` : ''}` : null],
-      ['Birth time', profile.tob], ['Birth place', profile.lob],
-      ['Country', profile.livingCountry], ['State', profile.state], ['City', profile.city],
-      ['Religion', profile.religion], ['Caste', profile.caste], ['Sub-caste', profile.subCaste], ['Koottam', profile.koottam],
-      ['Marital status', profile.maritalStatus], ['Family status', profile.familyStatus],
-      ['Height', profile.height ? `${profile.height} cm` : null], ['Weight', profile.weight ? `${profile.weight} kg` : null],
-      ['Physical condition', profile.physicalCondition], ['Skin colour', profile.skinColour],
-      ['Food habits', profile.foodHabits], ['Drinking habits', profile.drinkingHabits], ['Smoking habits', profile.smokingHabits],
-      ['Rasi', profile.rasi], ['Nakshatra', profile.nakshatra], ['Matching nakshatras', profile.poruthaNakshatram], ['Dosham', profile.dosham],
-      ['Dasa balance', profile.dasaBalance], ['House address', profile.houseAddress],
+      ['முழு பெயர்', profile.name], ['பாலினம்', profile.gender],
+      ['பிறந்த தேதி', profile.dob ? `${new Date(profile.dob).toLocaleDateString()}${age !== null ? ` (${age} ஆண்டுகள்)` : ''}` : null],
+      ['பிறந்த நேரம்', profile.tob], ['பிறந்த இடம்', profile.lob],
+      ['நாடு', profile.livingCountry], ['மாநிலம்', profile.state], ['நகரம்', profile.city],
+      ['மதம்', profile.religion], ['ஜாதி', profile.caste], ['உட்பிரிவு', profile.subCaste], ['கூட்டம்', profile.koottam],
+      ['திருமண நிலை', profile.maritalStatus], ['குடும்ப நிலை', profile.familyStatus],
+      ['உயரம்', profile.height ? `${profile.height} cm` : null], ['எடை', profile.weight ? `${profile.weight} kg` : null],
+      ['உடல் நிலை', profile.physicalCondition], ['நிறம்', profile.skinColour],
+      ['உணவு பழக்கம்', profile.foodHabits], ['குடி பழக்கம்', profile.drinkingHabits], ['புகை பழக்கம்', profile.smokingHabits],
+      ['ராசி', profile.rasi], ['நட்சத்திரம்', profile.nakshatra], ['பொருந்தும் நட்சத்திரங்கள்', profile.poruthaNakshatram], ['தோஷம்', profile.dosham],
+      ['தசா இருப்பு', profile.dasaBalance], ['வீட்டு முகவரி', profile.houseAddress],
     ].map(([label, fieldValue]) => [label, value(fieldValue)] as [string, string | null])
       .filter((item): item is [string, string] => item[1] !== null);
   }, [profile]);
@@ -96,15 +96,15 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
   const expectationFields = useMemo(() => {
     const expectations = userData?.expectations;
     if (!expectations) return [] as Array<[string, string]>;
-    const yesNo = (item: unknown) => item === null || item === undefined ? null : item ? 'Yes' : 'No';
+    const yesஇல்லை = (item: unknown) => item === null || item === undefined ? null : item ? 'ஆம்' : 'இல்லை';
     return [
-      ['Expected height', expectations.expectedHeight ? `${expectations.expectedHeight} cm` : null],
-      ['Colour preference', expectations.colourPreference], ['Maximum age', expectations.maxAgeLimit ? `${expectations.maxAgeLimit} years` : null],
-      ['Dowry expectation', expectations.dowryExpectation], ['Preferred sectors', expectations.preferredSectors],
-      ['Preferred locations', expectations.preferredLocations], ['Expected income', expectations.expectedIncome],
-      ['Rental income expected', yesNo(expectations.expectsRentalIncome)], ['Thottam expected', yesNo(expectations.expectsThottam)],
-      ['Vacant land preference', expectations.vacantLand], ['Distance radius', expectations.preferredDistanceRadius ? `${expectations.preferredDistanceRadius} km` : null],
-      ['Preferred city', expectations.city], ['Comments', expectations.comments],
+      ['எதிர்பார்க்கும் உயரம்', expectations.expectedHeight ? `${expectations.expectedHeight} cm` : null],
+      ['நிறம் எதிர்பார்ப்பு', expectations.colourPreference], ['அதிகபட்ச வயது', expectations.maxAgeLimit ? `${expectations.maxAgeLimit} ஆண்டுகள்` : null],
+      ['வரதட்சணை எதிர்பார்ப்பு', expectations.dowryExpectation], ['விருப்பமான துறைகள்', expectations.preferredSectors],
+      ['விருப்பமான இடங்கள்', expectations.preferredLocations], ['எதிர்பார்க்கும் வருமானம்', expectations.expectedIncome],
+      ['வாடகை வருமானம் எதிர்பார்ப்பு', yesஇல்லை(expectations.expectsRentalIncome)], ['தோட்டம் எதிர்பார்ப்பு', yesஇல்லை(expectations.expectsThottam)],
+      ['காலி மனை எதிர்பார்ப்பு', expectations.vacantLand], ['தூர வரம்பு', expectations.preferredDistanceRadius ? `${expectations.preferredDistanceRadius} km` : null],
+      ['விருப்பமான நகரம்', expectations.city], ['கருத்துக்கள்', expectations.comments],
     ].map(([label, fieldValue]) => [label, value(fieldValue)] as [string, string | null])
       .filter((item): item is [string, string] => item[1] !== null);
   }, [userData]);
@@ -112,30 +112,30 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
     const family = userData?.family;
     if (!family) return [] as Array<[string, string]>;
     return [
-      ['Father name', family.fatherName], ['Father status', family.fatherStatus], ['Father mobile', family.fatherMobile],
-      ['Mother name', family.motherName], ['Mother status', family.motherStatus], ['Mother mobile', family.motherMobile],
-      ['Work nature', family.workNature], ['Organisation', family.organisation], ['Designation', family.designation], ['Salary', family.salary],
-      ['Working address', family.workingAddress], ['Google location', family.googleLocation], ['Rental income', family.rentalIncome],
-      ['House type', family.houseType], ['House size', family.houseSqFt], ['Site / land', family.siteLand], ['Thottam', family.thottam],
-      ['Vacant land', family.vacantLand], ['Total asset value', family.totalAssetValue], ['Asset comments', family.assetComments],
+      ['தந்தை பெயர்', family.fatherName], ['தந்தை நிலை', family.fatherStatus], ['தந்தை மொபைல்', family.fatherMobile],
+      ['தாய் பெயர்', family.motherName], ['தாய் நிலை', family.motherStatus], ['தாய் மொபைல்', family.motherMobile],
+      ['வேலை தன்மை', family.workNature], ['நிறுவனம்', family.organisation], ['பதவி', family.designation], ['சம்பளம்', family.salary],
+      ['வேலை செய்யும் முகவரி', family.workingAddress], ['கூகுள் இருப்பிடம்', family.googleLocation], ['வாடகை வருமானம்', family.rentalIncome],
+      ['வீட்டின் வகை', family.houseType], ['வீட்டின் அளவு', family.houseSqFt], ['மனை / நிலம்', family.siteLand], ['தோட்டம்', family.thottam],
+      ['காலி மனை', family.vacantLand], ['மொத்த சொத்து மதிப்பு', family.totalAssetValue], ['சொத்து கருத்துக்கள்', family.assetComments],
     ].map(([label, fieldValue]) => [label, value(fieldValue)] as [string, string | null])
       .filter((item): item is [string, string] => item[1] !== null);
   }, [userData]);
 
   const documents = useMemo(() => {
     const docs = profile ? [
-      ['Jathagam', profile.jathakamUrl], ['Profile photo', profile.photoUrl], ['Caste certificate', profile.casteCertificateUrl],
+      ['ஜாதகம்', profile.jathakamUrl], ['சுயவிவரப் படம்', profile.photoUrl], ['ஜாதி சான்றிதழ்', profile.casteCertificateUrl],
     ].filter((item): item is [string, string] => Boolean(item[1])) : [] as Array<[string, string]>;
     
     if (userData?.paymentScreenshot) {
-      docs.push(['Payment Screenshot', userData.paymentScreenshot]);
+      docs.push(['கட்டண ரசீது', userData.paymentScreenshot]);
     }
     return docs;
   }, [profile, userData]);
   const handleReview = async (action: 'APPROVE' | 'REJECT' | 'MATCHED_REMOVED') => {
     if (!userId) return;
     if (action === 'REJECT' && !reviewReason.trim()) {
-      showToast('Enter a reason so the user knows what to correct.', 'error');
+      showToast('பயனர் என்ன திருத்த வேண்டும் என்பதை அறிய ஒரு காரணத்தை உள்ளிடவும்.', 'error');
       return;
     }
     setActionLoading(true);
@@ -284,12 +284,13 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
             <div className="flex flex-wrap items-center gap-2 self-end sm:self-auto">
               <button 
                 onClick={handleFindMatches}
-                className="p-2 rounded-lg bg-emerald-800/50 hover:bg-emerald-700 transition-colors text-white tooltip-trigger" 
+                className="px-3 py-2 flex items-center gap-2 rounded-lg bg-emerald-800/50 hover:bg-emerald-700 transition-colors text-white tooltip-trigger font-medium text-sm" 
                 title="Find Matches (Filter)"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                 </svg>
+                <span>Check matching</span>
               </button>
               
               <button 
@@ -328,13 +329,13 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
 
         <main className="flex-1 overflow-y-auto p-6 space-y-6">
           {loading ? <div className="flex items-center justify-center h-48"><div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin" /></div>
-          : !userData ? <div className="text-center text-slate-500 mt-10">No data available.</div>
+          : !userData ? <div className="text-center text-slate-500 mt-10">இல்லை data available.</div>
           : <>
             <section className="bg-slate-50 rounded-2xl p-5 border border-slate-100">
               <div className="flex items-center gap-4">
                 {profile?.photoUrl ? (
                   <img 
-                    src={getFullUrl(profile.photoUrl, 'Profile photo')} 
+                    src={getFullUrl(profile.photoUrl, 'சுயவிவரப் படம்')} 
                     alt={profile.name || 'User'} 
                     className="w-16 h-16 rounded-full object-cover border-2 border-emerald-400 shadow-sm"
                   />
@@ -352,7 +353,7 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
                       </span>
                     )}
                   </h3>
-                  <p className="text-sm text-slate-500 break-all">{userData.email || 'No email provided'}</p>
+                  <p className="text-sm text-slate-500 break-all">{userData.email || 'இல்லை email provided'}</p>
                   <div className="mt-3 grid gap-2 sm:grid-cols-[1fr_auto] items-end">
                     <label className="text-xs font-semibold uppercase tracking-wide text-slate-400">User ID</label>
                     <div className="flex gap-2">
@@ -416,7 +417,7 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
                 <span className="text-sm font-semibold text-slate-600">Match Tracking</span>
                 <div className="flex gap-2">
                   <Button variant="primary" isLoading={actionLoading} onClick={() => setMatchTrackingTab('SENT')} className="bg-emerald-600 hover:bg-emerald-700 text-white">Profile Sent</Button>
-                  <Button variant="danger" isLoading={actionLoading} onClick={() => setMatchTrackingTab('NOT_MATCHED')}>Sent (Not Matched)</Button>
+                  <Button variant="danger" isLoading={actionLoading} onClick={() => setMatchTrackingTab('NOT_MATCHED')}>Sent (இல்லைt Matched)</Button>
                 </div>
               </div>
               <div className="flex justify-end pt-3 border-t border-slate-200">

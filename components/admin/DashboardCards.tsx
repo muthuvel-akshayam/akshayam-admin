@@ -15,9 +15,9 @@ export interface DashboardCardsProps {
 export const DashboardCards: React.FC<DashboardCardsProps> = ({ stats }) => {
   const cards = [
     {
-      title: 'Total Users',
+      title: 'மொத்த பயனர்கள்',
       value: stats.totalUsers,
-      change: '+12% this month',
+      change: '+12% இந்த மாதம்',
       isPositive: true,
       href: '/admin/users',
       iconBg: 'bg-blue-100 text-blue-700  ',
@@ -28,9 +28,9 @@ export const DashboardCards: React.FC<DashboardCardsProps> = ({ stats }) => {
       ),
     },
     {
-      title: 'Pending Profiles',
+      title: 'நிலுவையில் உள்ள சுயவிவரங்கள்',
       value: stats.pendingProfiles,
-      change: 'Requires review',
+      change: 'மதிப்பாய்வு தேவை',
       isAlert: stats.pendingProfiles > 0,
       href: '/admin/users?status=pending',
       iconBg: 'bg-amber-100 text-amber-700  ',
@@ -41,9 +41,9 @@ export const DashboardCards: React.FC<DashboardCardsProps> = ({ stats }) => {
       ),
     },
     {
-      title: 'Approved Profiles',
+      title: 'அங்கீகரிக்கப்பட்ட சுயவிவரங்கள்',
       value: stats.approvedProfiles,
-      change: `${stats.approvalRate}% approval rate`,
+      change: `${stats.approvalRate}% அங்கீகார விகிதம்`,
       isPositive: true,
       href: '/admin/users?status=approved',
       iconBg: 'bg-emerald-100 text-emerald-700  ',
@@ -54,9 +54,9 @@ export const DashboardCards: React.FC<DashboardCardsProps> = ({ stats }) => {
       ),
     },
     {
-      title: 'Rejected Profiles',
+      title: 'நிராகரிக்கப்பட்ட சுயவிவரங்கள்',
       value: stats.rejectedProfiles,
-      change: 'Moderated out',
+      change: 'நிராகரிக்கப்பட்டது',
       href: '/admin/users?status=denied',
       iconBg: 'bg-rose-100 text-rose-700  ',
       icon: (
@@ -66,9 +66,9 @@ export const DashboardCards: React.FC<DashboardCardsProps> = ({ stats }) => {
       ),
     },
     {
-      title: "Today's Registrations",
+      title: "இன்றைய பதிவுகள்",
       value: stats.todaysRegistrations,
-      change: 'New today',
+      change: 'இன்று புதிதாக',
       isPositive: true,
       href: '/admin/users?status=all',
       iconBg: 'bg-teal-100 text-teal-700  ',
@@ -79,9 +79,9 @@ export const DashboardCards: React.FC<DashboardCardsProps> = ({ stats }) => {
       ),
     },
     {
-      title: 'Total Male',
+      title: 'மொத்த ஆண்கள்',
       value: stats.totalMale,
-      change: `${Math.round((stats.totalMale / (stats.totalMale + stats.totalFemale || 1)) * 100)}% of database`,
+      change: `${Math.round((stats.totalMale / (stats.totalMale + stats.totalFemale || 1)) * 100)}% தரவுத்தளத்தில்`,
       href: '/admin/users?status=all',
       iconBg: 'bg-sky-100 text-sky-700  ',
       icon: (
@@ -91,9 +91,9 @@ export const DashboardCards: React.FC<DashboardCardsProps> = ({ stats }) => {
       ),
     },
     {
-      title: 'Total Female',
+      title: 'மொத்த பெண்கள்',
       value: stats.totalFemale,
-      change: `${Math.round((stats.totalFemale / (stats.totalMale + stats.totalFemale || 1)) * 100)}% of database`,
+      change: `${Math.round((stats.totalFemale / (stats.totalMale + stats.totalFemale || 1)) * 100)}% தரவுத்தளத்தில்`,
       href: '/admin/users?status=all',
       iconBg: 'bg-fuchsia-100 text-fuchsia-700  ',
       icon: (

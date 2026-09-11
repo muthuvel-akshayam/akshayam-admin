@@ -7,7 +7,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useToast } from './ui/Toast';
-import LanguageSwitcher from './LanguageSwitcher';
 import { getUnreadPasswordResetRequestsCount, getPasswordResetRequests } from '../../actions/admin/passwordReset.actions';
 
 export interface TopbarProps {
@@ -61,7 +60,7 @@ export const Topbar: React.FC<TopbarProps> = ({
   };
 
   const handleLogout = () => {
-    showToast('Logging out of admin console...', 'info');
+    showToast('நிர்வாகி கணக்கிலிருந்து வெளியேறுகிறது...', 'info');
     setTimeout(() => {
       // Redirect or invoke auth logout
       router.push('/');
@@ -85,7 +84,7 @@ export const Topbar: React.FC<TopbarProps> = ({
         <form onSubmit={handleSearch} className="w-full relative">
           <input
             type="text"
-            placeholder="Search profiles, nakshatra, city, users..."
+            placeholder="சுயவிவரங்கள், நட்சத்திரம், நகரம் தேடுக..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full bg-slate-100  text-slate-800  pl-10 pr-4 py-2 rounded-xl text-sm border border-transparent focus:border-emerald-600 focus:bg-white  focus:outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all"
@@ -104,8 +103,6 @@ export const Topbar: React.FC<TopbarProps> = ({
       {/* Right side: Notifications & Admin Profile */}
       <div className="flex items-center gap-3 ml-4">
         
-        <LanguageSwitcher />
-
         {/* Notifications Dropdown */}
         <div className="relative">
           <button
@@ -115,7 +112,7 @@ export const Topbar: React.FC<TopbarProps> = ({
               if (!showNotifications) fetchNotifications();
             }}
             className="relative p-2.5 rounded-xl text-slate-600  hover:bg-slate-100  transition-colors"
-            title="Notifications"
+            title="அறிவிப்புகள்"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
@@ -128,10 +125,10 @@ export const Topbar: React.FC<TopbarProps> = ({
           {showNotifications && (
             <div className="absolute right-0 mt-2 w-80 bg-white  rounded-2xl shadow-xl border border-slate-200  py-3 z-50 animate-scaleUp">
               <div className="px-4 pb-2 border-b border-slate-100  flex justify-between items-center">
-                <span className="font-bold text-sm text-slate-800 ">Notifications</span>
+                <span className="font-bold text-sm text-slate-800 ">அறிவிப்புகள்</span>
                 {unreadCount > 0 && (
                   <span className="text-[10px] uppercase font-bold bg-red-100 text-red-800 px-2 py-0.5 rounded-full">
-                    {unreadCount} New
+                    {unreadCount} புதிய
                   </span>
                 )}
               </div>
@@ -146,14 +143,14 @@ export const Topbar: React.FC<TopbarProps> = ({
                       }}
                       className="p-3.5 hover:bg-slate-50  cursor-pointer transition-colors"
                     >
-                      <p className="text-xs font-semibold text-slate-800 ">Password Reset Request</p>
-                      <p className="text-xs text-slate-500  mt-0.5">{req.user?.profile?.name || req.user?.mobile_no} requested a reset.</p>
+                      <p className="text-xs font-semibold text-slate-800 ">கடவுச்சொல் மீட்டமைக்க கோரிக்கை</p>
+                      <p className="text-xs text-slate-500  mt-0.5">{req.user?.profile?.name || req.user?.mobile_no} கடவுச்சொல்லை மீட்டமைக்க கோரியுள்ளார்.</p>
                       <p className="text-[10px] text-emerald-600 mt-1 font-medium">{new Date(req.createdAt).toLocaleTimeString()}</p>
                     </div>
                   ))
                 ) : (
                   <div className="p-4 text-center">
-                    <p className="text-xs text-slate-500">No new notifications</p>
+                    <p className="text-xs text-slate-500">புதிய அறிவிப்புகள் இல்லை</p>
                   </div>
                 )}
               </div>
@@ -165,7 +162,7 @@ export const Topbar: React.FC<TopbarProps> = ({
                   }}
                   className="text-xs font-bold text-emerald-600 hover:text-emerald-700"
                 >
-                  View all requests
+                  அனைத்து கோரிக்கைகளையும் காண்க
                 </button>
               </div>
             </div>
@@ -192,7 +189,7 @@ export const Topbar: React.FC<TopbarProps> = ({
           {showProfileMenu && (
             <div className="absolute right-0 mt-2 w-48 bg-white  rounded-2xl shadow-xl border border-slate-200  py-2 z-50 animate-scaleUp">
               <div className="px-4 py-2 border-b border-slate-100  mb-1">
-                <p className="text-sm font-bold text-slate-800 ">Admin User</p>
+                <p className="text-sm font-bold text-slate-800 ">நிர்வாகி (Admin)</p>
                 <p className="text-xs text-slate-500 ">admin@akshayam.com</p>
               </div>
               
@@ -207,7 +204,7 @@ export const Topbar: React.FC<TopbarProps> = ({
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                Settings
+                அமைப்புகள்
               </button>
               <button 
                 onClick={handleLogout}
@@ -216,7 +213,7 @@ export const Topbar: React.FC<TopbarProps> = ({
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                 </svg>
-                Sign out
+                வெளியேறு
               </button>
             </div>
           )}

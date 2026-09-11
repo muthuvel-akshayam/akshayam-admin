@@ -264,10 +264,13 @@ export default function JathagamPDFTemplate({ profile, profileId, family: family
   const dasaBalance = jData.dasaBalance || profile.dasaBalance || profile.birthDetails || 'தசா இருப்பு விவரம் பார்க்கவும்';
   
   const kulam = profile.koottam || jData.kulam || profile.subCaste || 'குறிப்பிடப்படவில்லை';
-  const fatherName = family.fatherName || jData.fatherName || '-';
-  const motherName = family.motherName || jData.motherName || '-';
-  const fatherStatus = mapParentStatus(family.fatherStatus || jData.fatherStatus);
-  const motherStatus = mapParentStatus(family.motherStatus || jData.motherStatus);
+  const fatherNameRaw = family.fatherName || jData.fatherName || '-';
+  const motherNameRaw = family.motherName || jData.motherName || '-';
+  const fatherLivingStatus = mapParentStatus(family.fatherLivingStatus || jData.fatherLivingStatus);
+  const motherLivingStatus = mapParentStatus(family.motherLivingStatus || jData.motherLivingStatus);
+  
+  const fatherName = fatherNameRaw !== '-' && fatherLivingStatus === 'இல்லை' ? `${fatherNameRaw} (காலமானார்)` : fatherNameRaw;
+  const motherName = motherNameRaw !== '-' && motherLivingStatus === 'இல்லை' ? `${motherNameRaw} (காலமானார்)` : motherNameRaw;
   
   const formatSiblings = (siblingsStr: any) => {
     if (!siblingsStr || typeof siblingsStr !== 'string') return siblingsStr;
@@ -437,10 +440,7 @@ export default function JathagamPDFTemplate({ profile, profileId, family: family
             <FieldItem label="உடன் பிறந்தோர்" value={siblingsDisplay} />
             
             <FieldItem label="தந்தை பெயர்" value={fatherName} />
-            <FieldItem label="தந்தை நிலை" value={fatherStatus} />
-            
             <FieldItem label="தாய் பெயர்" value={motherName} />
-            <FieldItem label="தாய் நிலை" value={motherStatus} />
             
             <FieldItem label="நட்சத்திரம்" value={nakshatra} />
             <FieldItem label="பாதம்" value={padam} />

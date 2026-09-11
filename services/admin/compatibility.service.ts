@@ -20,14 +20,14 @@ function getJsonCompatibilityMatrix(): CompatibilityMatrixRow[] {
   // We can just use maleData since it contains male -> female matchings.
   for (const [maleNakshatra, partners] of Object.entries(maleData)) {
     for (const [femaleNakshatra, score] of Object.entries(partners as Record<string, number>)) {
-      const isUthamam = score >= 8;
-      const type = isUthamam ? 'Uthamam (Excellent)' : score >= 6 ? 'Madhyamam (Average)' : 'Adhamam (Poor)';
+      if (score < 8) continue;
+      
       rows.push({
         id: id++,
         maleNakshatra,
         femaleNakshatra,
         compatibilityScore: score,
-        compatibilityType: type,
+        compatibilityType: 'Uthamam (Excellent)',
         notes: 'Loaded from JSON matching dataset.',
       });
     }
@@ -49,7 +49,7 @@ export class CompatibilityService {
       const db = prisma as any;
       const skip = (page - 1) * limit;
 
-      const where: any = {};
+      const where: any = { compatibilityScore: { gte: 8 } };
       if (search) {
         if (genderFilter === 'MALE') {
           where.maleNakshatra = { contains: search, mode: 'insensitive' };
@@ -127,8 +127,8 @@ export class CompatibilityService {
       if (db.nakshatraCompatibility) {
         const whereClause =
           searcherGender === 'MALE'
-            ? { maleNakshatra: nakshatra }
-            : { femaleNakshatra: nakshatra };
+            ? { maleNakshatra: nakshatra, compatibilityScore: { gte: 8 } }
+            : { femaleNakshatra: nakshatra, compatibilityScore: { gte: 8 } };
 
         const matches = await db.nakshatraCompatibility.findMany({
           where: whereClause,

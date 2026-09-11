@@ -21,6 +21,7 @@ model User {
   isFeatured                         Boolean                @default(false)
   userid                             String?                @unique
   paymentScreenshot                  String?
+  paymentDone                        Boolean                @default(false)
   receivedRequests                   ContactApproval[]      @relation("ReceivedRequests")
   sentRequests                       ContactApproval[]      @relation("SentRequests")
   expectations                       Expectations?
@@ -81,6 +82,12 @@ model Profile {
   rasiGrid            Json?
   jathagamData        Json?
   idProofUrl          String?
+  yearOfMarriage      String?
+  yearOfDivorce       String?
+  haveChildren        Boolean?
+  numberOfChildren    Int?
+  childrenGender      String?
+  childrenAge         String?
   displayId           String?           @unique
   houseLocation       String?
   profileCreatedBy    String?
@@ -156,6 +163,7 @@ model Expectations {
   city                    String?
   comments                String?
   expectsVacantLand       Boolean?
+  acceptsDivorced         Boolean?
   user                    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 

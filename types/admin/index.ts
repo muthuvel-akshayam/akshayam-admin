@@ -28,6 +28,8 @@ export interface AdminUser {
   profileId?: number;
   isFeatured?: boolean;
   paymentScreenshot?: string | null;
+  paymentDone?: boolean;
+  profileCreatedBy?: string;
 }
 
 export interface PhotoItem {

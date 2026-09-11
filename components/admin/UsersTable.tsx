@@ -13,6 +13,7 @@ import {
   deleteUserAction,
   toggleUserFeaturedAction,
   updateUserPasswordAction,
+  togglePaymentAction,
 } from '../../actions/admin/user.actions';
 import { removeAfterMatchAction } from '../../actions/admin/profile.actions';
 import { NAKSHATRAS_LIST } from '../../lib/admin/constants';
@@ -54,7 +55,7 @@ export const UsersTable: React.FC<UsersTableProps> = ({
       const action = isSuspended ? activateUserAction : suspendUserAction;
       const res = await action(userId);
       if (res.success) showToast(res.message || `Account status updated for ${user.name}`, 'info');
-      else showToast(res.error || 'Failed to change status', 'error');
+      else showToast(res.error || 'நிலையை மாற்றுவதில் பிழை', 'error');
     } catch (err: any) {
       showToast(err.message, 'error');
     } finally {
@@ -69,13 +70,34 @@ export const UsersTable: React.FC<UsersTableProps> = ({
     try {
       const res = await toggleUserFeaturedAction(user.id, isFeatured);
       if (res.success) {
-        showToast(res.message || 'Featured status updated', 'success');
+        showToast(res.message || 'முகப்பு நிலை புதுப்பிக்கப்பட்டது', 'success');
       } else {
         e.target.checked = !isFeatured;
-        showToast(res.error || 'Failed to update', 'error');
+        showToast(res.error || 'புதுப்பிப்பதில் பிழை', 'error');
       }
     } catch (err: any) {
       e.target.checked = !isFeatured;
+      showToast(err.message, 'error');
+    } finally {
+      setLoadingId(null);
+    }
+  };
+
+  const handlePaymentToggle = async (e: React.ChangeEvent<HTMLInputElement>, user: AdminUser) => {
+    e.stopPropagation();
+    const isPaid = e.target.checked;
+    setLoadingId(Number(user.id));
+    try {
+      const res = await togglePaymentAction(user.id, isPaid);
+      if (res.success) {
+        user.paymentDone = isPaid;
+        showToast(res.message || 'கட்டண நிலை புதுப்பிக்கப்பட்டது', 'success');
+      } else {
+        e.target.checked = !isPaid;
+        showToast(res.error || 'புதுப்பிப்பதில் பிழை', 'error');
+      }
+    } catch (err: any) {
+      e.target.checked = !isPaid;
       showToast(err.message, 'error');
     } finally {
       setLoadingId(null);
@@ -89,12 +111,12 @@ export const UsersTable: React.FC<UsersTableProps> = ({
     try {
       if (deleteConfirmUser.profileId) {
         const res = await removeAfterMatchAction(deleteConfirmUser.profileId);
-        if (res.success) showToast('User marked as matched and removed', 'success');
-        else showToast(res.error || 'Failed to remove user', 'error');
+        if (res.success) showToast('பயனர் பொருத்தப்பட்டதாகக் குறிக்கப்பட்டு நீக்கப்பட்டார்', 'success');
+        else showToast(res.error || 'பயனரை நீக்குவதில் பிழை', 'error');
       } else {
         const res = await deleteUserAction(deleteConfirmUser.id as number);
-        if (res.success) showToast('User account deleted permanently', 'success');
-        else showToast(res.error || 'Failed to delete user', 'error');
+        if (res.success) showToast('பயனர் கணக்கு நிரந்தரமாக நீக்கப்பட்டது', 'success');
+        else showToast(res.error || 'பயனரை நீக்குவதில் பிழை', 'error');
       }
     } catch (err: any) {
       showToast(err.message, 'error');
@@ -109,7 +131,7 @@ export const UsersTable: React.FC<UsersTableProps> = ({
     if (!resetPasswordUser || !newPassword) return;
     
     if (newPassword.length < 6) {
-      showToast('Password must be at least 6 characters long', 'error');
+      showToast('கடவுச்சொல் குறைந்தது 6 எழுத்துகள் இருக்க வேண்டும்', 'error');
       return;
     }
 
@@ -118,11 +140,11 @@ export const UsersTable: React.FC<UsersTableProps> = ({
     try {
       const res = await updateUserPasswordAction(resetPasswordUser.id, newPassword);
       if (res.success) {
-        showToast(`Password updated for ${resetPasswordUser.name}`, 'success');
+        showToast(`${resetPasswordUser.name} கடவுச்சொல் புதுப்பிக்கப்பட்டது`, 'success');
         setResetPasswordUser(null);
         setNewPassword('');
       } else {
-        showToast(res.error || 'Failed to update password', 'error');
+        showToast(res.error || 'கடவுச்சொல்லை புதுப்பிப்பதில் பிழை', 'error');
       }
     } catch (err: any) {
       showToast(err.message, 'error');
@@ -143,7 +165,7 @@ export const UsersTable: React.FC<UsersTableProps> = ({
           <div className="relative flex-1">
             <input
               type="text"
-              placeholder="Search user name, email, phone..."
+              placeholder="பயனர் பெயர், மின்னஞ்சல், போன் எண் தேடுக..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-white text-slate-800 pl-9 pr-3 py-2 rounded-xl text-sm border border-slate-200 focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
@@ -152,7 +174,7 @@ export const UsersTable: React.FC<UsersTableProps> = ({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
-          <Button type="submit" variant="secondary" size="sm" className="shrink-0 h-9">Search</Button>
+          <Button type="submit" variant="secondary" size="sm" className="shrink-0 h-9">தேடு</Button>
         </form>
         {onFilterChange && (
           <div className="w-full sm:w-auto">
@@ -161,11 +183,11 @@ export const UsersTable: React.FC<UsersTableProps> = ({
               onChange={(e) => onFilterChange(searchQuery, e.target.value)}
               className="w-full sm:w-auto bg-white text-slate-700 px-3 py-2 rounded-xl text-sm border border-slate-200 focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 font-medium"
             >
-              <option value="all">All Users</option>
-              <option value="pending">Pending</option>
-              <option value="approved">Approved</option>
-              <option value="denied">Denied</option>
-              <option value="matched_removed">Matched / Removed</option>
+              <option value="all">அனைத்து பயனர்கள்</option>
+              <option value="pending">நிலுவையில்</option>
+              <option value="approved">அங்கீகரிக்கப்பட்டது</option>
+              <option value="denied">நிராகரிக்கப்பட்டது</option>
+              <option value="matched_removed">பொருத்தப்பட்டது / நீக்கப்பட்டது</option>
             </select>
           </div>
         )}
@@ -176,25 +198,29 @@ export const UsersTable: React.FC<UsersTableProps> = ({
         <table className="w-full text-left text-xs sm:text-sm">
           <thead className="bg-slate-50 text-slate-500 uppercase tracking-wider text-[11px] font-bold border-b border-slate-200">
             <tr>
-              <th className="px-6 py-3.5">ID / Name</th>
-              <th className="px-4 py-3.5">Phone Number</th>
-              <th className="px-4 py-3.5">Role</th>
-              <th className="px-4 py-3.5">Status</th>
-              <th className="px-4 py-3.5">Date</th>
-              <th className="px-4 py-3.5 text-center">Featured</th>
-              <th className="px-6 py-3.5 text-right">Actions</th>
+              <th className="px-6 py-3.5">பெயர்</th>
+              <th className="px-4 py-3.5">பயனர் எண்</th>
+              <th className="px-4 py-3.5">மொபைல் எண்</th>
+              <th className="px-4 py-3.5 text-center">கட்டணம்</th>
+              <th className="px-4 py-3.5">பங்கு</th>
+              <th className="px-4 py-3.5">நிலை</th>
+              <th className="px-4 py-3.5">தேதி</th>
+              <th className="px-4 py-3.5 text-center">முகப்பு</th>
+              <th className="px-6 py-3.5 text-right">செயல்கள்</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
             {users.length === 0 ? (
               <tr>
                 <td colSpan={6} className="px-6 py-12 text-center text-slate-500">
-                  No registered users found.
+                  பதிவு செய்த பயனர்கள் எதுவும் இல்லை.
                 </td>
               </tr>
             ) : (
               users.map((user, index) => {
-                const isAdmin = String(user.role) === 'ADMIN';
+                const isRoleAdmin = String(user.role) === 'ADMIN';
+                const isCreatedByAdmin = user.profileCreatedBy ? String(user.profileCreatedBy).toLowerCase() === 'admin' : false;
+                const isAdmin = isRoleAdmin || isCreatedByAdmin;
                 const isSuspended = user.status === 'SUSPENDED';
 
                 return (
@@ -211,21 +237,39 @@ export const UsersTable: React.FC<UsersTableProps> = ({
                           {user.name.charAt(0).toUpperCase()}
                         </div>
                         <div>
-                          <div className="font-bold text-slate-900 leading-tight flex items-center gap-2">
-                            {user.name} <span className="text-[10px] text-slate-500 font-semibold bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200">#{user.userid || user.userIndex || user.id}</span>
+                          <div className="font-bold text-slate-900 leading-tight">
+                            {user.name}
                           </div>
                         </div>
                       </div>
                     </td>
+                    <td className="px-4 py-3.5 whitespace-nowrap">
+                      <span className="text-xs text-slate-600 font-semibold bg-slate-100 px-2 py-1 rounded-md border border-slate-200">
+                        {user.userid || user.userIndex || user.id}
+                      </span>
+                    </td>
                     <td className="px-4 py-3.5 whitespace-nowrap text-slate-700 font-mono text-xs">
                       {user.phone || 'N/A'}
+                    </td>
+                    <td className="px-4 py-3.5 whitespace-nowrap text-center" onClick={(e) => e.stopPropagation()}>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          defaultChecked={user.paymentDone || false}
+                          disabled={loadingId === user.id}
+                          onChange={(e) => handlePaymentToggle(e, user)}
+                          className="sr-only peer"
+                        />
+                        <div className="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-600"></div>
+                      </label>
+                      <div className="text-[10px] text-slate-500 mt-1">{user.paymentDone ? 'ஆம்' : 'இல்லை'}</div>
                     </td>
                     <td className="px-4 py-3.5 whitespace-nowrap">
                       <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border ${
                           isAdmin ? 'bg-emerald-50 text-emerald-800 border-emerald-200' : 'bg-slate-100 text-slate-700 border-slate-200'
                       }`}>
                         {isAdmin && <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />}
-                        {isAdmin ? 'Admin' : 'User'}
+                        {isAdmin ? 'நிர்வாகி' : 'பயனர்'}
                       </span>
                     </td>
                     <td className="px-4 py-3.5 whitespace-nowrap">
@@ -241,7 +285,7 @@ export const UsersTable: React.FC<UsersTableProps> = ({
                         disabled={loadingId === user.id}
                         onChange={(e) => handleFeaturedToggle(e, user)}
                         className="w-4 h-4 text-emerald-600 bg-slate-100 border-slate-300 rounded focus:ring-emerald-500 focus:ring-2 cursor-pointer disabled:opacity-50"
-                        title="Show on Landing Page"
+                        title="முகப்பு பக்கத்தில் காட்டு"
                       />
                     </td>
                     <td className="px-6 py-3.5 whitespace-nowrap text-right">
@@ -253,7 +297,7 @@ export const UsersTable: React.FC<UsersTableProps> = ({
                             isSuspended ? 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                           }`}
                         >
-                          {isSuspended ? 'Activate' : 'Suspend'}
+                          {isSuspended ? 'செயல்படுத்து' : 'தடை செய்'}
                         </button>
                         
                         {/* Reset Password Button */}
@@ -261,7 +305,7 @@ export const UsersTable: React.FC<UsersTableProps> = ({
                           onClick={(e) => { e.stopPropagation(); setResetPasswordUser(user); setNewPassword(''); }}
                           disabled={loadingId === user.id}
                           className="p-1.5 rounded-lg text-amber-600 hover:bg-amber-50 hover:text-amber-700 transition-colors"
-                          title="Reset Password"
+                          title="கடவுச்சொல்லை மாற்று"
                         >
                           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
@@ -272,7 +316,7 @@ export const UsersTable: React.FC<UsersTableProps> = ({
                           onClick={(e) => { e.stopPropagation(); setDeleteConfirmUser(user); }}
                           disabled={loadingId === user.id}
                           className="p-1.5 rounded-lg text-rose-600 hover:bg-rose-50 transition-colors"
-                          title={user.profileId ? "Remove After Match" : "Delete Account"}
+                          title={user.profileId ? "பொருத்தத்திற்குப் பிறகு நீக்கு" : "கணக்கை நீக்கு"}
                         >
                           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -300,9 +344,9 @@ export const UsersTable: React.FC<UsersTableProps> = ({
         isOpen={!!deleteConfirmUser}
         onClose={() => setDeleteConfirmUser(null)}
         onConfirm={handleDelete}
-        title={deleteConfirmUser?.profileId ? "Remove After Match?" : "Delete User Account?"}
-        message={deleteConfirmUser?.profileId ? `Are you sure you want to mark ${deleteConfirmUser?.name} as matched and remove them from active searches?` : `Delete account for ${deleteConfirmUser?.name}?`}
-        confirmText={deleteConfirmUser?.profileId ? "Remove After Match" : "Delete Account"}
+        title={deleteConfirmUser?.profileId ? "பொருத்தத்திற்குப் பிறகு நீக்கவா?" : "பயனர் கணக்கை நீக்கவா?"}
+        message={deleteConfirmUser?.profileId ? `${deleteConfirmUser?.name} அவர்களுக்கு பொருத்தம் கிடைத்துவிட்டதாக குறிக்க மற்றும் தேடலில் இருந்து நீக்க விரும்புகிறீர்களா?` : `${deleteConfirmUser?.name} கணக்கை நீக்கவா?`}
+        confirmText={deleteConfirmUser?.profileId ? "பொருத்தத்திற்குப் பிறகு நீக்கு" : "கணக்கை நீக்கு"}
         variant="danger"
         isLoading={!!loadingId}
       />
@@ -312,7 +356,7 @@ export const UsersTable: React.FC<UsersTableProps> = ({
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm animate-in fade-in duration-200">
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden" onClick={(e) => e.stopPropagation()}>
             <div className="p-5 border-b border-slate-100 flex items-center justify-between">
-              <h3 className="text-lg font-bold text-slate-900">Reset Password</h3>
+              <h3 className="text-lg font-bold text-slate-900">கடவுச்சொல்லை மாற்று</h3>
               <button onClick={() => setResetPasswordUser(null)} className="text-slate-400 hover:text-slate-600">
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -322,13 +366,13 @@ export const UsersTable: React.FC<UsersTableProps> = ({
             
             <form onSubmit={handleResetPassword} className="p-5">
               <p className="text-sm text-slate-600 mb-4">
-                Update the password for <strong>{resetPasswordUser.name}</strong>. They will be able to log in with this new password immediately.
+                <strong>{resetPasswordUser.name}</strong> அவர்களுக்கு புதிய கடவுச்சொல்லை உள்ளிடவும். அவர்கள் உடனடியாக இந்த புதிய கடவுச்சொல்லுடன் உள்நுழைய முடியும்.
               </p>
               
               <div className="space-y-4">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">
-                    New Password <span className="text-rose-500">*</span>
+                    புதிய கடவுச்சொல் <span className="text-rose-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -337,19 +381,19 @@ export const UsersTable: React.FC<UsersTableProps> = ({
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     className="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-xl px-4 py-2.5 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors"
-                    placeholder="Enter new password"
+                    placeholder="புதிய கடவுச்சொல்லை உள்ளிடுக"
                     autoComplete="off"
                   />
-                  <p className="text-[10px] text-slate-500 mt-1.5">Minimum 6 characters.</p>
+                  <p className="text-[10px] text-slate-500 mt-1.5">குறைந்தபட்சம் 6 எழுத்துக்கள்.</p>
                 </div>
               </div>
               
               <div className="mt-8 flex gap-3 justify-end">
                 <Button type="button" variant="secondary" onClick={() => setResetPasswordUser(null)}>
-                  Cancel
+                  ரத்துசெய்
                 </Button>
                 <Button type="submit" variant="primary" isLoading={!!loadingId}>
-                  Update Password
+                  கடவுச்சொல்லை புதுப்பி
                 </Button>
               </div>
             </form>

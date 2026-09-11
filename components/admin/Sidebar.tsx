@@ -21,20 +21,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, pendingCount 
   const searchParams = useSearchParams();
   const t = useTranslations('Navigation');
 
-  const getTransKey = (title: string): string => {
-    switch (title) {
-      case 'Dashboard': return 'dashboard';
-      case 'Pending': return 'pending';
-      case 'Denied': return 'denied';
-      case 'Remove After Match': return 'removeAfterMatch';
-      case 'Users': return 'users';
-      case 'Nakshatra Compatibility': return 'nakshatraCompatibility';
-      case 'Carousel': return 'carousel';
-      case 'Analytics': return 'analytics';
-      case 'Settings': return 'settings';
-      default: return 'dashboard';
-    }
-  };
 
   const renderIcon = (iconName: string, isActive: boolean) => {
     const color = isActive ? 'text-emerald-700 ' : 'text-slate-400 group-hover:text-slate-600 ';
@@ -185,7 +171,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, pendingCount 
                 >
                   <div className="flex items-center gap-3">
                     {renderIcon(item.iconName, isActive)}
-                    <span>{t(getTransKey(item.title) as any)}</span>
+                    <span>{item.title}</span>
                   </div>
 
                   {showBadge && (

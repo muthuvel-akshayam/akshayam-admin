@@ -393,45 +393,159 @@ export class ProfileService {
   }
 
   /**
-   * Creates a new profile from admin panel
+   * Creates a new profile from admin panel with comprehensive details
    */
   static async createProfile(data: any, adminId: number): Promise<AdminProfile> {
     try {
       const db = prisma as any;
       if (db.profile) {
-        const created = await db.profile.create({
-          data: {
-            ...data,
-            status: ProfileStatus.PENDING,
-            isLive: false,
-          },
-        });
-        await logAdminAction(adminId, 'CREATE_PROFILE', created.id);
-        return ProfileService.formatProfile(created);
-      }
-    } catch (error) {
-      console.warn('DB create failed:', error);
-    }
+        const userId = 'ADM_USR_' + Date.now() + Math.floor(Math.random() * 1000);
+        const profileId = 'ADM_PRF_' + Date.now() + Math.floor(Math.random() * 1000);
+        const familyId = 'ADM_FAM_' + Date.now() + Math.floor(Math.random() * 1000);
+        const expId = 'ADM_EXP_' + Date.now() + Math.floor(Math.random() * 1000);
 
-    const newProf: AdminProfile = {
-      id: Date.now(),
-      userId: Date.now(),
-      name: data.name || 'New Profile',
-      gender: data.gender || 'FEMALE',
-      age: Number(data.age) || 25,
-      religion: data.religion || 'Hindu',
-      caste: data.caste || 'Brahmin - Iyer',
-      nakshatra: data.nakshatra || 'Ashwini',
-      city: data.city || 'Chennai',
-      state: data.state || 'Tamil Nadu',
-      country: data.country || 'India',
-      status: ProfileStatus.PENDING,
-      isLive: false,
-      registeredDate: new Date().toISOString(),
-      approvedAt: null,
-      approvedBy: null,
-    };
-    return newProf;
+        let dob = new Date();
+        if (data.dateOfBirth) {
+          let cleanStr = data.dateOfBirth.replace(/\D/g, '');
+          if (cleanStr.length === 8) {
+            dob = new Date(`${cleanStr.slice(4, 8)}-${cleanStr.slice(2, 4)}-${cleanStr.slice(0, 2)}`);
+          } else {
+            const parts = data.dateOfBirth.split(/[-/]/);
+            if (parts.length === 3 && parts[2].length === 4) {
+              dob = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
+            } else {
+              dob = new Date(data.dateOfBirth);
+            }
+          }
+        } else if (data.age) {
+          dob.setFullYear(dob.getFullYear() - Number(data.age));
+        }
+
+        // Map siblings
+        const siblingsData = Array.isArray(data.siblings) ? data.siblings.map((sib: any) => ({
+          id: 'ADM_SIB_' + Date.now() + Math.floor(Math.random() * 10000),
+          name: sib.name || 'Unknown',
+          relation: sib.relation || 'Sibling',
+          status: sib.status || 'Unmarried'
+        })) : [];
+
+        // Create nested user with family, siblings, expectations
+        const createdUser = await db.user.create({
+          data: {
+            id: userId,
+            mobile_no: data.mobileNumber || undefined,
+            password: data.password || undefined,
+            whatsappProfileDeliveryNumber: data.whatsappProfileDeliveryNumber || undefined,
+            role: 'USER',
+            status: 'ACTIVE',
+            isFeatured: false,
+            family: {
+              create: {
+                id: familyId,
+                fatherName: data.fatherName || undefined,
+                fatherLivingStatus: data.fatherLivingStatus ? data.fatherLivingStatus.toUpperCase() : undefined,
+                fatherStatus: data.fatherOccupation || undefined,
+                fatherMobile: data.fatherMobile || undefined,
+                motherName: data.motherName || undefined,
+                motherLivingStatus: data.motherLivingStatus ? data.motherLivingStatus.toUpperCase() : undefined,
+                motherStatus: data.motherOccupation || undefined,
+                motherMobile: data.motherMobile || undefined,
+                workNature: data.workNature ? data.workNature.toUpperCase().replace(' ', '_') : undefined,
+                salary: data.salary || undefined,
+                organisation: data.organisation || undefined,
+                designation: data.occupationDetails || undefined,
+                workingAddress: data.workLocation || undefined,
+                googleLocation: data.workingLocationGoogle || undefined,
+                rentalIncome: data.rentalIncome || undefined,
+                houseType: data.houseType || undefined,
+                houseSqFt: data.houseSqFt || undefined,
+                siteLand: data.siteLand || undefined,
+                thottam: data.thottam || undefined,
+                vacantLand: data.vacantLand || undefined,
+                totalAssetValue: data.totalAssetValue || undefined,
+                assetComments: data.assetComments || undefined,
+                dowryDetails: data.gender === 'FEMALE' ? data.dowryDetails : undefined,
+                siblings: siblingsData.length > 0 ? { create: siblingsData } : undefined
+              }
+            },
+            expectations: {
+              create: {
+                id: expId,
+                expectedHeight: Number(data.expectedHeight) || undefined,
+                colourPreference: data.colourPreference || undefined,
+                maxAgeLimit: Number(data.maxAgeLimit) || undefined,
+                dowryExpectation: data.gender === 'MALE' ? data.dowryExpectation : undefined,
+                preferredSectors: data.preferredSectors || [],
+                preferredLocations: data.preferredLocations || [],
+                expectedIncome: data.expectedIncome || undefined,
+                expectsRentalIncome: data.expectsRentalIncome || false,
+                expectsThottam: data.expectsThottam || false,
+                expectsVacantLand: data.expectsVacantLand || false,
+                preferredDistanceRadius: Number(data.preferredDistanceRadius) || undefined,
+                city: data.preferredCities && data.preferredCities.length > 0 ? data.preferredCities[0] : undefined,
+                comments: data.expectationComments || undefined,
+                acceptsDivorced: data.acceptsDivorced || false,
+              }
+            }
+          }
+        });
+
+        const createdProfile = await db.profile.create({
+          data: {
+            id: profileId,
+            userId: userId,
+            name: data.name || 'Unknown',
+            gender: data.gender || 'FEMALE',
+            livingCountry: data.livingCountry || 'India',
+            state: data.state || 'Tamil Nadu',
+            city: data.city || 'Chennai',
+            houseAddress: data.houseAddress || undefined,
+            houseLocation: data.houseLocation || undefined,
+            religion: data.religion || 'Hindu',
+            caste: data.caste || 'Any',
+            subCaste: data.subCaste || undefined,
+            koottam: data.koottam || undefined,
+            dob: dob,
+            tob: data.timeOfBirth || undefined,
+            lob: data.placeOfBirth || undefined,
+            height: Number(data.height?.replace(/[^0-9.]/g, '')) || 160,
+            weight: Number(data.weight?.replace(/[^0-9.]/g, '')) || 60,
+            physicalCondition: data.physicalStatus ? data.physicalStatus.toUpperCase() : 'AVERAGE',
+            skinColour: data.complexion || 'Fair',
+            maritalStatus: data.maritalStatus || 'NEVER_MARRIED',
+            familyStatus: 'MIDDLE',
+            foodHabits: 'NONE',
+            drinkingHabits: 'NONE',
+            smokingHabits: 'NONE',
+            rasi: data.rasi || undefined,
+            nakshatra: data.nakshatra || undefined,
+            dosham: data.dosham || undefined,
+            poruthaNakshatram: data.poruthaNakshatram || [],
+            status: 'PENDING',
+            isLive: false,
+            yearOfMarriage: data.yearOfMarriage || undefined,
+            yearOfDivorce: data.yearOfDivorce || undefined,
+            haveChildren: data.haveChildren === 'Yes',
+            numberOfChildren: data.numberOfChildren ? parseInt(data.numberOfChildren) : undefined,
+            childrenGender: data.childrenGender || undefined,
+            childrenAge: data.childrenAge || undefined,
+            photoUrl: data.photoUrl || undefined,
+            jathakamUrl: data.jathakamUrl || undefined,
+          },
+          include: {
+            user: { include: { family: { include: { siblings: true } }, expectations: true } },
+            educations: true,
+          }
+        });
+
+        await logAdminAction(adminId, 'CREATE_PROFILE', createdProfile.id);
+        return ProfileService.formatProfile(createdProfile);
+      }
+    } catch (error: any) {
+      console.warn('DB create failed:', error);
+      throw new Error(`Failed to save profile: ${error.message}`);
+    }
+    throw new Error('Database connection missing.');
   }
 
   /**

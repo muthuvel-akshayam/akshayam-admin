@@ -173,6 +173,28 @@ export async function toggleUserFeaturedAction(
 }
 
 /**
+ * Toggles payment done status for a user
+ */
+export async function togglePaymentAction(
+  userId: string | number,
+  paymentDone: boolean
+): Promise<ServerActionResponse<AdminUser>> {
+  try {
+    const session = await requireAdmin();
+    const updated = await UserService.updatePaymentStatus(userId, paymentDone, session.user.id);
+    revalidatePath('/admin/users');
+
+    return {
+      success: true,
+      data: updated,
+      message: `Payment status updated for ${updated.name}.`,
+    };
+  } catch (error: any) {
+    return { success: false, error: error.message || 'Failed to update payment status.' };
+  }
+}
+
+/**
  * Permanently deletes a user and associated data
  */
 export async function deleteUserAction(

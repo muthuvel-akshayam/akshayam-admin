@@ -69,13 +69,13 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
     try {
       const res = await approveProfileAction(profileId);
       if (res.success) {
-        showToast(res.message || `Approved ${profile.name}`, 'success');
+        showToast(res.message || `${profile.name} அங்கீகரிக்கப்பட்டது`, 'success');
         if (onRefresh) onRefresh();
       } else {
-        showToast(res.error || 'Failed to approve', 'error');
+        showToast(res.error || 'அங்கீகரிக்க முடியவில்லை', 'error');
       }
     } catch (err: any) {
-      showToast(err.message || 'Error approving profile', 'error');
+      showToast(err.message || 'அங்கீகரிப்பதில் பிழை', 'error');
     } finally {
       setLoadingId(null);
     }
@@ -88,13 +88,13 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
     try {
       const res = await removeAfterMatchAction(profileId);
       if (res.success) {
-        showToast('Profile moved to Remove After Match successfully', 'success');
+        showToast('பொருத்தத்திற்குப் பிறகு நீக்கப்பட்டது', 'success');
         if (onRefresh) onRefresh();
       } else {
-        showToast(res.error || 'Failed to remove profile', 'error');
+        showToast(res.error || 'நீக்குவதில் பிழை', 'error');
       }
     } catch (err: any) {
-      showToast(err.message || 'Error removing profile', 'error');
+      showToast(err.message || 'சுயவிவரத்தை நீக்குவதில் பிழை', 'error');
     } finally {
       setLoadingId(null);
       setDeleteConfirmProfile(null);
@@ -107,13 +107,13 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
     try {
       const res = await restoreProfileAction(profileId);
       if (res.success) {
-        showToast(res.message || `Restored ${profile.name} to pending`, 'info');
+        showToast(res.message || `${profile.name} நிலுவைக்கு மாற்றப்பட்டது`, 'info');
         if (onRefresh) onRefresh();
       } else {
-        showToast(res.error || 'Failed to restore', 'error');
+        showToast(res.error || 'மீட்பதில் பிழை', 'error');
       }
     } catch (err: any) {
-      showToast(err.message || 'Error restoring profile', 'error');
+      showToast(err.message || 'சுயவிவரத்தை மீட்பதில் பிழை', 'error');
     } finally {
       setLoadingId(null);
     }
@@ -156,7 +156,7 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
       
       router.push(`/admin/profiles?${queryParams.toString()}`);
     } catch (err: any) {
-      showToast(err.message || 'Error finding matches', 'error');
+      showToast(err.message || 'பொருத்தங்களை தேடுவதில் பிழை', 'error');
     } finally {
       setLoadingId(null);
     }
@@ -213,7 +213,7 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
               onChange={(e) => onFilterChange && onFilterChange(currentStatus, e.target.value, searchQuery)}
               className="bg-white  text-slate-700  px-3 py-2 rounded-xl text-xs font-semibold border border-slate-200  focus:outline-none focus:border-emerald-600"
             >
-              <option value="ALL">All Genders</option>
+              <option value="ALL">அனைத்து பாலினமும்</option>
               <option value="MALE">Male Only</option>
               <option value="FEMALE">Female Only</option>
             </select>
@@ -223,7 +223,7 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
               onChange={(e) => onFilterChange && onFilterChange(e.target.value, currentGender, searchQuery)}
               className="bg-white  text-slate-700  px-3 py-2 rounded-xl text-xs font-semibold border border-slate-200  focus:outline-none focus:border-emerald-600"
             >
-              <option value="ALL">All Status</option>
+              <option value="ALL">அனைத்து நிலைகளும்</option>
               <option value="PENDING">Pending Only</option>
               <option value="APPROVED">Approved Only</option>
               <option value="REJECTED">Rejected Only</option>
@@ -238,6 +238,7 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
           <thead className="bg-slate-50  text-slate-500  uppercase tracking-wider text-[11px] font-bold border-b border-slate-200 ">
             <tr>
               <th className="px-5 py-3.5">Photo / Name</th>
+              <th className="px-4 py-3.5">User ID</th>
               <th className="px-4 py-3.5">Gender / Age</th>
               <th className="px-4 py-3.5">Religion / Caste</th>
               <th className="px-4 py-3.5">Nakshatra</th>
@@ -250,7 +251,7 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
           <tbody className="divide-y divide-slate-100 ">
             {profiles.length === 0 ? (
               <tr>
-                <td colSpan={8} className="px-6 py-12 text-center text-slate-500 ">
+                <td colSpan={9} className="px-6 py-12 text-center text-slate-500 ">
                   <div className="mx-auto w-12 h-12 rounded-full bg-slate-100  flex items-center justify-center text-slate-400 mb-3">
                     <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -303,11 +304,15 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
                               </svg>
                             )}
                           </Link>
-                          <span className="text-[11px] text-slate-400  font-mono">
-                            ID: {profile.userIndex ? `#${profile.userIndex}` : String(profile.id).substring(0, 8)}
-                          </span>
                         </div>
                       </div>
+                    </td>
+
+                    {/* User ID */}
+                    <td className="px-4 py-3.5 whitespace-nowrap">
+                      <span className="inline-block px-2 py-1 rounded-md bg-slate-100 border border-slate-200 text-slate-600 font-mono text-xs font-semibold">
+                        {profile.userIndex ? `#${profile.userIndex}` : String(profile.id).substring(0, 8)}
+                      </span>
                     </td>
 
                     {/* Gender / Age */}
@@ -375,7 +380,7 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
                             else router.push(`/admin/profiles/${profile.id}`);
                           }}
                           className="p-1.5 rounded-lg text-slate-600 hover:text-emerald-700 hover:bg-emerald-50   transition-colors"
-                          title="View Details"
+                          title="விவரங்களை காண்க"
                         >
                           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -392,7 +397,7 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
                             }}
                             disabled={loadingId === profile.id}
                             className="p-1.5 rounded-lg text-emerald-600 hover:bg-emerald-50   transition-colors disabled:opacity-50"
-                            title="Approve Profile"
+                            title="சுயவிவரத்தை அங்கீகரி"
                           >
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -425,7 +430,7 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
                             }}
                             disabled={loadingId === profile.id}
                             className="p-1.5 rounded-lg text-blue-600 hover:bg-blue-50   transition-colors"
-                            title="Restore to Pending"
+                            title="மீண்டும் நிலுவைக்கு மாற்று"
                           >
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -441,7 +446,7 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
                               onEditProfile(profile);
                             }}
                             className="p-1.5 rounded-lg text-slate-600 hover:bg-slate-100   transition-colors"
-                            title="Edit Profile"
+                            title="திருத்து"
                           >
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -456,7 +461,7 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
                             setDeleteConfirmProfile(profile);
                           }}
                           className="p-1.5 rounded-lg text-rose-600 hover:bg-rose-50   transition-colors"
-                          title="Remove After Match"
+                          title="பொருத்தத்திற்குப் பிறகு நீக்கு"
                         >
                           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -486,9 +491,9 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
         isOpen={!!deleteConfirmProfile}
         onClose={() => setDeleteConfirmProfile(null)}
         onConfirm={handleDelete}
-        title="Remove After Match?"
-        message={`Are you sure you want to mark ${deleteConfirmProfile?.name} as matched and remove them from active searches?`}
-        confirmText="Remove After Match"
+        title="பொருத்தத்திற்குப் பிறகு நீக்கவா?"
+        message={`${deleteConfirmProfile?.name} அவர்களுக்கு பொருத்தம் கிடைத்துவிட்டதாக குறிக்க மற்றும் தேடலில் இருந்து நீக்க விரும்புகிறீர்களா?`}
+        confirmText="பொருத்தத்திற்குப் பிறகு நீக்கு"
         variant="danger"
         isLoading={!!loadingId}
       />

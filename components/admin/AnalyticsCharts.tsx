@@ -30,18 +30,18 @@ export const AnalyticsCharts: React.FC<AnalyticsChartsProps> = ({ stats }) => {
           <div className="flex justify-between items-start mb-6">
             <div>
               <h3 className="text-base font-bold text-slate-900 ">
-                Profiles Registered per Month
+                மாத வாரியாக பதிவு செய்யப்பட்ட சுயவிவரங்கள்
               </h3>
               <p className="text-xs text-slate-500  mt-0.5">
-                Monthly breakdown of registrations, approvals, and rejections
+                மாத வாரியான பதிவுகள் மற்றும் அங்கீகாரங்கள்
               </p>
             </div>
             <div className="flex items-center gap-4 text-xs font-semibold">
               <span className="flex items-center gap-1.5 text-slate-700 ">
-                <span className="w-3 h-3 rounded bg-emerald-700" /> Registered
+                <span className="w-3 h-3 rounded bg-emerald-700" /> பதிவு செய்தவை
               </span>
               <span className="flex items-center gap-1.5 text-slate-700 ">
-                <span className="w-3 h-3 rounded bg-emerald-400" /> Approved
+                <span className="w-3 h-3 rounded bg-emerald-400" /> அங்கீகரிக்கப்பட்டவை
               </span>
             </div>
           </div>
@@ -81,17 +81,17 @@ export const AnalyticsCharts: React.FC<AnalyticsChartsProps> = ({ stats }) => {
           </div>
 
           <div className="mt-4 flex justify-between items-center text-xs text-slate-400">
-            <span>Overall Growth: +18.4% YoY</span>
-            <span>Avg Approval Time: 4.2 Hours</span>
+            <span>ஒட்டுமொத்த வளர்ச்சி: +18.4% YoY</span>
+            <span>சராசரி அங்கீகார நேரம்: 4.2 மணி நேரம்</span>
           </div>
         </div>
 
         {/* Gender Breakdown & Approval Rate Box */}
         <div className="bg-white  p-6 rounded-2xl border border-slate-200  shadow-sm flex flex-col justify-between">
           <div>
-            <h3 className="text-base font-bold text-slate-900 ">Male vs Female Ratio</h3>
+            <h3 className="text-base font-bold text-slate-900 ">ஆண் - பெண் விகிதம்</h3>
             <p className="text-xs text-slate-500  mt-0.5">
-              Demographic balance in active database
+              தரவுத்தளத்தில் உள்ள பாலின சமநிலை
             </p>
           </div>
 
@@ -99,10 +99,10 @@ export const AnalyticsCharts: React.FC<AnalyticsChartsProps> = ({ stats }) => {
           <div className="my-6">
             <div className="flex justify-between items-center mb-2 text-sm font-bold">
               <span className="flex items-center gap-2 text-sky-700 ">
-                <span className="w-3 h-3 rounded-full bg-sky-600" /> Male ({stats.totalMale})
+                <span className="w-3 h-3 rounded-full bg-sky-600" /> ஆண் ({stats.totalMale})
               </span>
               <span className="flex items-center gap-2 text-fuchsia-700 ">
-                Female ({stats.totalFemale}) <span className="w-3 h-3 rounded-full bg-fuchsia-600" />
+                பெண் ({stats.totalFemale}) <span className="w-3 h-3 rounded-full bg-fuchsia-600" />
               </span>
             </div>
 
@@ -127,7 +127,7 @@ export const AnalyticsCharts: React.FC<AnalyticsChartsProps> = ({ stats }) => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs font-bold text-emerald-800  uppercase tracking-wider">
-                  Overall Approval Rate
+                  ஒட்டுமொத்த அங்கீகார விகிதம்
                 </p>
                 <p className="text-3xl font-extrabold text-emerald-700  mt-1">
                   {stats.approvalRate}%
@@ -138,7 +138,7 @@ export const AnalyticsCharts: React.FC<AnalyticsChartsProps> = ({ stats }) => {
               </div>
             </div>
             <p className="text-[11px] text-emerald-700/80  mt-2">
-              Based on {stats.approvedProfiles} approved and {stats.rejectedProfiles} rejected profiles.
+              அங்கீகரிக்கப்பட்ட {stats.approvedProfiles} மற்றும் நிராகரிக்கப்பட்ட {stats.rejectedProfiles} சுயவிவரங்களின் அடிப்படையில்.
             </p>
           </div>
         </div>
@@ -148,9 +148,9 @@ export const AnalyticsCharts: React.FC<AnalyticsChartsProps> = ({ stats }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Religion Distribution */}
         <div className="bg-white  p-6 rounded-2xl border border-slate-200  shadow-sm">
-          <h3 className="text-base font-bold text-slate-900 ">Religion Distribution</h3>
+          <h3 className="text-base font-bold text-slate-900 ">மதப் பகிர்வு</h3>
           <p className="text-xs text-slate-500  mt-0.5 mb-6">
-            Profile distribution across religious communities
+            மத சமூகங்களில் சுயவிவரப் பகிர்வு
           </p>
 
           <div className="space-y-4">
@@ -173,9 +173,9 @@ export const AnalyticsCharts: React.FC<AnalyticsChartsProps> = ({ stats }) => {
 
         {/* Caste Distribution */}
         <div className="bg-white  p-6 rounded-2xl border border-slate-200  shadow-sm">
-          <h3 className="text-base font-bold text-slate-900 ">Caste Distribution</h3>
+          <h3 className="text-base font-bold text-slate-900 ">ஜாதிப் பகிர்வு</h3>
           <p className="text-xs text-slate-500  mt-0.5 mb-6">
-            Top community representations in active matrimonial database
+            தரவுத்தளத்தில் உள்ள முக்கிய சமூகப் பகிர்வுகள்
           </p>
 
           <div className="space-y-4">

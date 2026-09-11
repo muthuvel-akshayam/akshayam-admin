@@ -6,8 +6,12 @@ import prisma from '../../lib/admin/db';
 import { logAdminAction } from '../../lib/admin/auth';
 import { AdminUser, UserRole, PaginatedResponse } from '../../types/admin';
 
-function getMockUsers(): AdminUser[] {
-  return [
+let mockUsersState: any[] = null;
+
+function getMockUsers(): any[] {
+  if (mockUsersState) return mockUsersState;
+  
+  mockUsersState = [
     {
       id: 101,
       userIndex: 101,
@@ -18,6 +22,7 @@ function getMockUsers(): AdminUser[] {
       status: 'ACTIVE',
       registeredDate: new Date(Date.now() - 86400000 * 10).toISOString(),
       profileId: 101,
+      paymentDone: false,
     },
     {
       id: 102,
@@ -29,6 +34,7 @@ function getMockUsers(): AdminUser[] {
       status: 'ACTIVE',
       registeredDate: new Date(Date.now() - 86400000 * 15).toISOString(),
       profileId: 102,
+      paymentDone: false,
     },
     {
       id: 1,
@@ -39,6 +45,7 @@ function getMockUsers(): AdminUser[] {
       role: UserRole.ADMIN,
       status: 'ACTIVE',
       registeredDate: new Date(Date.now() - 86400000 * 100).toISOString(),
+      paymentDone: true,
     },
     {
       id: 103,
@@ -50,6 +57,7 @@ function getMockUsers(): AdminUser[] {
       status: 'ACTIVE',
       registeredDate: new Date(Date.now() - 86400000 * 2).toISOString(),
       profileId: 103,
+      paymentDone: false,
     },
     {
       id: 104,
@@ -61,6 +69,7 @@ function getMockUsers(): AdminUser[] {
       status: 'SUSPENDED',
       registeredDate: new Date(Date.now() - 86400000 * 25).toISOString(),
       profileId: 104,
+      paymentDone: false,
     },
     {
       id: 105,
@@ -72,8 +81,10 @@ function getMockUsers(): AdminUser[] {
       status: 'ACTIVE',
       registeredDate: new Date(Date.now() - 86400000 * 12).toISOString(),
       profileId: 105,
+      paymentDone: false,
     },
   ];
+  return mockUsersState;
 }
 
 export class UserService {
@@ -113,7 +124,7 @@ export class UserService {
             skip,
             take: limit,
             orderBy: { createdAt: 'desc' },
-            include: { profile: { select: { id: true, name: true } } },
+            include: { profile: { select: { id: true, name: true, profileCreatedBy: true } } },
           }),
           db.user.count({ where }),
         ]);
@@ -149,6 +160,9 @@ export class UserService {
       );
     }
 
+    // Sort in descending order (newest first)
+    mock = mock.sort((a, b) => new Date(b.registeredDate).getTime() - new Date(a.registeredDate).getTime());
+
     const total = mock.length;
     const paginated = mock.slice((page - 1) * limit, page * limit);
 
@@ -171,7 +185,7 @@ export class UserService {
         const updated = await db.user.update({
           where: { id: userId },
           data: { role },
-          include: { profile: { select: { id: true, name: true } } },
+          include: { profile: { select: { id: true, name: true, profileCreatedBy: true } } },
         });
         await logAdminAction(adminId, `UPDATE_ROLE_${role}`, userId);
         return UserService.formatUser(updated);
@@ -199,7 +213,7 @@ export class UserService {
         const updated = await db.user.update({
           where: { id: userId },
           data: { status },
-          include: { profile: { select: { id: true, name: true } } },
+          include: { profile: { select: { id: true, name: true, profileCreatedBy: true } } },
         });
         await logAdminAction(adminId, `UPDATE_STATUS_${status}`, userId);
         return UserService.formatUser(updated);
@@ -227,7 +241,7 @@ export class UserService {
         const updated = await db.user.update({
           where: { id: String(userId) },
           data: { password: newPassword },
-          include: { profile: { select: { id: true, name: true } } },
+          include: { profile: { select: { id: true, name: true, profileCreatedBy: true } } },
         });
         await logAdminAction(Number(adminId), `UPDATE_USER_PASSWORD`, String(userId));
         return UserService.formatUser(updated);
@@ -255,7 +269,7 @@ export class UserService {
         const updated = await db.user.update({
           where: { id: String(userId) },
           data: { isFeatured },
-          include: { profile: { select: { id: true, name: true } } },
+          include: { profile: { select: { id: true, name: true, profileCreatedBy: true } } },
         });
         await logAdminAction(Number(adminId), `UPDATE_FEATURED_${isFeatured ? 'TRUE' : 'FALSE'}`, String(userId));
         return UserService.formatUser(updated);
@@ -266,6 +280,33 @@ export class UserService {
 
     const mock = getMockUsers().find((u) => u.id === userId) || getMockUsers()[0];
     mock.isFeatured = isFeatured;
+    return mock;
+  }
+
+  /**
+   * Updates user payment done status
+   */
+  static async updatePaymentStatus(
+    userId: string | number,
+    paymentDone: boolean,
+    adminId: string | number
+  ): Promise<AdminUser> {
+    try {
+      const db = prisma as any;
+      if (db.user) {
+        const updated = await db.user.update({
+          where: { id: userId },
+          data: { paymentDone },
+        });
+        await logAdminAction(adminId, `UPDATE_PAYMENT_STATUS`, userId);
+        return UserService.formatUser(updated);
+      }
+    } catch (error) {
+      console.warn('DB update failed in updatePaymentStatus:', error);
+    }
+
+    const mock = getMockUsers().find((u) => u.id === userId) || getMockUsers()[0];
+    mock.paymentDone = paymentDone;
     return mock;
   }
 
@@ -296,7 +337,7 @@ export class UserService {
           const updated = await tx.user.update({
             where: { id: oldUserId },
             data: { id: newUserId },
-            include: { profile: { select: { id: true, name: true } } },
+            include: { profile: { select: { id: true, name: true, profileCreatedBy: true } } },
           });
 
           return updated;
@@ -347,6 +388,9 @@ export class UserService {
       registeredDate: raw.createdAt || raw.registeredDate || new Date().toISOString(),
       profileId: raw.profile?.id || raw.profileId,
       isFeatured: raw.isFeatured || false,
+      paymentScreenshot: raw.paymentScreenshot,
+      paymentDone: raw.paymentDone || false,
+      profileCreatedBy: raw.profile?.profileCreatedBy,
     };
   }
 }
