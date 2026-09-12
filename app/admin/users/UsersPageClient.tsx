@@ -5,6 +5,8 @@ import Button from '@/components/admin/ui/Button';
 import UsersTable from '@/components/admin/UsersTable';
 import UserDrawer from '@/components/admin/UserDrawer';
 import AmazonFiltersSidebar from '@/components/admin/AmazonFiltersSidebar';
+import LanguageSwitcher from '@/components/admin/LanguageSwitcher';
+import { CreateProfileModal } from '@/components/admin/CreateProfileModal';
 import { AdminUser, FilterParams } from '@/types/admin';
 import { useSearchParams, useRouter } from 'next/navigation';
 
@@ -25,6 +27,7 @@ export default function UsersPageClient() {
   const [loading, setLoading] = useState(false);
   const [drawerUserId, setDrawerUserId] = useState<string | number | null>(null);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const fetchUsers = useCallback(async (page: number, currentFilters: Partial<FilterParams>) => {
     setLoading(true);
@@ -115,6 +118,20 @@ export default function UsersPageClient() {
           </p>
         </div>
         <div className="flex items-center justify-end gap-3 w-full sm:w-auto mt-2 sm:mt-0">
+          <LanguageSwitcher />
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => setIsCreateModalOpen(true)}
+            className="hidden sm:flex"
+            leftIcon={
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+            }
+          >
+            Create Profile
+          </Button>
           <Button
             variant="secondary"
             size="sm"
@@ -176,6 +193,12 @@ export default function UsersPageClient() {
         isOpen={drawerUserId !== null}
         onClose={() => setDrawerUserId(null)}
         onReviewComplete={refreshList}
+      />
+
+      <CreateProfileModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        onSuccess={refreshList}
       />
     </div>
   );
