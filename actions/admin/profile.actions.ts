@@ -30,10 +30,10 @@ export async function approveProfileAction(
     const session = await requireAdmin();
     
     // Fetch profile to get the current userId if newUserId is provided
-    if (newUserId) {
+    if (newUserId && newUserId.trim() !== '') {
       const profile = await ProfileService.getProfileById(id);
-      if (profile && profile.userId && String(profile.userId) !== newUserId) {
-        await UserService.updateUserId(String(profile.userId), newUserId, session.user.id);
+      if (profile && profile.userId && String(profile.userId) !== newUserId.trim()) {
+        await UserService.updateUserId(String(profile.userId), newUserId.trim(), session.user.id);
       }
     }
 

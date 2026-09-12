@@ -124,7 +124,7 @@ export class UserService {
             skip,
             take: limit,
             orderBy: { createdAt: 'desc' },
-            include: { profile: { select: { id: true, name: true, profileCreatedBy: true } } },
+            include: { profile: { select: { id: true, name: true } } },
           }),
           db.user.count({ where }),
         ]);
@@ -185,7 +185,7 @@ export class UserService {
         const updated = await db.user.update({
           where: { id: userId },
           data: { role },
-          include: { profile: { select: { id: true, name: true, profileCreatedBy: true } } },
+          include: { profile: { select: { id: true, name: true } } },
         });
         await logAdminAction(adminId, `UPDATE_ROLE_${role}`, userId);
         return UserService.formatUser(updated);
@@ -213,7 +213,7 @@ export class UserService {
         const updated = await db.user.update({
           where: { id: userId },
           data: { status },
-          include: { profile: { select: { id: true, name: true, profileCreatedBy: true } } },
+          include: { profile: { select: { id: true, name: true } } },
         });
         await logAdminAction(adminId, `UPDATE_STATUS_${status}`, userId);
         return UserService.formatUser(updated);
@@ -241,7 +241,7 @@ export class UserService {
         const updated = await db.user.update({
           where: { id: String(userId) },
           data: { password: newPassword },
-          include: { profile: { select: { id: true, name: true, profileCreatedBy: true } } },
+          include: { profile: { select: { id: true, name: true } } },
         });
         await logAdminAction(Number(adminId), `UPDATE_USER_PASSWORD`, String(userId));
         return UserService.formatUser(updated);
@@ -269,7 +269,7 @@ export class UserService {
         const updated = await db.user.update({
           where: { id: String(userId) },
           data: { isFeatured },
-          include: { profile: { select: { id: true, name: true, profileCreatedBy: true } } },
+          include: { profile: { select: { id: true, name: true } } },
         });
         await logAdminAction(Number(adminId), `UPDATE_FEATURED_${isFeatured ? 'TRUE' : 'FALSE'}`, String(userId));
         return UserService.formatUser(updated);
@@ -337,7 +337,7 @@ export class UserService {
           const updated = await tx.user.update({
             where: { id: oldUserId },
             data: { id: newUserId },
-            include: { profile: { select: { id: true, name: true, profileCreatedBy: true } } },
+            include: { profile: { select: { id: true, name: true } } },
           });
 
           return updated;
@@ -390,7 +390,6 @@ export class UserService {
       isFeatured: raw.isFeatured || false,
       paymentScreenshot: raw.paymentScreenshot,
       paymentDone: raw.paymentDone || false,
-      profileCreatedBy: raw.profile?.profileCreatedBy,
     };
   }
 }

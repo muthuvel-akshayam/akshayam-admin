@@ -334,7 +334,7 @@ export class ProfileService {
   ): Promise<AdminProfile> {
     const isLive = status === ProfileStatus.APPROVED;
     const approvedAt = status === ProfileStatus.APPROVED ? new Date() : null;
-    const approvedBy = status === ProfileStatus.APPROVED ? adminId : null;
+    const approvedBy = status === ProfileStatus.APPROVED ? String(adminId) : null;
     const reason = status === ProfileStatus.REJECTED ? (rejectedReason || 'Does not meet guidelines') : null;
 
     try {
@@ -343,7 +343,7 @@ export class ProfileService {
         // Use Prisma transaction to ensure consistency
         const updated = await prisma.$transaction(async (tx: any) => {
           const prof = await tx.profile.update({
-            where: { id },
+            where: { id: String(id) },
             data: {
               status,
               isLive,
