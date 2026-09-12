@@ -410,7 +410,8 @@ export const ModelName = {
   PasswordResetRequest: 'PasswordResetRequest',
   ProfileSentLog: 'ProfileSentLog',
   CasteLookup: 'CasteLookup',
-  Shortlist: 'Shortlist'
+  Shortlist: 'Shortlist',
+  OtpVerification: 'OtpVerification'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -426,7 +427,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "profile" | "education" | "family" | "sibling" | "expectations" | "contactApproval" | "nakshatraCompatibility" | "siteSettings" | "adminAuditLog" | "passwordResetRequest" | "profileSentLog" | "casteLookup" | "shortlist"
+    modelProps: "user" | "profile" | "education" | "family" | "sibling" | "expectations" | "contactApproval" | "nakshatraCompatibility" | "siteSettings" | "adminAuditLog" | "passwordResetRequest" | "profileSentLog" | "casteLookup" | "shortlist" | "otpVerification"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1466,6 +1467,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    OtpVerification: {
+      payload: Prisma.$OtpVerificationPayload<ExtArgs>
+      fields: Prisma.OtpVerificationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OtpVerificationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OtpVerificationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OtpVerificationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OtpVerificationPayload>
+        }
+        findFirst: {
+          args: Prisma.OtpVerificationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OtpVerificationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OtpVerificationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OtpVerificationPayload>
+        }
+        findMany: {
+          args: Prisma.OtpVerificationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OtpVerificationPayload>[]
+        }
+        create: {
+          args: Prisma.OtpVerificationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OtpVerificationPayload>
+        }
+        createMany: {
+          args: Prisma.OtpVerificationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.OtpVerificationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OtpVerificationPayload>[]
+        }
+        delete: {
+          args: Prisma.OtpVerificationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OtpVerificationPayload>
+        }
+        update: {
+          args: Prisma.OtpVerificationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OtpVerificationPayload>
+        }
+        deleteMany: {
+          args: Prisma.OtpVerificationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OtpVerificationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.OtpVerificationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OtpVerificationPayload>[]
+        }
+        upsert: {
+          args: Prisma.OtpVerificationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OtpVerificationPayload>
+        }
+        aggregate: {
+          args: Prisma.OtpVerificationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOtpVerification>
+        }
+        groupBy: {
+          args: Prisma.OtpVerificationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OtpVerificationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OtpVerificationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OtpVerificationCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1757,6 +1832,18 @@ export const ShortlistScalarFieldEnum = {
 } as const
 
 export type ShortlistScalarFieldEnum = (typeof ShortlistScalarFieldEnum)[keyof typeof ShortlistScalarFieldEnum]
+
+
+export const OtpVerificationScalarFieldEnum = {
+  id: 'id',
+  phone: 'phone',
+  otp: 'otp',
+  expiresAt: 'expiresAt',
+  verified: 'verified',
+  createdAt: 'createdAt'
+} as const
+
+export type OtpVerificationScalarFieldEnum = (typeof OtpVerificationScalarFieldEnum)[keyof typeof OtpVerificationScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2215,6 +2302,7 @@ export type GlobalOmitConfig = {
   profileSentLog?: Prisma.ProfileSentLogOmit
   casteLookup?: Prisma.CasteLookupOmit
   shortlist?: Prisma.ShortlistOmit
+  otpVerification?: Prisma.OtpVerificationOmit
 }
 
 /* Types for Logging */

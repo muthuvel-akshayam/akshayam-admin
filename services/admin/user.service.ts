@@ -6,7 +6,7 @@ import prisma from '../../lib/admin/db';
 import { logAdminAction } from '../../lib/admin/auth';
 import { AdminUser, UserRole, PaginatedResponse } from '../../types/admin';
 
-let mockUsersState: any[] = null;
+let mockUsersState: any[] | null = null;
 
 function getMockUsers(): any[] {
   if (mockUsersState) return mockUsersState;

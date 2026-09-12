@@ -111,3 +111,8 @@ export type CasteLookup = Prisma.CasteLookupModel
  * 
  */
 export type Shortlist = Prisma.ShortlistModel
+/**
+ * Model OtpVerification
+ * 
+ */
+export type OtpVerification = Prisma.OtpVerificationModel

@@ -64,7 +64,8 @@ export const ModelName = {
   PasswordResetRequest: 'PasswordResetRequest',
   ProfileSentLog: 'ProfileSentLog',
   CasteLookup: 'CasteLookup',
-  Shortlist: 'Shortlist'
+  Shortlist: 'Shortlist',
+  OtpVerification: 'OtpVerification'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -335,6 +336,18 @@ export const ShortlistScalarFieldEnum = {
 } as const
 
 export type ShortlistScalarFieldEnum = (typeof ShortlistScalarFieldEnum)[keyof typeof ShortlistScalarFieldEnum]
+
+
+export const OtpVerificationScalarFieldEnum = {
+  id: 'id',
+  phone: 'phone',
+  otp: 'otp',
+  expiresAt: 'expiresAt',
+  verified: 'verified',
+  createdAt: 'createdAt'
+} as const
+
+export type OtpVerificationScalarFieldEnum = (typeof OtpVerificationScalarFieldEnum)[keyof typeof OtpVerificationScalarFieldEnum]
 
 
 export const SortOrder = {
