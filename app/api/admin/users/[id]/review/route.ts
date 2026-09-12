@@ -87,6 +87,6 @@ export async function POST(
     return NextResponse.json({ success: true, data: { ...updatedUser, profile } });
   } catch (error: any) {
     console.error('API /admin/users/[id]/review POST Error:', error);
-    return NextResponse.json({ success: false, error: error.message || 'Profile review failed.' }, { status: 500 });
+    return NextResponse.json({ success: false, data: null, error: error.message || 'Profile review failed.' });
   }
 }

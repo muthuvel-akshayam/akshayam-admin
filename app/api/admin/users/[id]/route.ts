@@ -41,7 +41,7 @@ export async function GET(
     return NextResponse.json({ success: true, data: user });
   } catch (error: any) {
     console.error('API /admin/users/[id] GET Error:', error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, data: null, error: error.message || 'Database error occurred' });
   }
 }
 
@@ -70,6 +70,6 @@ export async function PATCH(
     return NextResponse.json({ success: true, data: updated });
   } catch (error: any) {
     console.error('API /admin/users/[id] PATCH Error:', error);
-    return NextResponse.json({ success: false, error: error.message || 'Failed to update user ID.' }, { status: 500 });
+    return NextResponse.json({ success: false, data: null, error: error.message || 'Failed to update user ID.' });
   }
 }

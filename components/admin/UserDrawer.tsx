@@ -124,7 +124,7 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
 
   const documents = useMemo(() => {
     const docs = profile ? [
-      ['ஜாதகம்', profile.jathakamUrl], ['சுயவிவரப் படம்', profile.photoUrl], ['ஜாதி சான்றிதழ்', profile.casteCertificateUrl],
+      ['ஜாதகம்', profile?.jathakamUrl], ['சுயவிவரப் படம்', profile?.photoUrl], ['ஜாதி சான்றிதழ்', profile?.casteCertificateUrl], ['அடையாள சான்று', profile?.idProofUrl],
     ].filter((item): item is [string, string] => Boolean(item[1])) : [] as Array<[string, string]>;
     
     if (userData?.paymentScreenshot) {
@@ -214,7 +214,7 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
 
   const handleShare = () => {
     if (!profile) return;
-    const education = userData?.educations?.[0]?.degreeName || 'N/A';
+    const education = profile?.educations?.[0]?.degreeName || 'N/A';
     const kulam = profile.koottam || profile.caste || profile.subCaste || 'N/A';
     const profileUrl = `https://www.akshayamtamilmatrimony.com/profiles/${profile.displayId || profile.userId || profile.id}`;
     const shareText = `பெயர் :${profile.name} படிப்பு :${education} குலம் : ${kulam} - மேலும் விபரங்களுக்கு லிங்க்கை கிளிக் செய்யவும்\n${profileUrl}`;
