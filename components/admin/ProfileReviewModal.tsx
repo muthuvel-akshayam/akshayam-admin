@@ -37,9 +37,9 @@ export interface ProfileReviewModalProps {
   profile: AdminProfile | null;
   isOpen: boolean;
   onClose?: () => void;
-  onநிராகரி?: (profile: AdminProfile) => void;
-  onதிருத்து?: (profile: AdminProfile) => void;
-  onநீக்குd?: (id: number) => void;
+  onReject?: (profile: AdminProfile) => void;
+  onEdit?: (profile: AdminProfile) => void;
+  onDeleted?: (id: number) => void;
   isStandalonePage?: boolean;
 }
 
@@ -47,9 +47,9 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
   profile,
   isOpen,
   onClose,
-  onநிராகரி,
-  onதிருத்து,
-  onநீக்குd,
+  onReject,
+  onEdit,
+  onDeleted,
   isStandalonePage = false,
 }) => {
   const { showToast } = useToast();
@@ -91,7 +91,7 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
       const res = await deleteProfileAction(profileId);
       if (res.success) {
         showToast('சுயவிவரம் வெற்றிகரமாக நீக்கப்பட்டது', 'success');
-        if (onநீக்குd) onநீக்குd(profileId);
+        if (onDeleted) onDeleted(profileId);
         if (!isStandalonePage) onClose?.();
       } else {
         showToast(res.error || 'நீக்குவதில் பிழை', 'error');
@@ -268,7 +268,7 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
               variant="danger"
               size="sm"
               onClick={() => {
-                if (onநிராகரி) onநிராகரி(profile);
+                if (onReject) onReject(profile);
               }}
               leftIcon={
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -280,11 +280,11 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
             </Button>
           )}
 
-          {onதிருத்து && (
+          {onEdit && (
             <Button
               variant="secondary"
               size="sm"
-              onClick={() => onதிருத்து(profile)}
+              onClick={() => onEdit(profile)}
               leftIcon={
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
