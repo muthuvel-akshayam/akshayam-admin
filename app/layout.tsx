@@ -19,7 +19,7 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body className="antialiased bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200">
-        <NextIntlClientProvider messages={messages}>
+        <NextIntlClientProvider locale={locale} messages={messages}>
           {children}
         </NextIntlClientProvider>
       </body>
