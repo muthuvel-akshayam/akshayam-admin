@@ -165,6 +165,7 @@ export default function UsersPageClient() {
             onFilterChange={handleFilterChange}
             onRowClick={(id) => setDrawerUserId(id)}
             currentStatus={filters.status as string}
+            isLoading={loading}
           />
         </div>
       </div>

@@ -27,6 +27,7 @@ export interface UsersTableProps {
   onFilterChange?: (search: string, status: string) => void;
   onRowClick?: (userId: string | number) => void;
   currentStatus?: string;
+  isLoading?: boolean;
 }
 
 export const UsersTable: React.FC<UsersTableProps> = ({
@@ -38,6 +39,7 @@ export const UsersTable: React.FC<UsersTableProps> = ({
   onFilterChange,
   onRowClick,
   currentStatus = 'all',
+  isLoading = false,
 }) => {
   const { showToast } = useToast();
   const [loadingId, setLoadingId] = useState<number | null>(null);
@@ -210,9 +212,48 @@ export const UsersTable: React.FC<UsersTableProps> = ({
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
-            {users.length === 0 ? (
+            {isLoading ? (
+              Array.from({ length: 5 }).map((_, i) => (
+                <tr key={`skeleton-${i}`} className="animate-pulse">
+                  <td className="px-6 py-3.5 whitespace-nowrap">
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-full bg-slate-200 shrink-0"></div>
+                      <div className="h-4 bg-slate-200 rounded w-24"></div>
+                    </div>
+                  </td>
+                  <td className="px-4 py-3.5 whitespace-nowrap">
+                    <div className="h-5 bg-slate-200 rounded w-16"></div>
+                  </td>
+                  <td className="px-4 py-3.5 whitespace-nowrap">
+                    <div className="h-4 bg-slate-200 rounded w-24"></div>
+                  </td>
+                  <td className="px-4 py-3.5 whitespace-nowrap text-center">
+                    <div className="w-9 h-5 bg-slate-200 rounded-full mx-auto"></div>
+                  </td>
+                  <td className="px-4 py-3.5 whitespace-nowrap">
+                    <div className="h-5 bg-slate-200 rounded-full w-14"></div>
+                  </td>
+                  <td className="px-4 py-3.5 whitespace-nowrap">
+                    <div className="h-5 bg-slate-200 rounded-full w-20"></div>
+                  </td>
+                  <td className="px-4 py-3.5 whitespace-nowrap">
+                    <div className="h-4 bg-slate-200 rounded w-20"></div>
+                  </td>
+                  <td className="px-4 py-3.5 whitespace-nowrap text-center">
+                    <div className="w-4 h-4 bg-slate-200 rounded mx-auto"></div>
+                  </td>
+                  <td className="px-6 py-3.5 whitespace-nowrap text-right">
+                    <div className="flex items-center justify-end gap-2">
+                      <div className="h-6 w-20 bg-slate-200 rounded"></div>
+                      <div className="h-6 w-6 bg-slate-200 rounded"></div>
+                      <div className="h-6 w-6 bg-slate-200 rounded"></div>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : users.length === 0 ? (
               <tr>
-                <td colSpan={6} className="px-6 py-12 text-center text-slate-500">
+                <td colSpan={9} className="px-6 py-12 text-center text-slate-500">
                   பதிவு செய்த பயனர்கள் எதுவும் இல்லை.
                 </td>
               </tr>
