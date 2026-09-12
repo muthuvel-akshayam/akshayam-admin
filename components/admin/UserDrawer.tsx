@@ -42,6 +42,7 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
   const [actionLoading, setActionLoading] = useState(false);
   const [reviewReason, setReviewReason] = useState('');
   const [newUserId, setNewUserId] = useState('');
+  const [lastAssignedId, setLastAssignedId] = useState<string | null>(null);
   const [previewDocument, setPreviewDocument] = useState<{ url: string; label: string } | null>(null);
   const [matchTrackingTab, setMatchTrackingTab] = useState<'SENT' | 'NOT_MATCHED' | null>(null);
   const [isFeatured, setIsFeatured] = useState(false);
@@ -54,6 +55,7 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
       setUserData(null);
       setReviewReason('');
       setNewUserId('');
+      setLastAssignedId(null);
       return;
     }
 
@@ -71,6 +73,16 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
       })
       .catch((error) => showToast(error.message, 'error'))
       .finally(() => setLoading(false));
+
+    // Fetch last assigned ID
+    fetch('/api/admin/users/last-id')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.lastId) {
+          setLastAssignedId(data.lastId);
+        }
+      })
+      .catch(console.error);
   }, [isOpen, userId, showToast]);
 
   const profile = userData?.profile;
@@ -355,7 +367,14 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
                   </h3>
                   <p className="text-sm text-slate-500 break-all">{userData.email || 'இல்லை email provided'}</p>
                   <div className="mt-3 grid gap-2 sm:grid-cols-[1fr_auto] items-end">
-                    <label className="text-xs font-semibold uppercase tracking-wide text-slate-400">User ID</label>
+                    <div>
+                      <label className="text-xs font-semibold uppercase tracking-wide text-slate-400">User ID</label>
+                      {lastAssignedId && (
+                        <span className="ml-2 text-xs text-emerald-600 font-medium tracking-wide">
+                          (Last assigned: {lastAssignedId})
+                        </span>
+                      )}
+                    </div>
                     <div className="flex gap-2">
                       <input
                         type="text"
