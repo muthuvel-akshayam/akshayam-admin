@@ -9,9 +9,8 @@ import { PrismaClient } from '../../generated/prisma/client/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import pg from 'pg';
 
-const connectionString = process.env.DATABASE_URL || process.env.DIRECT_URL || '';
-
 const prismaClientSingleton = () => {
+  const connectionString = process.env.DATABASE_URL || process.env.DIRECT_URL || '';
   if (!connectionString) {
     console.warn("DATABASE_URL is not set");
   }

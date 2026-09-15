@@ -285,7 +285,7 @@ export class ProfileService {
         }
       }
     } catch (error) {
-      console.warn('DB query failed in getProfiles, falling back to mock:', error);
+      console.error('DB query failed in getProfiles, falling back to mock:', error);
     }
 
     return {
@@ -300,12 +300,12 @@ export class ProfileService {
   /**
    * Fetches a single profile by ID with all related details
    */
-  static async getProfileById(id: number): Promise<AdminProfile | null> {
+  static async getProfileById(id: string | number): Promise<AdminProfile | null> {
     try {
       const db = prisma as any;
       if (db.profile) {
         const raw = await db.profile.findUnique({
-          where: { id },
+          where: { id: String(id) },
           include: {
             user: { include: { family: { include: { siblings: true } } } },
             educations: true,
@@ -327,7 +327,7 @@ export class ProfileService {
    * - Reject: status=REJECTED, isLive=false, rejectedReason=reason
    */
   static async moderateProfile(
-    id: number,
+    id: string | number,
     status: ProfileStatus,
     adminId: number,
     rejectedReason?: string
@@ -371,11 +371,11 @@ export class ProfileService {
   /**
    * Deletes a profile permanently or marks as inactive
    */
-  static async deleteProfile(id: number, adminId: number): Promise<boolean> {
+  static async deleteProfile(id: string | number, adminId: number | string): Promise<boolean> {
     try {
       const db = prisma as any;
       if (db.profile) {
-        await db.profile.delete({ where: { id } });
+        await db.profile.delete({ where: { id: String(id) } });
         await logAdminAction(adminId, 'DELETE_PROFILE', id);
         return true;
       }
@@ -388,14 +388,14 @@ export class ProfileService {
   /**
    * Restores a deleted profile back to pending status
    */
-  static async restoreProfile(id: number, adminId: number): Promise<AdminProfile> {
+  static async restoreProfile(id: string | number, adminId: number | string): Promise<AdminProfile> {
     return ProfileService.moderateProfile(id, ProfileStatus.PENDING, adminId);
   }
 
   /**
    * Creates a new profile from admin panel with comprehensive details
    */
-  static async createProfile(data: any, adminId: number): Promise<AdminProfile> {
+  static async createProfile(data: any, adminId: number | string): Promise<AdminProfile> {
     try {
       const db = prisma as any;
       if (db.profile) {
@@ -551,7 +551,7 @@ export class ProfileService {
   /**
    * Updates existing profile details
    */
-  static async updateProfile(id: number, data: any, adminId: number): Promise<AdminProfile> {
+  static async updateProfile(id: string | number, data: any, adminId: number | string): Promise<AdminProfile> {
     try {
       const db = prisma as any;
       if (db.profile) {

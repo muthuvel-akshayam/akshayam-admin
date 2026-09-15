@@ -118,7 +118,6 @@ export default function UsersPageClient() {
           </p>
         </div>
         <div className="flex items-center justify-end gap-3 w-full sm:w-auto mt-2 sm:mt-0">
-          <LanguageSwitcher />
           <Button
             variant="primary"
             size="sm"

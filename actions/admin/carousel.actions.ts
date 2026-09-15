@@ -1,6 +1,6 @@
 'use server';
 
-const API_BASE = process.env.NEXT_PUBLIC_MAIN_APP_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+const API_BASE = process.env.NEXT_PUBLIC_MAIN_APP_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
 export async function fetchCarouselItems() {
   try {
@@ -20,7 +20,11 @@ export async function createCarouselItem(payload: any) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
-    if (!res.ok) throw new Error('Failed to create carousel item');
+    if (!res.ok) {
+      const errText = await res.text();
+      console.error('API Error:', res.status, errText);
+      throw new Error(`Failed to create carousel item: ${res.status} ${errText}`);
+    }
     return await res.json();
   } catch (error: any) {
     console.error("createCarouselItem error:", error);

@@ -133,8 +133,8 @@ export const AmazonFiltersSidebar: React.FC<AmazonFiltersSidebarProps> = ({ filt
       `}>
         <div className="flex items-center justify-between mb-4 lg:mb-4 pb-4 border-b border-slate-100 lg:border-none lg:pb-0">
           <h3 className="font-bold text-sm text-slate-900">{'வடிகட்டிகள்'}</h3>
-          <div className="flex items-center gap-3">
-            <button onClick={clearFilters} className="text-xs text-emerald-600 hover:text-emerald-800 hover:underline font-semibold">
+          <div className="flex items-center gap-2">
+            <button onClick={clearFilters} className="text-xs whitespace-nowrap text-emerald-600 hover:text-emerald-800 hover:underline font-semibold">
               {'அனைத்தையும் நீக்கு'}
             </button>
             {/* Mobile Close Button */}
@@ -157,15 +157,15 @@ export const AmazonFiltersSidebar: React.FC<AmazonFiltersSidebarProps> = ({ filt
               placeholder={'குறைந்த'} 
               value={filters.minAge || ''}
               onChange={e => updateFilter('minAge', e.target.value ? Number(e.target.value) : undefined)}
-              className="w-16 px-2 py-1 text-[13px] border border-slate-300 rounded focus:border-emerald-500 focus:outline-none"
+              className="flex-1 min-w-0 px-2 py-1.5 text-[13px] border border-slate-300 rounded focus:border-emerald-500 focus:outline-none"
             />
-            <span className="text-slate-400 text-xs">{'முதல்'}</span>
+            <span className="text-slate-400 text-xs shrink-0">{'முதல்'}</span>
             <input 
               type="number" 
               placeholder={'அதிக'} 
               value={filters.maxAge || ''}
               onChange={e => updateFilter('maxAge', e.target.value ? Number(e.target.value) : undefined)}
-              className="w-16 px-2 py-1 text-[13px] border border-slate-300 rounded focus:border-emerald-500 focus:outline-none"
+              className="flex-1 min-w-0 px-2 py-1.5 text-[13px] border border-slate-300 rounded focus:border-emerald-500 focus:outline-none"
             />
           </div>
         </div>

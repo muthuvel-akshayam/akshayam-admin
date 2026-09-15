@@ -361,11 +361,11 @@ export class UserService {
   /**
    * Deletes a user account permanently
    */
-  static async deleteUser(userId: number, adminId: number): Promise<boolean> {
+  static async deleteUser(userId: string | number, adminId: number | string): Promise<boolean> {
     try {
       const db = prisma as any;
       if (db.user) {
-        await db.user.delete({ where: { id: userId } });
+        await db.user.delete({ where: { id: String(userId) } });
         await logAdminAction(adminId, 'DELETE_USER', userId);
         return true;
       }

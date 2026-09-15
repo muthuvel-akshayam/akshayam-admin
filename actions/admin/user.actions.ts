@@ -198,7 +198,7 @@ export async function togglePaymentAction(
  * Permanently deletes a user and associated data
  */
 export async function deleteUserAction(
-  userId: number
+  userId: string | number
 ): Promise<ServerActionResponse<boolean>> {
   try {
     const session = await requireAdmin();

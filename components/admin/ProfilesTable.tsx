@@ -59,12 +59,12 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
 }) => {
   const router = useRouter();
   const { showToast } = useToast();
-  const [loadingId, setLoadingId] = useState<number | null>(null);
+  const [loadingId, setLoadingId] = useState<string | number | null>(null);
   const [deleteConfirmProfile, setDeleteConfirmProfile] = useState<AdminProfile | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleApprove = async (profile: AdminProfile) => {
-    const profileId = Number(profile.id);
+    const profileId = profile.id;
     setLoadingId(profileId);
     try {
       const res = await approveProfileAction(profileId);
@@ -83,7 +83,7 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
 
   const handleDelete = async () => {
     if (!deleteConfirmProfile) return;
-    const profileId = Number(deleteConfirmProfile.id);
+    const profileId = deleteConfirmProfile.id;
     setLoadingId(profileId);
     try {
       const res = await removeAfterMatchAction(profileId);
@@ -102,7 +102,7 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
   };
 
   const handleRestore = async (profile: AdminProfile) => {
-    const profileId = Number(profile.id);
+    const profileId = profile.id;
     setLoadingId(profileId);
     try {
       const res = await restoreProfileAction(profileId);
@@ -121,7 +121,7 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
 
   const handleFindMatchesRow = async (e: React.MouseEvent, profile: AdminProfile) => {
     e.stopPropagation();
-    const profileId = Number(profile.id);
+    const profileId = profile.id;
     setLoadingId(profileId);
     try {
       const oppositeGender = profile.gender === 'MALE' ? 'FEMALE' : 'MALE';

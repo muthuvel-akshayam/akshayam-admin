@@ -23,7 +23,7 @@ import {
  * Approves a pending profile and makes it live for public search
  */
 export async function approveProfileAction(
-  id: number,
+  id: string | number,
   newUserId?: string
 ): Promise<ServerActionResponse<AdminProfile>> {
   try {
@@ -67,7 +67,7 @@ export async function approveProfileAction(
  * Rejects a profile with a specified reason
  */
 export async function rejectProfileAction(
-  id: number,
+  id: string | number,
   reason: string
 ): Promise<ServerActionResponse<AdminProfile>> {
   try {
@@ -103,7 +103,7 @@ export async function rejectProfileAction(
  * Permanently deletes or deactivates a profile
  */
 export async function deleteProfileAction(
-  id: number
+  id: string | number
 ): Promise<ServerActionResponse<boolean>> {
   try {
     const session = await requireAdmin();
@@ -127,7 +127,7 @@ export async function deleteProfileAction(
  * Marks a profile as MATCHED_REMOVED
  */
 export async function removeAfterMatchAction(
-  id: number
+  id: string | number
 ): Promise<ServerActionResponse<AdminProfile>> {
   try {
     const session = await requireAdmin();
@@ -155,7 +155,7 @@ export async function removeAfterMatchAction(
  * Restores a rejected profile back to pending queue
  */
 export async function restoreProfileAction(
-  id: number
+  id: string | number
 ): Promise<ServerActionResponse<AdminProfile>> {
   try {
     const session = await requireAdmin();
@@ -234,7 +234,7 @@ export async function createProfileAction(
  * Admin updates existing profile details
  */
 export async function editProfileAction(
-  id: number,
+  id: string | number,
   formData: any
 ): Promise<ServerActionResponse<AdminProfile>> {
   try {

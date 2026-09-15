@@ -42,7 +42,7 @@ export const UsersTable: React.FC<UsersTableProps> = ({
   isLoading = false,
 }) => {
   const { showToast } = useToast();
-  const [loadingId, setLoadingId] = useState<number | null>(null);
+  const [loadingId, setLoadingId] = useState<string | number | null>(null);
   const [deleteConfirmUser, setDeleteConfirmUser] = useState<AdminUser | null>(null);
   const [resetPasswordUser, setResetPasswordUser] = useState<AdminUser | null>(null);
   const [newPassword, setNewPassword] = useState('');
@@ -50,7 +50,7 @@ export const UsersTable: React.FC<UsersTableProps> = ({
 
   const handleStatusToggle = async (e: React.MouseEvent, user: AdminUser) => {
     e.stopPropagation();
-    const userId = Number(user.id);
+    const userId = String(user.id);
     setLoadingId(userId);
     try {
       const isSuspended = user.status === 'SUSPENDED';
@@ -68,7 +68,7 @@ export const UsersTable: React.FC<UsersTableProps> = ({
   const handleFeaturedToggle = async (e: React.ChangeEvent<HTMLInputElement>, user: AdminUser) => {
     e.stopPropagation();
     const isFeatured = e.target.checked;
-    setLoadingId(Number(user.id));
+    setLoadingId(String(user.id));
     try {
       const res = await toggleUserFeaturedAction(user.id, isFeatured);
       if (res.success) {
@@ -88,7 +88,7 @@ export const UsersTable: React.FC<UsersTableProps> = ({
   const handlePaymentToggle = async (e: React.ChangeEvent<HTMLInputElement>, user: AdminUser) => {
     e.stopPropagation();
     const isPaid = e.target.checked;
-    setLoadingId(Number(user.id));
+    setLoadingId(String(user.id));
     try {
       const res = await togglePaymentAction(user.id, isPaid);
       if (res.success) {
@@ -108,15 +108,16 @@ export const UsersTable: React.FC<UsersTableProps> = ({
 
   const handleDelete = async () => {
     if (!deleteConfirmUser) return;
-    const userId = Number(deleteConfirmUser.id);
+    const userId = String(deleteConfirmUser.id);
     setLoadingId(userId);
     try {
-      if (deleteConfirmUser.profileId) {
-        const res = await removeAfterMatchAction(deleteConfirmUser.profileId);
+      let res;
+      if (deleteConfirmUser.profileId && currentStatus !== 'matched_removed') {
+        res = await removeAfterMatchAction(deleteConfirmUser.profileId);
         if (res.success) showToast('பயனர் பொருத்தப்பட்டதாகக் குறிக்கப்பட்டு நீக்கப்பட்டார்', 'success');
         else showToast(res.error || 'பயனரை நீக்குவதில் பிழை', 'error');
       } else {
-        const res = await deleteUserAction(deleteConfirmUser.id as number);
+        res = await deleteUserAction(userId);
         if (res.success) showToast('பயனர் கணக்கு நிரந்தரமாக நீக்கப்பட்டது', 'success');
         else showToast(res.error || 'பயனரை நீக்குவதில் பிழை', 'error');
       }
@@ -137,7 +138,7 @@ export const UsersTable: React.FC<UsersTableProps> = ({
       return;
     }
 
-    const userId = Number(resetPasswordUser.id);
+    const userId = String(resetPasswordUser.id);
     setLoadingId(userId);
     try {
       const res = await updateUserPasswordAction(resetPasswordUser.id, newPassword);
@@ -357,7 +358,7 @@ export const UsersTable: React.FC<UsersTableProps> = ({
                           onClick={(e) => { e.stopPropagation(); setDeleteConfirmUser(user); }}
                           disabled={loadingId === user.id}
                           className="p-1.5 rounded-lg text-rose-600 hover:bg-rose-50 transition-colors"
-                          title={user.profileId ? "பொருத்தத்திற்குப் பிறகு நீக்கு" : "கணக்கை நீக்கு"}
+                          title={user.profileId && currentStatus !== 'matched_removed' ? "பொருத்தத்திற்குப் பிறகு நீக்கு" : "கணக்கை நீக்கு"}
                         >
                           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -385,9 +386,9 @@ export const UsersTable: React.FC<UsersTableProps> = ({
         isOpen={!!deleteConfirmUser}
         onClose={() => setDeleteConfirmUser(null)}
         onConfirm={handleDelete}
-        title={deleteConfirmUser?.profileId ? "பொருத்தத்திற்குப் பிறகு நீக்கவா?" : "பயனர் கணக்கை நீக்கவா?"}
-        message={deleteConfirmUser?.profileId ? `${deleteConfirmUser?.name} அவர்களுக்கு பொருத்தம் கிடைத்துவிட்டதாக குறிக்க மற்றும் தேடலில் இருந்து நீக்க விரும்புகிறீர்களா?` : `${deleteConfirmUser?.name} கணக்கை நீக்கவா?`}
-        confirmText={deleteConfirmUser?.profileId ? "பொருத்தத்திற்குப் பிறகு நீக்கு" : "கணக்கை நீக்கு"}
+        title={deleteConfirmUser?.profileId && currentStatus !== 'matched_removed' ? "பொருத்தத்திற்குப் பிறகு நீக்கவா?" : "பயனர் கணக்கை நீக்கவா?"}
+        message={deleteConfirmUser?.profileId && currentStatus !== 'matched_removed' ? `${deleteConfirmUser?.name} அவர்களுக்கு பொருத்தம் கிடைத்துவிட்டதாக குறிக்க மற்றும் தேடலில் இருந்து நீக்க விரும்புகிறீர்களா?` : `${deleteConfirmUser?.name} கணக்கை நீக்கவா?`}
+        confirmText={deleteConfirmUser?.profileId && currentStatus !== 'matched_removed' ? "பொருத்தத்திற்குப் பிறகு நீக்கு" : "கணக்கை நீக்கு"}
         variant="danger"
         isLoading={!!loadingId}
       />

@@ -314,8 +314,8 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase mb-1">{t('labels.tob')}</label>
             <div className="flex gap-2">
-              <input type="text" placeholder="HH:MM" value={formData.timeOfBirth} onChange={(e) => handleTimeInput(e.target.value)} className="flex-1 p-2.5 rounded-xl border border-slate-300 bg-white focus:border-emerald-600 focus:outline-none" />
-              <select value={formData.timeOfBirthAMPM} onChange={(e) => updateForm('timeOfBirthAMPM', e.target.value)} className="w-24 p-2.5 rounded-xl border border-slate-300 bg-white focus:border-emerald-600 focus:outline-none text-center">
+              <input type="text" placeholder="HH:MM" value={formData.timeOfBirth} onChange={(e) => handleTimeInput(e.target.value)} className="flex-1 min-w-0 p-2.5 rounded-xl border border-slate-300 bg-white focus:border-emerald-600 focus:outline-none" />
+              <select value={formData.timeOfBirthAMPM} onChange={(e) => updateForm('timeOfBirthAMPM', e.target.value)} className="w-20 sm:w-24 p-2.5 rounded-xl border border-slate-300 bg-white focus:border-emerald-600 focus:outline-none text-center">
                 <option value="AM">AM</option>
                 <option value="PM">PM</option>
               </select>
@@ -377,7 +377,7 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
                 <input type="text" placeholder="e.g. 2022" value={formData.yearOfDivorce} onChange={(e) => updateForm('yearOfDivorce', e.target.value)} className="w-full p-2.5 rounded-xl border border-slate-300 bg-white focus:border-emerald-600 focus:outline-none" />
               </div>
             )}
-            <div>
+            <div className={formData.maritalStatus !== 'DIVORCED' ? 'sm:col-span-2' : ''}>
               <label className="block text-xs font-bold text-slate-700 uppercase mb-1">{t('labels.haveChildren')}</label>
               <select value={formData.haveChildren} onChange={(e) => updateForm('haveChildren', e.target.value)} className="w-full p-2.5 rounded-xl border border-slate-300 bg-white focus:border-emerald-600 focus:outline-none">
                 <option value="No">{t('options.No')}</option>
@@ -385,7 +385,7 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
               </select>
             </div>
             {formData.haveChildren === 'Yes' && (
-              <>
+              <div className="sm:col-span-3 grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 border-t border-slate-200 mt-2">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 uppercase mb-1">{t('labels.numberOfChildren')}</label>
                   <input type="number" placeholder="e.g. 1" value={formData.numberOfChildren} onChange={(e) => updateForm('numberOfChildren', e.target.value)} className="w-full p-2.5 rounded-xl border border-slate-300 bg-white focus:border-emerald-600 focus:outline-none" />
@@ -403,7 +403,7 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
                   <label className="block text-xs font-bold text-slate-700 uppercase mb-1">{t('labels.childrenAge')}</label>
                   <input type="text" placeholder="e.g. 5 years" value={formData.childrenAge} onChange={(e) => updateForm('childrenAge', e.target.value)} className="w-full p-2.5 rounded-xl border border-slate-300 bg-white focus:border-emerald-600 focus:outline-none" />
                 </div>
-              </>
+              </div>
             )}
           </div>
         </div>
@@ -751,24 +751,26 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
       <div>
         <h3 className="text-md font-bold text-slate-800 mb-3 border-b pb-1">{t('labels.propertyLocExp')}</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="flex items-center gap-2">
-            <input type="checkbox" id="exRent" checked={formData.expectsRentalIncome} onChange={(e) => updateForm('expectsRentalIncome', e.target.checked)} className="w-4 h-4" />
-            <label htmlFor="exRent" className="text-sm font-bold text-slate-700">{t('labels.expRental')}</label>
-          </div>
-          <div className="flex items-center gap-2">
-            <input type="checkbox" id="exThot" checked={formData.expectsThottam} onChange={(e) => updateForm('expectsThottam', e.target.checked)} className="w-4 h-4" />
-            <label htmlFor="exThot" className="text-sm font-bold text-slate-700">{t('labels.expThottam')}</label>
-          </div>
-          <div className="flex items-center gap-2">
-            <input type="checkbox" id="exVac" checked={formData.expectsVacantLand} onChange={(e) => updateForm('expectsVacantLand', e.target.checked)} className="w-4 h-4" />
-            <label htmlFor="exVac" className="text-sm font-bold text-slate-700">{t('labels.expVacant')}</label>
-          </div>
-          {['DIVORCED', 'WIDOWED', 'AWAITING_DIVORCE'].includes(formData.maritalStatus) && (
+          <div className="sm:col-span-2 flex flex-wrap items-center gap-6 mb-2">
             <div className="flex items-center gap-2">
-              <input type="checkbox" id="acDiv" checked={formData.acceptsDivorced} onChange={(e) => updateForm('acceptsDivorced', e.target.checked)} className="w-4 h-4" />
-              <label htmlFor="acDiv" className="text-sm font-bold text-slate-700 text-red-600">{t('labels.acceptDivorced')}</label>
+              <input type="checkbox" id="exRent" checked={formData.expectsRentalIncome} onChange={(e) => updateForm('expectsRentalIncome', e.target.checked)} className="w-4 h-4" />
+              <label htmlFor="exRent" className="text-sm font-bold text-slate-700">{t('labels.expRental')}</label>
             </div>
-          )}
+            <div className="flex items-center gap-2">
+              <input type="checkbox" id="exThot" checked={formData.expectsThottam} onChange={(e) => updateForm('expectsThottam', e.target.checked)} className="w-4 h-4" />
+              <label htmlFor="exThot" className="text-sm font-bold text-slate-700">{t('labels.expThottam')}</label>
+            </div>
+            <div className="flex items-center gap-2">
+              <input type="checkbox" id="exVac" checked={formData.expectsVacantLand} onChange={(e) => updateForm('expectsVacantLand', e.target.checked)} className="w-4 h-4" />
+              <label htmlFor="exVac" className="text-sm font-bold text-slate-700">{t('labels.expVacant')}</label>
+            </div>
+            {['DIVORCED', 'WIDOWED', 'AWAITING_DIVORCE'].includes(formData.maritalStatus) && (
+              <div className="flex items-center gap-2">
+                <input type="checkbox" id="acDiv" checked={formData.acceptsDivorced} onChange={(e) => updateForm('acceptsDivorced', e.target.checked)} className="w-4 h-4" />
+                <label htmlFor="acDiv" className="text-sm font-bold text-slate-700 text-red-600">{t('labels.acceptDivorced')}</label>
+              </div>
+            )}
+          </div>
           
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase mb-1">{t('labels.distancePref')}</label>

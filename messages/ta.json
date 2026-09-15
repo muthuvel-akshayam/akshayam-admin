@@ -8,7 +8,9 @@
     "nakshatraCompatibility": "நட்சத்திர பொருத்தம் (Nakshatra Compatibility)",
     "analytics": "பகுப்பாய்வு (Analytics)",
     "carousel": "முகப்பு படங்கள் (Carousel)",
-    "settings": "அமைப்புகள் (Settings)"
+    "settings": "அமைப்புகள்",
+    "admin": "நிர்வாகி (Admin)",
+    "logout": "வெளியேறு"
   },
   "LanguageSwitcher": {
     "toggleLanguage": "ஆங்கிலத்திற்கு மாற்று",

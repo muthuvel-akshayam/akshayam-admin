@@ -8,7 +8,9 @@
     "nakshatraCompatibility": "Nakshatra Compatibility",
     "analytics": "Analytics",
     "carousel": "Carousel",
-    "settings": "Settings"
+    "settings": "Settings",
+    "admin": "Admin",
+    "logout": "Logout"
   },
   "LanguageSwitcher": {
     "toggleLanguage": "Switch to Tamil",
