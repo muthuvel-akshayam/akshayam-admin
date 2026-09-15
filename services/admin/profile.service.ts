@@ -203,6 +203,17 @@ export class ProfileService {
       const sortField = filters.sortBy === 'name' ? 'name' : filters.sortBy === 'age' ? 'age' : 'id';
       const sortOrder = filters.sortOrder || 'desc';
 
+      let prismaOrderBy: any;
+      if (sortField === 'name') {
+        prismaOrderBy = { name: sortOrder };
+      } else if (sortField === 'age') {
+        // older dob = higher age, so age desc = dob asc
+        prismaOrderBy = { dob: sortOrder === 'desc' ? 'asc' : 'desc' };
+      } else {
+        // Default: Sort by latest registered
+        prismaOrderBy = { user: { createdAt: sortOrder } };
+      }
+
       if (db.profile) {
         // Handle in-memory filtering for text-based financial fields if they are requested
         const requiresMemoryFilter = !!(filters.propertyValue || filters.minPavan || filters.maxPavan);
@@ -214,7 +225,7 @@ export class ProfileService {
           // Fetch all matching basic where clause to filter in memory
           const allMatching = await db.profile.findMany({
             where,
-            orderBy: { [sortField]: sortOrder },
+            orderBy: prismaOrderBy,
             include: {
               user: { include: { family: { include: { siblings: true } } } },
               educations: true,
@@ -264,7 +275,7 @@ export class ProfileService {
               where,
               skip,
               take: limit,
-              orderBy: { [sortField]: sortOrder },
+              orderBy: prismaOrderBy,
               include: {
                 user: { include: { family: { include: { siblings: true } } } },
                 educations: true,
