@@ -203,6 +203,7 @@ model SiteSettings {
   maxDocSizeMb          Int      @default(10)
   featuredProfilesLimit Int      @default(12)
   maintenanceMode       Boolean  @default(false)
+  latestUserId          String?
   updatedAt             DateTime @updatedAt
 }
 

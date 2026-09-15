@@ -180,6 +180,7 @@ export interface SiteSettingsData {
   maxDocSizeMb: number;
   featuredProfilesLimit: number;
   maintenanceMode: boolean;
+  latestUserId?: string | null;
   siteTitle?: string;
   contactEmail?: string;
   defaultApprovalStatus?: string;

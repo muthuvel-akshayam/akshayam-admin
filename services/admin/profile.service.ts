@@ -542,6 +542,7 @@ export class ProfileService {
             childrenAge: data.childrenAge || undefined,
             photoUrl: data.photoUrl || undefined,
             jathakamUrl: data.jathakamUrl || undefined,
+            profileCreatedBy: 'Admin',
           },
           include: {
             user: { include: { family: { include: { siblings: true } }, expectations: true } },

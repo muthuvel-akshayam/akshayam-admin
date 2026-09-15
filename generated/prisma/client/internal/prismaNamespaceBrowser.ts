@@ -275,6 +275,7 @@ export const SiteSettingsScalarFieldEnum = {
   maxDocSizeMb: 'maxDocSizeMb',
   featuredProfilesLimit: 'featuredProfilesLimit',
   maintenanceMode: 'maintenanceMode',
+  latestUserId: 'latestUserId',
   updatedAt: 'updatedAt'
 } as const
 

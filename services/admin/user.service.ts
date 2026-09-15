@@ -387,6 +387,7 @@ export class UserService {
       status: raw.status || 'ACTIVE',
       registeredDate: raw.createdAt || raw.registeredDate || new Date().toISOString(),
       profileId: raw.profile?.id || raw.profileId,
+      profileCreatedBy: raw.profile?.profileCreatedBy,
       isFeatured: raw.isFeatured || false,
       paymentScreenshot: raw.paymentScreenshot,
       paymentDone: raw.paymentDone || false,

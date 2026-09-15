@@ -47,6 +47,7 @@ export class SettingsService {
             featuredProfilesLimit:
               data.featuredProfilesLimit !== undefined ? Number(data.featuredProfilesLimit) : undefined,
             maintenanceMode: data.maintenanceMode !== undefined ? Boolean(data.maintenanceMode) : undefined,
+            latestUserId: data.latestUserId !== undefined ? data.latestUserId : undefined,
           },
           create: {
             id: 'default_settings',
@@ -58,6 +59,7 @@ export class SettingsService {
               data.featuredProfilesLimit || DEFAULT_SITE_SETTINGS.featuredProfilesLimit
             ),
             maintenanceMode: Boolean(data.maintenanceMode ?? DEFAULT_SITE_SETTINGS.maintenanceMode),
+            latestUserId: data.latestUserId || null,
           },
         });
 

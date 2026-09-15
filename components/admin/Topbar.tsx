@@ -8,6 +8,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useToast } from './ui/Toast';
 import { getUnreadPasswordResetRequestsCount, getPasswordResetRequests } from '../../actions/admin/passwordReset.actions';
+import { loadSettingsAction, updateSettingsAction } from '../../actions/admin/settings.actions';
 import LanguageSwitcher from './LanguageSwitcher';
 import { useTranslations } from 'next-intl';
 
@@ -27,14 +28,44 @@ export const Topbar: React.FC<TopbarProps> = ({
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const [resetRequests, setResetRequests] = useState<any[]>([]);
+  const [latestUserId, setLatestUserId] = useState('');
+  const [isSavingUserId, setIsSavingUserId] = useState(false);
   
   const t = useTranslations('Navigation');
 
   useEffect(() => {
+    fetchSettings();
     fetchNotifications();
     const interval = setInterval(fetchNotifications, 60000); // Polling every minute
     return () => clearInterval(interval);
   }, []);
+
+  const fetchSettings = async () => {
+    try {
+      const res = await loadSettingsAction();
+      if (res.success && res.data?.latestUserId) {
+        setLatestUserId(res.data.latestUserId);
+      }
+    } catch (err) {
+      console.error('Failed to fetch settings', err);
+    }
+  };
+
+  const handleLatestUserIdBlur = async () => {
+    setIsSavingUserId(true);
+    try {
+      const res = await updateSettingsAction({ latestUserId });
+      if (res.success) {
+        showToast('Latest User ID saved', 'success');
+      } else {
+        showToast(res.error || 'Failed to save', 'error');
+      }
+    } catch (err) {
+      showToast('Error saving Latest User ID', 'error');
+    } finally {
+      setIsSavingUserId(false);
+    }
+  };
 
   const fetchNotifications = async () => {
     try {
@@ -171,6 +202,32 @@ export const Topbar: React.FC<TopbarProps> = ({
               </div>
             </div>
           )}
+        </div>
+
+        {/* Latest User ID Tracker */}
+        <div className="hidden sm:flex items-center gap-2 mr-2">
+          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider whitespace-nowrap">
+            Latest ID:
+          </label>
+          <div className="relative">
+            <input
+              type="text"
+              value={latestUserId}
+              onChange={(e) => setLatestUserId(e.target.value)}
+              onBlur={handleLatestUserIdBlur}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.currentTarget.blur();
+                }
+              }}
+              disabled={isSavingUserId}
+              placeholder="e.g. AK100"
+              className="w-24 bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all disabled:opacity-50"
+            />
+            {isSavingUserId && (
+              <div className="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+            )}
+          </div>
         </div>
 
         {/* Language Switcher */}

@@ -50,6 +50,7 @@ export type SiteSettingsMinAggregateOutputType = {
   maxDocSizeMb: number | null
   featuredProfilesLimit: number | null
   maintenanceMode: boolean | null
+  latestUserId: string | null
   updatedAt: Date | null
 }
 
@@ -61,6 +62,7 @@ export type SiteSettingsMaxAggregateOutputType = {
   maxDocSizeMb: number | null
   featuredProfilesLimit: number | null
   maintenanceMode: boolean | null
+  latestUserId: string | null
   updatedAt: Date | null
 }
 
@@ -72,6 +74,7 @@ export type SiteSettingsCountAggregateOutputType = {
   maxDocSizeMb: number
   featuredProfilesLimit: number
   maintenanceMode: number
+  latestUserId: number
   updatedAt: number
   _all: number
 }
@@ -101,6 +104,7 @@ export type SiteSettingsMinAggregateInputType = {
   maxDocSizeMb?: true
   featuredProfilesLimit?: true
   maintenanceMode?: true
+  latestUserId?: true
   updatedAt?: true
 }
 
@@ -112,6 +116,7 @@ export type SiteSettingsMaxAggregateInputType = {
   maxDocSizeMb?: true
   featuredProfilesLimit?: true
   maintenanceMode?: true
+  latestUserId?: true
   updatedAt?: true
 }
 
@@ -123,6 +128,7 @@ export type SiteSettingsCountAggregateInputType = {
   maxDocSizeMb?: true
   featuredProfilesLimit?: true
   maintenanceMode?: true
+  latestUserId?: true
   updatedAt?: true
   _all?: true
 }
@@ -221,6 +227,7 @@ export type SiteSettingsGroupByOutputType = {
   maxDocSizeMb: number
   featuredProfilesLimit: number
   maintenanceMode: boolean
+  latestUserId: string | null
   updatedAt: Date
   _count: SiteSettingsCountAggregateOutputType | null
   _avg: SiteSettingsAvgAggregateOutputType | null
@@ -255,6 +262,7 @@ export type SiteSettingsWhereInput = {
   maxDocSizeMb?: Prisma.IntFilter<"SiteSettings"> | number
   featuredProfilesLimit?: Prisma.IntFilter<"SiteSettings"> | number
   maintenanceMode?: Prisma.BoolFilter<"SiteSettings"> | boolean
+  latestUserId?: Prisma.StringNullableFilter<"SiteSettings"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"SiteSettings"> | Date | string
 }
 
@@ -266,6 +274,7 @@ export type SiteSettingsOrderByWithRelationInput = {
   maxDocSizeMb?: Prisma.SortOrder
   featuredProfilesLimit?: Prisma.SortOrder
   maintenanceMode?: Prisma.SortOrder
+  latestUserId?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -280,6 +289,7 @@ export type SiteSettingsWhereUniqueInput = Prisma.AtLeast<{
   maxDocSizeMb?: Prisma.IntFilter<"SiteSettings"> | number
   featuredProfilesLimit?: Prisma.IntFilter<"SiteSettings"> | number
   maintenanceMode?: Prisma.BoolFilter<"SiteSettings"> | boolean
+  latestUserId?: Prisma.StringNullableFilter<"SiteSettings"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"SiteSettings"> | Date | string
 }, "id">
 
@@ -291,6 +301,7 @@ export type SiteSettingsOrderByWithAggregationInput = {
   maxDocSizeMb?: Prisma.SortOrder
   featuredProfilesLimit?: Prisma.SortOrder
   maintenanceMode?: Prisma.SortOrder
+  latestUserId?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.SiteSettingsCountOrderByAggregateInput
   _avg?: Prisma.SiteSettingsAvgOrderByAggregateInput
@@ -310,6 +321,7 @@ export type SiteSettingsScalarWhereWithAggregatesInput = {
   maxDocSizeMb?: Prisma.IntWithAggregatesFilter<"SiteSettings"> | number
   featuredProfilesLimit?: Prisma.IntWithAggregatesFilter<"SiteSettings"> | number
   maintenanceMode?: Prisma.BoolWithAggregatesFilter<"SiteSettings"> | boolean
+  latestUserId?: Prisma.StringNullableWithAggregatesFilter<"SiteSettings"> | string | null
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"SiteSettings"> | Date | string
 }
 
@@ -321,6 +333,7 @@ export type SiteSettingsCreateInput = {
   maxDocSizeMb?: number
   featuredProfilesLimit?: number
   maintenanceMode?: boolean
+  latestUserId?: string | null
   updatedAt?: Date | string
 }
 
@@ -332,6 +345,7 @@ export type SiteSettingsUncheckedCreateInput = {
   maxDocSizeMb?: number
   featuredProfilesLimit?: number
   maintenanceMode?: boolean
+  latestUserId?: string | null
   updatedAt?: Date | string
 }
 
@@ -343,6 +357,7 @@ export type SiteSettingsUpdateInput = {
   maxDocSizeMb?: Prisma.IntFieldUpdateOperationsInput | number
   featuredProfilesLimit?: Prisma.IntFieldUpdateOperationsInput | number
   maintenanceMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  latestUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -354,6 +369,7 @@ export type SiteSettingsUncheckedUpdateInput = {
   maxDocSizeMb?: Prisma.IntFieldUpdateOperationsInput | number
   featuredProfilesLimit?: Prisma.IntFieldUpdateOperationsInput | number
   maintenanceMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  latestUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -365,6 +381,7 @@ export type SiteSettingsCreateManyInput = {
   maxDocSizeMb?: number
   featuredProfilesLimit?: number
   maintenanceMode?: boolean
+  latestUserId?: string | null
   updatedAt?: Date | string
 }
 
@@ -376,6 +393,7 @@ export type SiteSettingsUpdateManyMutationInput = {
   maxDocSizeMb?: Prisma.IntFieldUpdateOperationsInput | number
   featuredProfilesLimit?: Prisma.IntFieldUpdateOperationsInput | number
   maintenanceMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  latestUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -387,6 +405,7 @@ export type SiteSettingsUncheckedUpdateManyInput = {
   maxDocSizeMb?: Prisma.IntFieldUpdateOperationsInput | number
   featuredProfilesLimit?: Prisma.IntFieldUpdateOperationsInput | number
   maintenanceMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  latestUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -398,6 +417,7 @@ export type SiteSettingsCountOrderByAggregateInput = {
   maxDocSizeMb?: Prisma.SortOrder
   featuredProfilesLimit?: Prisma.SortOrder
   maintenanceMode?: Prisma.SortOrder
+  latestUserId?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -417,6 +437,7 @@ export type SiteSettingsMaxOrderByAggregateInput = {
   maxDocSizeMb?: Prisma.SortOrder
   featuredProfilesLimit?: Prisma.SortOrder
   maintenanceMode?: Prisma.SortOrder
+  latestUserId?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -428,6 +449,7 @@ export type SiteSettingsMinOrderByAggregateInput = {
   maxDocSizeMb?: Prisma.SortOrder
   featuredProfilesLimit?: Prisma.SortOrder
   maintenanceMode?: Prisma.SortOrder
+  latestUserId?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -449,6 +471,7 @@ export type SiteSettingsSelect<ExtArgs extends runtime.Types.Extensions.Internal
   maxDocSizeMb?: boolean
   featuredProfilesLimit?: boolean
   maintenanceMode?: boolean
+  latestUserId?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["siteSettings"]>
 
@@ -460,6 +483,7 @@ export type SiteSettingsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   maxDocSizeMb?: boolean
   featuredProfilesLimit?: boolean
   maintenanceMode?: boolean
+  latestUserId?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["siteSettings"]>
 
@@ -471,6 +495,7 @@ export type SiteSettingsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   maxDocSizeMb?: boolean
   featuredProfilesLimit?: boolean
   maintenanceMode?: boolean
+  latestUserId?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["siteSettings"]>
 
@@ -482,10 +507,11 @@ export type SiteSettingsSelectScalar = {
   maxDocSizeMb?: boolean
   featuredProfilesLimit?: boolean
   maintenanceMode?: boolean
+  latestUserId?: boolean
   updatedAt?: boolean
 }
 
-export type SiteSettingsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "minMaleAge" | "minFemaleAge" | "maxPhotoSizeMb" | "maxDocSizeMb" | "featuredProfilesLimit" | "maintenanceMode" | "updatedAt", ExtArgs["result"]["siteSettings"]>
+export type SiteSettingsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "minMaleAge" | "minFemaleAge" | "maxPhotoSizeMb" | "maxDocSizeMb" | "featuredProfilesLimit" | "maintenanceMode" | "latestUserId" | "updatedAt", ExtArgs["result"]["siteSettings"]>
 
 export type $SiteSettingsPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "SiteSettings"
@@ -498,6 +524,7 @@ export type $SiteSettingsPayload<ExtArgs extends runtime.Types.Extensions.Intern
     maxDocSizeMb: number
     featuredProfilesLimit: number
     maintenanceMode: boolean
+    latestUserId: string | null
     updatedAt: Date
   }, ExtArgs["result"]["siteSettings"]>
   composites: {}
@@ -929,6 +956,7 @@ export interface SiteSettingsFieldRefs {
   readonly maxDocSizeMb: Prisma.FieldRef<"SiteSettings", 'Int'>
   readonly featuredProfilesLimit: Prisma.FieldRef<"SiteSettings", 'Int'>
   readonly maintenanceMode: Prisma.FieldRef<"SiteSettings", 'Boolean'>
+  readonly latestUserId: Prisma.FieldRef<"SiteSettings", 'String'>
   readonly updatedAt: Prisma.FieldRef<"SiteSettings", 'DateTime'>
 }
     
