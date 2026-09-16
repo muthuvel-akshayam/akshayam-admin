@@ -16,7 +16,7 @@ const prismaClientSingleton = () => {
   }
   const pool = new pg.Pool({ 
     connectionString,
-    max: 5, // Limit connections per hot-reload to prevent exhaustion
+    max: process.env.NODE_ENV === 'production' ? 1 : 2, // Limit connections per hot-reload to prevent exhaustion
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 5000,
   });
