@@ -178,7 +178,7 @@ export class UserService {
   /**
    * Promotes or demotes user role (Make Admin / Remove Admin)
    */
-  static async updateUserRole(userId: number, role: UserRole, adminId: number): Promise<AdminUser> {
+  static async updateUserRole(userId: string | number, role: UserRole, adminId: string | number): Promise<AdminUser> {
     try {
       const db = prisma as any;
       if (db.user) {

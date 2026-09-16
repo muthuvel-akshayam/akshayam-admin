@@ -340,7 +340,7 @@ export class ProfileService {
   static async moderateProfile(
     id: string | number,
     status: ProfileStatus,
-    adminId: number,
+    adminId: string | number,
     rejectedReason?: string
   ): Promise<AdminProfile> {
     const isLive = status === ProfileStatus.APPROVED;

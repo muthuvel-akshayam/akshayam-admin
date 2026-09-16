@@ -32,7 +32,7 @@ export async function fetchUsersAction(
  * Promotes a standard user to ADMIN role
  */
 export async function makeAdminAction(
-  userId: number
+  userId: string | number
 ): Promise<ServerActionResponse<AdminUser>> {
   try {
     const session = await requireAdmin();
@@ -57,7 +57,7 @@ export async function makeAdminAction(
  * Removes ADMIN role and downgrades to standard USER
  */
 export async function removeAdminAction(
-  userId: number
+  userId: string | number
 ): Promise<ServerActionResponse<AdminUser>> {
   try {
     const session = await requireAdmin();
@@ -82,7 +82,7 @@ export async function removeAdminAction(
  * Suspends user account, preventing login and hiding profile
  */
 export async function suspendUserAction(
-  userId: number
+  userId: string | number
 ): Promise<ServerActionResponse<AdminUser>> {
   try {
     const session = await requireAdmin();
@@ -108,7 +108,7 @@ export async function suspendUserAction(
  * Activates a suspended user account
  */
 export async function activateUserAction(
-  userId: number
+  userId: string | number
 ): Promise<ServerActionResponse<AdminUser>> {
   try {
     const session = await requireAdmin();
