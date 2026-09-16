@@ -30,6 +30,9 @@
     "xlsx": "^0.18.5",
     "zod": "^4.4.3"
   },
+  "optionalDependencies": {
+    "@img/sharp-linux-x64": "^0.35.4"
+  },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/jest": "^30.0.0",

@@ -161,6 +161,9 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
       const contentType = response.headers.get('content-type') || '';
       if (!contentType.includes('application/json')) {
         const text = await response.text();
+        if (text.includes('<!DOCTYPE html>') || text.includes('<html')) {
+          throw new Error('Server returned an HTML error page. Please check the Next.js dev server logs for compilation or runtime errors.');
+        }
         throw new Error(text || 'Unexpected server response');
       }
 
