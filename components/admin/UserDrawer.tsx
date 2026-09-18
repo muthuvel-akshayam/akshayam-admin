@@ -249,7 +249,8 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
     try {
       const profileIdStr = String(profile.displayId || profile.userId || profile.id);
       const templateId = `pdf-template-${profileIdStr}`;
-      await downloadBioDataPdf(templateId, profileIdStr);
+      const fileName = profile.name ? `${profileIdStr} - ${profile.name}` : profileIdStr;
+      await downloadBioDataPdf(templateId, fileName);
       showToast('Bio-Data PDF downloaded successfully', 'success');
     } catch (err) {
       console.error('Error generating PDF:', err);

@@ -140,6 +140,7 @@ export async function GET(request: NextRequest) {
       paymentScreenshot: u.paymentScreenshot,
       userid: u.userid,
       userIndex: u.userIndex,
+      paymentDone: u.paymentDone || false,
     }));
 
     return NextResponse.json({
