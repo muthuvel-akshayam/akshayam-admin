@@ -299,6 +299,17 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
           {profile && (
             <div className="flex flex-wrap items-center gap-2 self-end sm:self-auto">
               <button 
+                onClick={() => router.push(`/admin/profiles/${profile.id || profile.displayId}/edit`)}
+                className="px-3 py-2 flex items-center gap-2 rounded-lg bg-emerald-800/50 hover:bg-emerald-700 transition-colors text-white tooltip-trigger font-medium text-sm" 
+                title="Edit Full Profile"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                </svg>
+                <span>Edit Profile</span>
+              </button>
+              
+              <button 
                 onClick={handleFindMatches}
                 className="px-3 py-2 flex items-center gap-2 rounded-lg bg-emerald-800/50 hover:bg-emerald-700 transition-colors text-white tooltip-trigger font-medium text-sm" 
                 title="Find Matches (Filter)"
@@ -371,14 +382,9 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
                   </h3>
                   <p className="text-sm text-slate-500 break-all">{userData.email || 'இல்லை email provided'}</p>
                   <div className="mt-3 grid gap-2 sm:grid-cols-[1fr_auto] items-end">
-                    <div>
-                      <label className="text-xs font-semibold uppercase tracking-wide text-slate-400">User ID</label>
-                      {lastAssignedId && (
-                        <span className="ml-2 text-xs text-emerald-600 font-medium tracking-wide">
-                          (Last assigned: {lastAssignedId})
-                        </span>
-                      )}
-                    </div>
+                      <div className="flex items-center mb-1.5">
+                        <label className="text-xs font-semibold uppercase tracking-wide text-slate-400">User ID</label>
+                      </div>
                     <div className="flex gap-2">
                       <input
                         type="text"
@@ -469,9 +475,19 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
 
       {previewDocument && (
         <div className="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[60] flex items-center justify-center p-4 sm:p-6" onClick={() => setPreviewDocument(null)}>
-          <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full h-full max-h-[90vh] flex flex-col overflow-hidden" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between p-4 border-b border-slate-200 bg-slate-50">
-              <h3 className="font-bold text-slate-800">{previewDocument.label}</h3>
+          <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full h-full max-h-[90vh] flex flex-col overflow-hidden relative" onClick={e => e.stopPropagation()}>
+            {/* Header */}
+            <div className="flex items-center justify-between p-4 border-b border-slate-200 bg-slate-50 relative">
+              <button 
+                onClick={() => setPreviewDocument(null)}
+                className="flex items-center gap-2 text-emerald-700 font-bold hover:text-emerald-800 transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back to Profile
+              </button>
+              <h3 className="font-bold text-slate-800 absolute left-1/2 -translate-x-1/2 hidden sm:block">{previewDocument.label}</h3>
               <button onClick={() => setPreviewDocument(null)} className="p-2 rounded-full hover:bg-slate-200 text-slate-500" aria-label="Close">✕</button>
             </div>
             <div className="flex-1 overflow-auto bg-slate-100 flex items-center justify-center">

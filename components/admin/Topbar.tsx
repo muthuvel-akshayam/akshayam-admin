@@ -209,24 +209,34 @@ export const Topbar: React.FC<TopbarProps> = ({
           <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider whitespace-nowrap">
             Latest ID:
           </label>
-          <div className="relative">
+          <div className="flex items-center gap-1.5">
             <input
               type="text"
               value={latestUserId}
               onChange={(e) => setLatestUserId(e.target.value)}
-              onBlur={handleLatestUserIdBlur}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
-                  e.currentTarget.blur();
+                  handleLatestUserIdBlur();
                 }
               }}
               disabled={isSavingUserId}
               placeholder="e.g. AK100"
               className="w-24 bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all disabled:opacity-50"
             />
-            {isSavingUserId && (
-              <div className="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
-            )}
+            <button
+              onClick={handleLatestUserIdBlur}
+              disabled={isSavingUserId}
+              className="bg-emerald-100 hover:bg-emerald-200 text-emerald-700 p-1.5 rounded-lg transition-colors flex items-center justify-center disabled:opacity-50"
+              title="Save Latest ID"
+            >
+              {isSavingUserId ? (
+                <div className="w-3.5 h-3.5 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              )}
+            </button>
           </div>
         </div>
 

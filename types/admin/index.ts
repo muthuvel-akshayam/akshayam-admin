@@ -104,12 +104,16 @@ export interface AdminProfile {
   weight?: string;
   complexion?: string;
   physicalStatus?: 'NORMAL' | 'PHYSICALLY_CHALLENGED';
+  family?: any;
+  educations?: any;
+  user?: any;
+  expectations?: any;
+  jathagamData?: any;
   aboutMe?: string;
   rasiGrid?: any;
   amsamGrid?: any;
   
   // Rich details
-  family?: FamilyInformation;
   educationOccupation?: EducationOccupation;
   photos?: PhotoItem[];
   jathagamUrl?: string;

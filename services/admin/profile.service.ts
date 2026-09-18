@@ -628,6 +628,7 @@ export class ProfileService {
       registeredDate: raw.createdAt || raw.registeredDate || new Date().toISOString(),
       photos: raw.photos || (raw.photoUrl ? [{ id: 'photo-1', url: raw.photoUrl, isPrimary: true }] : []),
       family: raw.family || (raw.user?.family ? {
+        ...raw.user.family,
         fatherName: raw.user.family.fatherName,
         fatherOccupation: raw.user.family.fatherStatus,
         motherName: raw.user.family.motherName,
@@ -640,6 +641,10 @@ export class ProfileService {
         familyValue: raw.user.family.familyValue,
         nativePlace: raw.user.family.nativePlace,
       } : undefined),
+      educations: raw.educations || raw.user?.profile?.educations || [],
+      user: raw.user || undefined,
+      expectations: raw.expectations || raw.user?.expectations || undefined,
+      jathagamData: raw.jathagamData || undefined,
       educationOccupation: raw.educationOccupation || (raw.educations || raw.user?.family ? {
         highestEducation: raw.educations?.[0]?.degreeName,
         employedIn: raw.user?.family?.workNature,

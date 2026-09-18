@@ -336,9 +336,14 @@ export default function JathagamPDFTemplate({ profile, profileId, family: family
   // Height translation (e.g. 5ft 3in -> 5 அடி 3 அங்குலம்)
   let heightStr = 'குறிப்பிடப்படவில்லை';
   if (profile.height) {
-    const feet = Math.floor(profile.height / 30.48);
-    const inches = Math.round((profile.height % 30.48) / 2.54);
-    heightStr = `${feet} அடி ${inches} அங்குலம் / ${profile.height} செ.மீ`;
+    if (typeof profile.height === 'number' || !isNaN(Number(profile.height))) {
+      const hNum = Number(profile.height);
+      const feet = Math.floor(hNum / 30.48);
+      const inches = Math.round((hNum % 30.48) / 2.54);
+      heightStr = `${feet} அடி ${inches} அங்குலம் / ${hNum} செ.மீ`;
+    } else {
+      heightStr = String(profile.height);
+    }
   }
   
   const casteDisplay = translateToTamil(profile.caste, { 'kongu vellala gounder': 'கொங்கு வேளாளக் கவுண்டர்', 'gounder': 'கவுண்டர்' }) || 'குறிப்பிடப்படவில்லை';
@@ -407,7 +412,7 @@ export default function JathagamPDFTemplate({ profile, profileId, family: family
 
         {/* Registration Bar */}
         <div className="flex justify-between items-center bg-gray-50 border-y border-slate-300 py-0.5 mt-1 font-bold text-[10px] text-emerald-950" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#f9fafb', borderTop: '1px solid #cbd5e1', borderBottom: '1px solid #cbd5e1', padding: '4px 0', marginTop: '4px', marginBottom: '12px', fontWeight: 'bold', fontSize: '10px', color: '#022c22' }}>
-          <div>Profile ID: {displayId}</div>
+          <div>Profile / User ID: {displayId}</div>
           <div>Date Reg: {new Date(userCreatedAt || profile.createdAt || Date.now()).toLocaleDateString('en-GB')} | Expiry: {new Date(new Date(userCreatedAt || profile.createdAt || Date.now()).setFullYear(new Date(userCreatedAt || profile.createdAt || Date.now()).getFullYear() + 1)).toLocaleDateString('en-GB')}</div>
         </div>
 

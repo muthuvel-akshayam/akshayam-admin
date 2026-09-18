@@ -189,8 +189,7 @@ export const ProfilesPageClient: React.FC<ProfilesPageClientProps> = ({
           setRejectModalOpen(true);
         }}
         onEditProfile={(profile) => {
-          setSelectedProfile(profile);
-          setEditModalOpen(true);
+          router.push(`/admin/profiles/${profile.id || profile.displayId}/edit`);
         }}
         onRefresh={refreshList}
       />
@@ -218,8 +217,7 @@ export const ProfilesPageClient: React.FC<ProfilesPageClientProps> = ({
         }}
         onEdit={(p) => {
           setReviewModalOpen(false);
-          setSelectedProfile(p);
-          setEditModalOpen(true);
+          router.push(`/admin/profiles/${p.id || p.displayId}/edit`);
         }}
         onDeleted={() => refreshList()}
       />

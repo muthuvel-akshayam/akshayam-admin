@@ -105,7 +105,7 @@ export async function GET(request: NextRequest) {
         where,
         skip,
         take: limit,
-        orderBy: { id: 'asc' },
+        orderBy: { createdAt: 'desc' },
         include: {
           profile: {
             select: {

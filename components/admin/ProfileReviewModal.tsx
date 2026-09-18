@@ -185,7 +185,7 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
               {profile.age} Yrs • {profile.height} • {profile.religion}, {profile.caste} • {profile.city}
             </p>
             <p className="text-[10px] text-emerald-300 font-mono mt-0.5">
-              Profile ID: {profile.id} | User ID: {profile.userId}
+              User ID: {profile.displayId || profile.userId}
             </p>
           </div>
         </div>
@@ -635,8 +635,19 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
               }}
             />
           )}
+          <div className="absolute top-4 left-4 z-50">
+            <button 
+              className="flex items-center gap-2 text-white bg-black/60 hover:bg-black/80 px-4 py-2 rounded-full font-bold transition-all shadow-lg"
+              onClick={() => setFullscreenImageUrl(null)}
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              Back to Profile
+            </button>
+          </div>
           <button 
-            className="absolute top-4 right-4 text-white/70 hover:text-white bg-black/50 hover:bg-black/80 rounded-full p-2 transition-all z-50"
+            className="absolute top-4 right-4 text-white/70 hover:text-white bg-black/50 hover:bg-black/80 rounded-full p-2 transition-all z-50 shadow-lg"
             onClick={() => setFullscreenImageUrl(null)}
           >
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
