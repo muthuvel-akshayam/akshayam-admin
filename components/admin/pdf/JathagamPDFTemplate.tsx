@@ -165,14 +165,14 @@ const translatePropertyText = (text: string | null | undefined) => {
 };
 
 // Strict colon-aligned row for bottom section
-const FieldRow = ({ label, value, labelWidth = "120px", valueWidth = "310px" }: { label: string; value: string | number | null | undefined; labelWidth?: string; valueWidth?: string }) => {
+const FieldRow = ({ label, value, labelWidth = "160px", valueWidth = "300px" }: { label: string; value: string | number | null | undefined; labelWidth?: string; valueWidth?: string }) => {
   const lWidth = labelWidth.startsWith('w-[') ? labelWidth.slice(3, -1) : labelWidth;
   const vWidth = valueWidth.startsWith('w-[') ? valueWidth.slice(3, -1) : valueWidth;
   return (
-    <div className="flex items-start mb-1 text-[11px] leading-tight" style={{ display: 'flex', alignItems: 'flex-start', marginBottom: '6px', fontSize: '11.5px', lineHeight: '1.4' }}>
-      <div className={`font-bold text-emerald-950 whitespace-nowrap flex-shrink-0`} style={{ fontWeight: 'bold', color: '#022c22', whiteSpace: 'nowrap', flexShrink: 0, width: lWidth }}>{label}</div>
-      <div className="font-bold text-emerald-950 text-center flex-shrink-0" style={{ fontWeight: 'bold', color: '#022c22', textAlign: 'center', width: '10px', flexShrink: 0 }}>:</div>
-      <div className={`font-bold text-gray-900 whitespace-pre-wrap break-words pl-1 flex-shrink-0`} style={{ fontWeight: 'bold', color: '#111827', whiteSpace: 'pre-wrap', wordBreak: 'break-word', paddingLeft: '4px', flexShrink: 0, width: vWidth }}>{value || '-'}</div>
+    <div className="mb-1 text-[11px] leading-tight" style={{ display: 'grid', gridTemplateColumns: `${lWidth} 10px ${vWidth}`, marginBottom: '6px', fontSize: '11.5px', lineHeight: '1.4', alignItems: 'start' }}>
+      <div className="font-bold text-emerald-950" style={{ fontWeight: 'bold', color: '#022c22' }}>{label}</div>
+      <div className="font-bold text-emerald-950 text-center" style={{ fontWeight: 'bold', color: '#022c22', textAlign: 'center' }}>:</div>
+      <div className="font-bold text-gray-900 whitespace-pre-wrap break-words pl-1" style={{ fontWeight: 'bold', color: '#111827', whiteSpace: 'pre-wrap', wordBreak: 'break-word', paddingLeft: '4px' }}>{value || '-'}</div>
     </div>
   );
 };
@@ -244,7 +244,8 @@ export default function JathagamPDFTemplate({ profile, profileId, family: family
     </div>
   );
 
-  const displayId = akshayamId || profile.displayId || (userIndex ? `${1000 + userIndex}` : `${profileId.substring(0, 8).toUpperCase()}`);
+  const isUuid = profileId && profileId.length === 36 && profileId.includes('-');
+  const displayId = akshayamId || profile.displayId || (!isUuid ? profileId : (userIndex ? `${1000 + userIndex}` : `${profileId.substring(0, 8).toUpperCase()}`));
   const profileUrl = `https://www.akshayamtamilmatrimony.com/profiles/${profileId}`;
 
   // Priority Mapping Logic
@@ -512,15 +513,18 @@ export default function JathagamPDFTemplate({ profile, profileId, family: family
             }).join(', ') : "Any"} />
             <FieldRow label="எதிர்பார்ப்பு" value={formatExpectations(profile.expectations)} />
             <FieldRow label="ராகு கேது ஜாதகம்" value={profile.dosham === 'RAHU_KETU' ? "உண்டு" : "-"} />
-            <div className="grid grid-cols-[130px_10px_1fr] mt-1 text-[11px] leading-tight" style={{ display: 'flex', marginTop: '4px', fontSize: '11px', lineHeight: '1.2' }}>
-              <div className="font-bold text-emerald-950" style={{ fontWeight: 'bold', color: '#022c22', width: '130px' }}>தொடர்பு எண்</div>
-              <div className="font-bold text-emerald-950 text-center" style={{ fontWeight: 'bold', color: '#022c22', width: '10px', textAlign: 'center' }}>:</div>
-              <div className="font-bold text-red-600" style={{ fontWeight: 'bold', color: '#dc2626', flex: '1' }}>+91 {profile.user?.mobile_no || "96776 13716, 93452 89217"}</div>
+            <div className="mt-1 text-[11px] leading-tight" style={{ display: 'grid', gridTemplateColumns: '160px 10px 1fr', marginTop: '4px', fontSize: '11px', lineHeight: '1.2', alignItems: 'start' }}>
+              <div className="font-bold text-emerald-950" style={{ fontWeight: 'bold', color: '#022c22' }}>தொடர்பு எண்</div>
+              <div className="font-bold text-emerald-950 text-center" style={{ fontWeight: 'bold', color: '#022c22', textAlign: 'center' }}>:</div>
+              <div className="font-bold text-red-600 pl-1" style={{ fontWeight: 'bold', color: '#dc2626', paddingLeft: '4px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span>+91 {profile.user?.mobile_no || "96776 13716, 93452 89217"}</span>
+                <span className="font-black text-[#004d40] text-[13px]" style={{ fontSize: '13px', color: '#004d40', fontWeight: '900' }}>www.akshayamtamilmatrimony.com</span>
+              </div>
             </div>
           </div>
           <div className="w-[280px] flex flex-col gap-0.5 pt-5" style={{ width: '280px', display: 'flex', flexDirection: 'column', gap: '2px', paddingTop: '20px' }}>
-            <FieldRow label={family?.workNature === 'JOB' ? 'பதவி' : 'தொழில்'} value={occupationStr} labelWidth="145px" valueWidth="125px" />
-            {!isNotWorking && <FieldRow label={family?.workNature === 'JOB' ? 'வேலை செய்யும் இடம்' : 'தொழில் அலுவலகம்'} value={translateToTamil(profile.city, { 'coimbatore': 'கோயம்புத்தூர்', 'chennai': 'சென்னை', 'tiruppur': 'திருப்பூர்', 'erode': 'ஈரோடு', 'salem': 'சேலம்', 'karur': 'கரூர்', 'namakkal': 'நாமக்கல்' }) || nativePlace} labelWidth="145px" valueWidth="125px" />}
+            <FieldRow label={family?.workNature === 'JOB' ? 'பதவி' : 'தொழில்'} value={occupationStr} labelWidth="155px" valueWidth="115px" />
+            {!isNotWorking && <FieldRow label={family?.workNature === 'JOB' ? 'வேலை செய்யும் இடம்' : 'தொழில் அலுவலகம்'} value={translateToTamil(profile.city, { 'coimbatore': 'கோயம்புத்தூர்', 'chennai': 'சென்னை', 'tiruppur': 'திருப்பூர்', 'erode': 'ஈரோடு', 'salem': 'சேலம்', 'karur': 'கரூர்', 'namakkal': 'நாமக்கல்' }) || nativePlace} labelWidth="155px" valueWidth="115px" />}
           </div>
         </div>
 
