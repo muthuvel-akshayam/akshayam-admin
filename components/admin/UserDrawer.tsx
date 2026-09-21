@@ -144,6 +144,40 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
     }
     return docs;
   }, [profile, userData]);
+
+  const handleForceDownload = async (filePathOrUrl: string, label: string) => {
+    try {
+      const fullUrl = getFullUrl(filePathOrUrl, label);
+      if (fullUrl.includes('supabase.co')) {
+        const downloadUrl = fullUrl.includes('?') ? `${fullUrl}&download=` : `${fullUrl}?download=`;
+        const a = document.createElement('a');
+        a.href = downloadUrl;
+        a.target = '_blank';
+        a.download = `${label}_${userData?.email || 'file'}`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        return;
+      }
+      
+      const response = await fetch(fullUrl);
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      const extension = fullUrl.split('.').pop()?.split('?')[0] || 'jpg';
+      a.download = `${userData?.email || label}_${label}.${extension}`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(blobUrl);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('Download failed:', error);
+      showToast('Failed to download file.', 'error');
+      window.open(getFullUrl(filePathOrUrl, label), '_blank');
+    }
+  };
+
   const handleReview = async (action: 'APPROVE' | 'REJECT' | 'MATCHED_REMOVED') => {
     if (!userId) return;
     if (action === 'REJECT' && !reviewReason.trim()) {
@@ -188,11 +222,11 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
     if (!userId || !userData) return;
     const trimmedId = newUserId.trim();
     if (!trimmedId) {
-      showToast('New user ID is required.', 'error');
+      showToast('New Profile ID is required.', 'error');
       return;
     }
     if (trimmedId === String(userData.id)) {
-      showToast('Please provide a different user ID to update.', 'error');
+      showToast('Please provide a different Profile ID to update.', 'error');
       return;
     }
 
@@ -211,12 +245,12 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
       }
 
       const data = await response.json();
-      if (!data.success) throw new Error(data.error || 'Failed to update user ID.');
-      showToast('User ID updated successfully. The drawer will refresh.', 'success');
+      if (!data.success) throw new Error(data.error || 'Failed to update Profile ID.');
+      showToast('Profile ID updated successfully. The drawer will refresh.', 'success');
       onReviewComplete?.();
       onClose();
     } catch (error: any) {
-      showToast(error.message || 'Failed to update user ID.', 'error');
+      showToast(error.message || 'Failed to update Profile ID.', 'error');
     } finally {
       setActionLoading(false);
     }
@@ -383,7 +417,7 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
                   <p className="text-sm text-slate-500 break-all">{userData.email || 'இல்லை email provided'}</p>
                   <div className="mt-3 grid gap-2 sm:grid-cols-[1fr_auto] items-end">
                       <div className="flex items-center mb-1.5">
-                        <label className="text-xs font-semibold uppercase tracking-wide text-slate-400">User ID</label>
+                        <label className="text-xs font-semibold uppercase tracking-wide text-slate-400">Profile ID</label>
                       </div>
                     <div className="flex gap-2">
                       <input
@@ -430,7 +464,28 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
             
             {familyFields.length > 0 && <section><h4 className="font-bold text-slate-800 mb-3 border-b border-slate-200 pb-2">Family Details</h4><div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 border border-slate-200 rounded-xl p-4">{familyFields.map(([label, fieldValue]) => <div key={label}><span className="block text-slate-400 text-xs uppercase tracking-wider mb-1">{label}</span><span className="font-medium text-slate-800 break-words">{fieldValue}</span></div>)}</div></section>}
 
-            {documents.length > 0 && <section><h4 className="font-bold text-slate-800 mb-3 border-b border-slate-200 pb-2">Documents</h4><div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 border border-slate-200 rounded-xl p-4">{documents.map(([label, fileUrl]) => <div key={label}><span className="block text-slate-400 text-xs uppercase tracking-wider mb-1">{label}</span><button onClick={() => setPreviewDocument({ url: getFullUrl(fileUrl, label), label })} className="text-emerald-600 hover:underline break-words font-medium text-left">View {label}</button></div>)}</div></section>}
+            {documents.length > 0 && (
+              <section>
+                <h4 className="font-bold text-slate-800 mb-3 border-b border-slate-200 pb-2">Documents</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 border border-slate-200 rounded-xl p-4">
+                  {documents.map(([label, fileUrl]) => (
+                    <div key={label}>
+                      <span className="block text-slate-400 text-xs uppercase tracking-wider mb-1">{label}</span>
+                      <div className="flex flex-wrap items-center gap-3">
+                        <button onClick={() => setPreviewDocument({ url: getFullUrl(fileUrl, label), label })} className="text-emerald-600 hover:underline break-words font-medium text-left">
+                          View {label}
+                        </button>
+                        <span className="text-slate-300">|</span>
+                        <button onClick={() => handleForceDownload(fileUrl, label)} className="text-blue-600 hover:underline break-words font-medium text-left flex items-center gap-1" title={`Download ${label}`}>
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                          Download
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
 
             {profile?.rejectedReason && <section className="rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm"><strong className="text-rose-800">Previous review reason</strong><p className="mt-1 text-rose-700">{profile.rejectedReason}</p></section>}
             
@@ -493,7 +548,14 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
             <div className="flex-1 overflow-auto bg-slate-100 flex items-center justify-center">
               <iframe src={previewDocument.url} className="w-full h-full border-0" title={previewDocument.label} />
             </div>
-            <div className="p-4 border-t border-slate-200 flex justify-end bg-slate-50">
+            <div className="p-4 border-t border-slate-200 flex justify-end gap-3 bg-slate-50">
+              <Button 
+                variant="primary" 
+                onClick={() => handleForceDownload(previewDocument.url, previewDocument.label)}
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+              >
+                Download {previewDocument.label}
+              </Button>
               <Button variant="secondary" onClick={() => setPreviewDocument(null)}>Close Document</Button>
             </div>
           </div>

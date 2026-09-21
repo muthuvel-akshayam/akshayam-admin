@@ -185,7 +185,7 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
               {profile.age} Yrs • {profile.height} • {profile.religion}, {profile.caste} • {profile.city}
             </p>
             <p className="text-[10px] text-emerald-300 font-mono mt-0.5">
-              User ID: {profile.displayId || profile.userId}
+              Profile ID: {profile.displayId || profile.userId}
             </p>
           </div>
         </div>
@@ -241,11 +241,11 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
             <div className="flex items-center gap-2">
               <input
                 type="text"
-                placeholder="Assign User ID"
+                placeholder="Assign Profile ID"
                 value={newUserId}
                 onChange={(e) => setNewUserId(e.target.value)}
                 className="bg-white/10 border border-emerald-500 text-white placeholder:text-emerald-300 text-xs px-2 py-1.5 rounded-lg w-28 focus:outline-none focus:border-white transition-colors"
-                title="Optional: Assign a specific User ID before approving"
+                title="Optional: Assign a specific Profile ID before approving"
               />
               <Button
                 variant="success"

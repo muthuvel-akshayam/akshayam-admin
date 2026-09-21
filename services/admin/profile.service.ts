@@ -410,7 +410,23 @@ export class ProfileService {
     try {
       const db = prisma as any;
       if (db.profile) {
-        const userId = 'ADM_USR_' + Date.now() + Math.floor(Math.random() * 1000);
+        // Find the maximum existing numeric userIndex to auto-increment
+        const lastUser = await db.user.aggregate({
+          _max: {
+            userIndex: true,
+          }
+        });
+        
+        let nextIndex = 1;
+        if (lastUser && lastUser._max && lastUser._max.userIndex !== null) {
+          nextIndex = lastUser._max.userIndex + 1;
+        } else {
+          // Fallback if userIndex was never used: try to count or default to 1
+          const userCount = await db.user.count();
+          nextIndex = userCount > 0 ? userCount + 1 : 1;
+        }
+        
+        const userId = String(nextIndex);
         const profileId = 'ADM_PRF_' + Date.now() + Math.floor(Math.random() * 1000);
         const familyId = 'ADM_FAM_' + Date.now() + Math.floor(Math.random() * 1000);
         const expId = 'ADM_EXP_' + Date.now() + Math.floor(Math.random() * 1000);
@@ -444,6 +460,8 @@ export class ProfileService {
         const createdUser = await db.user.create({
           data: {
             id: userId,
+            userid: userId,
+            userIndex: nextIndex,
             mobile_no: data.mobileNumber || undefined,
             password: data.password || undefined,
             whatsappProfileDeliveryNumber: data.whatsappProfileDeliveryNumber || undefined,

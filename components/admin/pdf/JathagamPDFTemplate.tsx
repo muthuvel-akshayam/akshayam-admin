@@ -413,7 +413,7 @@ export default function JathagamPDFTemplate({ profile, profileId, family: family
 
         {/* Registration Bar */}
         <div className="flex justify-between items-center bg-gray-50 border-y border-slate-300 py-0.5 mt-1 font-bold text-[10px] text-emerald-950" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#f9fafb', borderTop: '1px solid #cbd5e1', borderBottom: '1px solid #cbd5e1', padding: '4px 0', marginTop: '4px', marginBottom: '12px', fontWeight: 'bold', fontSize: '10px', color: '#022c22' }}>
-          <div>Profile / User ID: {displayId}</div>
+          <div>Profile ID: {displayId}</div>
           <div>Date Reg: {new Date(userCreatedAt || profile.createdAt || Date.now()).toLocaleDateString('en-GB')} | Expiry: {new Date(new Date(userCreatedAt || profile.createdAt || Date.now()).setFullYear(new Date(userCreatedAt || profile.createdAt || Date.now()).getFullYear() + 1)).toLocaleDateString('en-GB')}</div>
         </div>
 

@@ -99,7 +99,7 @@ export default function MatchTrackingModal({ isOpen, onClose, targetUserId, init
         <div className="flex items-center justify-between p-5 border-b border-slate-200">
           <div>
             <h2 className="text-xl font-bold text-slate-800">Match Tracking</h2>
-            <p className="text-sm text-slate-500 mt-1">Manage shared profiles for user ID: <span className="font-mono text-slate-700 bg-slate-100 px-1 rounded">{targetUserId}</span></p>
+            <p className="text-sm text-slate-500 mt-1">Manage shared profiles for Profile ID: <span className="font-mono text-slate-700 bg-slate-100 px-1 rounded">{targetUserId}</span></p>
           </div>
           <button onClick={onClose} className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">
             ✕
@@ -131,7 +131,7 @@ export default function MatchTrackingModal({ isOpen, onClose, targetUserId, init
           <form onSubmit={handleAddCandidate} className="flex gap-3">
             <input
               type="text"
-              placeholder="Enter Candidate User ID to log..."
+              placeholder="Enter Candidate Profile ID to log..."
               value={candidateId}
               onChange={e => setCandidateId(e.target.value)}
               className="flex-1 px-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"

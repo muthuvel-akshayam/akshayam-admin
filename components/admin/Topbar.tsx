@@ -56,12 +56,12 @@ export const Topbar: React.FC<TopbarProps> = ({
     try {
       const res = await updateSettingsAction({ latestUserId });
       if (res.success) {
-        showToast('Latest User ID saved', 'success');
+        showToast('Latest Profile ID saved', 'success');
       } else {
         showToast(res.error || 'Failed to save', 'error');
       }
     } catch (err) {
-      showToast('Error saving Latest User ID', 'error');
+      showToast('Error saving Latest Profile ID', 'error');
     } finally {
       setIsSavingUserId(false);
     }
@@ -204,7 +204,7 @@ export const Topbar: React.FC<TopbarProps> = ({
           )}
         </div>
 
-        {/* Latest User ID Tracker */}
+        {/* Latest Profile ID Tracker */}
         <div className="hidden sm:flex items-center gap-2 mr-2">
           <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider whitespace-nowrap">
             Latest ID:

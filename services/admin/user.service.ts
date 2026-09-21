@@ -333,12 +333,21 @@ export class UserService {
           throw new Error('A user with the new ID already exists. Choose a different ID.');
         }
 
-        const updatedUser = await prisma.$transaction(async (tx: any) => {
-          const updated = await tx.user.update({
-            where: { id: oldUserId },
-            data: { id: newUserId },
-            include: { profile: { select: { id: true, name: true } } },
-          });
+          const updatedUser = await prisma.$transaction(async (tx: any) => {
+            const dataToUpdate: any = { id: newUserId };
+            if (existing.profile) {
+              dataToUpdate.profile = {
+                update: {
+                  displayId: newUserId
+                }
+              };
+            }
+
+            const updated = await tx.user.update({
+              where: { id: oldUserId },
+              data: dataToUpdate,
+              include: { profile: { select: { id: true, name: true } } },
+            });
 
           return updated;
         });
