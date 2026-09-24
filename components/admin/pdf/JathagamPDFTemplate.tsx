@@ -547,7 +547,7 @@ export default function JathagamPDFTemplate({ profile, profileId, family: family
               <div className="font-bold text-emerald-950 text-center shrink-0" style={{ fontWeight: 'bold', color: '#022c22', width: '10px', flexShrink: 0, textAlign: 'center' }}>:</div>
               <div className="font-bold text-red-600 pl-1" style={{ fontWeight: 'bold', color: '#dc2626', flex: 1, display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '8px', paddingLeft: '4px' }}>
                 <span style={{ whiteSpace: 'nowrap' }}>{String(profile.user?.mobile_no || "96776 13716, 93452 89217").replace(/^\+91\s*/, '')}</span>
-                <span className="font-black text-[#004d40]" style={{ fontSize: '12px', color: '#004d40', fontWeight: '900', whiteSpace: 'nowrap' }}>www.akshayamtamilmatrimony.com</span>
+                
               </div>
             </div>
           </div>
