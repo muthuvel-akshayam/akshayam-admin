@@ -227,6 +227,10 @@ export default function JathagamPDFTemplate({ profile, profileId, family: family
     return date.toLocaleDateString('ta-IN', { weekday: 'long' });
   };
 
+  const educationStr = profile.educations && profile.educations.length > 0 
+    ? profile.educations.map((e: any) => e.degreeName || '').filter(Boolean).join(', ') 
+    : 'குறிப்பிடப்படவில்லை';
+
   const siblingsArray = Array.isArray(family.siblings) ? family.siblings : [];
   const brothersCount = siblingsArray.filter((s: any) => s.relation?.toLowerCase().includes('brother')).length || family.brothers || 0;
   const sistersCount = siblingsArray.filter((s: any) => s.relation?.toLowerCase().includes('sister')).length || family.sisters || 0;
