@@ -542,12 +542,12 @@ export default function JathagamPDFTemplate({ profile, profileId, family: family
             }).join(', ') : "-"} />
             <FieldRow label="எதிர்பார்ப்பு" value={formatExpectations(profile.expectations)} />
             <FieldRow label="ராகு கேது ஜாதகம்" value={profile.dosham === 'RAHU_KETU' ? "உண்டு" : "-"} />
-            <div className="grid grid-cols-[160px_10px_1fr] mt-1 text-[11px] leading-tight" style={{ display: 'flex', marginTop: '4px', fontSize: '11.5px', lineHeight: '1.4', alignItems: 'start' }}>
-              <div className="font-bold text-emerald-950 shrink-0" style={{ fontWeight: 'bold', color: '#022c22', width: '160px', flexShrink: 0 }}>தொடர்பு எண்</div>
+            <div className="flex items-start mt-1 text-[11px] leading-tight" style={{ display: 'flex', alignItems: 'flex-start', marginTop: '4px', fontSize: '11.5px', lineHeight: '1.4' }}>
+              <div className="font-bold text-emerald-950 shrink-0" style={{ fontWeight: 'bold', color: '#022c22', width: '120px', flexShrink: 0 }}>தொடர்பு எண்</div>
               <div className="font-bold text-emerald-950 text-center shrink-0" style={{ fontWeight: 'bold', color: '#022c22', width: '10px', flexShrink: 0, textAlign: 'center' }}>:</div>
-              <div className="font-bold text-red-600 pl-1 shrink-0" style={{ fontWeight: 'bold', color: '#dc2626', flex: '1', display: 'flex', alignItems: 'center', gap: '8px', paddingLeft: '4px', flexShrink: 0 }}>
-                <span>{String(profile.user?.mobile_no || "96776 13716, 93452 89217").replace(/^\+91\s*/, '')}</span>
-                <span className="font-black text-[#004d40] text-[13px]" style={{ fontSize: '13px', color: '#004d40', fontWeight: '900', marginLeft: 'auto' }}>www.akshayamtamilmatrimony.com</span>
+              <div className="font-bold text-red-600 pl-1" style={{ fontWeight: 'bold', color: '#dc2626', flex: 1, display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '8px', paddingLeft: '4px' }}>
+                <span style={{ whiteSpace: 'nowrap' }}>{String(profile.user?.mobile_no || "96776 13716, 93452 89217").replace(/^\+91\s*/, '')}</span>
+                <span className="font-black text-[#004d40]" style={{ fontSize: '12px', color: '#004d40', fontWeight: '900', whiteSpace: 'nowrap' }}>www.akshayamtamilmatrimony.com</span>
               </div>
             </div>
           </div>
