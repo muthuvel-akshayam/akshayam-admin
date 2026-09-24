@@ -276,7 +276,12 @@ export default function JathagamPDFTemplate({ profile, profileId, family: family
   const placeOfBirth = translateToTamil(jData.placeOfBirth || jData.nativePlace || profile.placeOfBirth || profile.lob || profile.city, { 'coimbatore': 'கோயம்புத்தூர்', 'chennai': 'சென்னை', 'tiruppur': 'திருப்பூர்', 'erode': 'ஈரோடு', 'salem': 'சேலம்', 'karur': 'கரூர்', 'namakkal': 'நாமக்கல்' }) || 'குறிப்பிடப்படவில்லை';
   const dasaBalance = jData.dasaBalance || profile.dasaBalance || profile.birthDetails || 'தசா இருப்பு விவரம் பார்க்கவும்';
   
-  const kulam = profile.koottam || jData.kulam || profile.subCaste || 'குறிப்பிடப்படவில்லை';
+  const extractTamilKoottam = (str: string | null | undefined) => {
+    if (!str) return 'குறிப்பிடப்படவில்லை';
+    const match = str.match(/\((.*?)\)/);
+    return match ? match[1].trim() : str;
+  };
+  const kulam = extractTamilKoottam(profile.koottam || jData.kulam || profile.subCaste);
   const fatherName = family.fatherName || jData.fatherName || '-';
   const motherName = family.motherName || jData.motherName || '-';
   const fatherStatus = mapParentStatus(family.fatherLivingStatus || family.fatherStatus || jData.fatherStatus);
