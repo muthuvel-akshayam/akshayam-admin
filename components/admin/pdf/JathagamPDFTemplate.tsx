@@ -511,7 +511,7 @@ export default function JathagamPDFTemplate({ profile, profileId, family: family
                 return `${tamilNak} (${padaPart})`;
               }
               return tamilNak;
-            }).join(', ') : "Any"} />
+            }).join(', ') : "-"} />
             <FieldRow label="எதிர்பார்ப்பு" value={formatExpectations(profile.expectations)} />
             <FieldRow label="ராகு கேது ஜாதகம்" value={profile.dosham === 'RAHU_KETU' ? "உண்டு" : "-"} />
             <div className="grid grid-cols-[130px_10px_1fr] mt-1 text-[11px] leading-tight" style={{ display: 'flex', marginTop: '4px', fontSize: '11px', lineHeight: '1.2' }}>
