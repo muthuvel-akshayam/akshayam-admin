@@ -495,10 +495,10 @@ export default function JathagamPDFTemplate({ profile, profileId, family: family
         <div className="flex py-1 gap-4" style={{ display: 'flex', padding: '8px 0', gap: '16px' }}>
           <div className="flex-1 flex flex-col gap-0.5" style={{ flex: '1', display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <FieldRow label="ஜனன கால தகவல்" value={dasaBalance} />
-            <FieldRow label="படிப்பு - விவரங்கள்" value={profile.educations?.map((e: any) => e.degreeName || e.degree).filter(Boolean).join(', ') || "-"} />
+            <FieldRow label="படிப்பு - விவரங்கள்" value={educationStr} />
             <FieldRow label="மாத வருமானம்" value={income} />
             <FieldRow label="சொத்து விவரம்" value={propertyStr} />
-            <FieldRow label="நட்சத்திரங்கள்" value={profile.poruthaNakshatram?.length ? profile.poruthaNakshatram.map((val: string) => {
+            <FieldRow label="பொருந்தும் நட்சத்திரம்" value={profile.poruthaNakshatram?.length ? profile.poruthaNakshatram.map((val: string) => {
               const parts = val.split('(');
               const nakName = parts[0].trim();
               const tamilNak = translateToTamil(nakName, nakshatraMap) || nakName;
@@ -517,7 +517,10 @@ export default function JathagamPDFTemplate({ profile, profileId, family: family
             <div className="grid grid-cols-[130px_10px_1fr] mt-1 text-[11px] leading-tight" style={{ display: 'flex', marginTop: '4px', fontSize: '11px', lineHeight: '1.2' }}>
               <div className="font-bold text-emerald-950" style={{ fontWeight: 'bold', color: '#022c22', width: '130px' }}>தொடர்பு எண்</div>
               <div className="font-bold text-emerald-950 text-center" style={{ fontWeight: 'bold', color: '#022c22', width: '10px', textAlign: 'center' }}>:</div>
-              <div className="font-bold text-red-600" style={{ fontWeight: 'bold', color: '#dc2626', flex: '1' }}>96776 13716, 93452 89217</div>
+              <div className="font-bold text-red-600 pl-1" style={{ fontWeight: 'bold', color: '#dc2626', flex: '1', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span>{String(profile.user?.mobile_no || "96776 13716, 93452 89217").replace(/^\+91\s*/, '')}</span>
+                <span className="font-black text-[#004d40] text-[13px]" style={{ fontSize: '13px', color: '#004d40', fontWeight: '900' }}>www.akshayamtamilmatrimony.com</span>
+              </div>
             </div>
           </div>
           <div className="w-[280px] flex flex-col gap-0.5 pt-5" style={{ width: '280px', display: 'flex', flexDirection: 'column', gap: '2px', paddingTop: '20px' }}>
