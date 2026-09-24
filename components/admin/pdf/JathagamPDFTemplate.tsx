@@ -170,14 +170,15 @@ const translatePropertyText = (text: string | null | undefined) => {
 };
 
 // Strict colon-aligned row for bottom section
-const FieldRow = ({ label, value, labelWidth = "120px", valueWidth = "310px" }: { label: string; value: string | number | null | undefined; labelWidth?: string; valueWidth?: string }) => {
+const FieldRow = ({ label, value, labelWidth = "120px", valueWidth = "310px", highlightLabel = false }: { label: string; value: string | number | null | undefined; labelWidth?: string; valueWidth?: string; highlightLabel?: boolean }) => {
   const lWidth = labelWidth.startsWith('w-[') ? labelWidth.slice(3, -1) : labelWidth;
   const vWidth = valueWidth.startsWith('w-[') ? valueWidth.slice(3, -1) : valueWidth;
+  const color = highlightLabel ? '#dc2626' : '#111827';
   return (
     <div className="flex items-start mb-1 text-[11px] leading-tight" style={{ display: 'flex', alignItems: 'flex-start', marginBottom: '6px', fontSize: '11.5px', lineHeight: '1.4' }}>
-      <div className={`font-bold text-emerald-950 whitespace-nowrap flex-shrink-0`} style={{ fontWeight: 'bold', color: '#022c22', whiteSpace: 'nowrap', flexShrink: 0, width: lWidth }}>{label}</div>
-      <div className="font-bold text-emerald-950 text-center flex-shrink-0" style={{ fontWeight: 'bold', color: '#022c22', textAlign: 'center', width: '10px', flexShrink: 0 }}>:</div>
-      <div className={`font-bold text-gray-900 whitespace-pre-wrap break-words pl-1 flex-shrink-0`} style={{ fontWeight: 'bold', color: '#111827', whiteSpace: 'pre-wrap', wordBreak: 'break-word', paddingLeft: '4px', flexShrink: 0, width: vWidth }}>{value || '-'}</div>
+      <div className={`font-bold whitespace-nowrap flex-shrink-0 ${highlightLabel ? 'text-red-600' : 'text-emerald-950'}`} style={{ fontWeight: 'bold', color: highlightLabel ? '#dc2626' : '#022c22', whiteSpace: 'nowrap', flexShrink: 0, width: lWidth }}>{label}</div>
+      <div className={`font-bold text-center flex-shrink-0 ${highlightLabel ? 'text-red-600' : 'text-emerald-950'}`} style={{ fontWeight: 'bold', color: highlightLabel ? '#dc2626' : '#022c22', textAlign: 'center', width: '10px', flexShrink: 0 }}>:</div>
+      <div className={`font-bold whitespace-pre-wrap break-words pl-1 flex-shrink-0 ${highlightLabel ? 'text-red-600' : 'text-gray-900'}`} style={{ fontWeight: 'bold', color, whiteSpace: 'pre-wrap', wordBreak: 'break-word', paddingLeft: '4px', flexShrink: 0, width: vWidth }}>{value || '-'}</div>
     </div>
   );
 };
@@ -186,11 +187,12 @@ const FieldItem = ({ label, value, colSpan = 1, highlightLabel = false }: { labe
   const displayValue = (value === null || value === undefined || value === '' || value === 'null' || value === '-') ? 'குறிப்பிடப்படவில்லை' : value;
   const labelColor = highlightLabel ? '#dc2626' : '#1e293b';
   const labelFontWeight = highlightLabel ? 'bold' : 600;
+  const valColor = highlightLabel ? '#dc2626' : '#0f172a';
   return (
     <div className={`flex items-start text-[10.5px] leading-tight text-slate-900`} style={{ display: 'flex', alignItems: 'flex-start', fontSize: '11px', lineHeight: '1.3', color: '#0f172a', width: colSpan === 2 ? '100%' : '50%', boxSizing: 'border-box', paddingRight: '8px', marginBottom: '4px' }}>
       <div className={`${highlightLabel ? 'font-bold text-red-600' : 'font-semibold text-slate-800'} whitespace-nowrap w-[100px] flex-shrink-0`} style={{ fontWeight: labelFontWeight, color: labelColor, whiteSpace: 'nowrap', width: '100px', flexShrink: 0 }}>{label}</div>
-      <div className={`font-bold text-center text-slate-700 w-[10px] flex-shrink-0`} style={{ fontWeight: 'bold', textAlign: 'center', color: '#334155', width: '10px', flexShrink: 0 }}>:</div>
-      <div className={`${highlightLabel ? 'font-bold text-red-600' : 'font-medium text-slate-900'} pl-1 break-words flex-1 flex-shrink-0`} style={{ fontWeight: highlightLabel ? 'bold' : 500, color: highlightLabel ? '#dc2626' : '#0f172a', paddingLeft: '4px', wordBreak: 'break-word', flex: '1 1 0%', flexShrink: 0 }}>{displayValue}</div>
+      <div className={`font-bold text-center w-[10px] flex-shrink-0`} style={{ fontWeight: 'bold', textAlign: 'center', color: labelColor, width: '10px', flexShrink: 0 }}>:</div>
+      <div className={`${highlightLabel ? 'font-bold text-red-600' : 'font-medium text-slate-900'} pl-1 break-words flex-1 flex-shrink-0`} style={{ fontWeight: highlightLabel ? 'bold' : 500, color: valColor, paddingLeft: '4px', wordBreak: 'break-word', flex: '1 1 0%', flexShrink: 0 }}>{displayValue}</div>
     </div>
   );
 };
@@ -427,7 +429,7 @@ export default function JathagamPDFTemplate({ profile, profileId, family: family
           {/* Left Text Columns */}
           <div className="flex-1 pr-2 leading-tight text-[10.5px] text-slate-900 content-start" style={{ flex: '1', paddingRight: '12px', display: 'flex', flexWrap: 'wrap', alignContent: 'flex-start' }}>
             <FieldItem label="பெயர்" value={name} />
-            <FieldItem label="குலம்" value={kulam} highlightLabel={true} />
+            <FieldItem label="கூட்டம்" value={kulam} highlightLabel={true} />
             
             <FieldItem label="பாலினம்" value={profile.gender === 'MALE' ? 'ஆண்' : 'பெண்'} />
             <FieldItem label="பிறந்த தேதி" value={formatSafeDate(dob)} />
@@ -459,7 +461,7 @@ export default function JathagamPDFTemplate({ profile, profileId, family: family
             <FieldItem label="ராசி" value={rasi} highlightLabel={true} />
             <FieldItem label="லக்னம்" value={lagnam} />
             
-            <FieldItem label="ஜாதகம்" value={dosham} highlightLabel={true} />
+            <FieldItem label="தோசம்" value={dosham} highlightLabel={true} />
           </div>
 
           {/* Right Photo Column */}
@@ -519,7 +521,7 @@ export default function JathagamPDFTemplate({ profile, profileId, family: family
             <FieldRow label="படிப்பு - விவரங்கள்" value={educationStr} />
             <FieldRow label="மாத வருமானம்" value={income} />
             <FieldRow label="சொத்து விவரம்" value={propertyStr} />
-            <FieldRow label="பொருந்தும் நட்சத்திரம்" value={profile.poruthaNakshatram?.length ? profile.poruthaNakshatram.map((val: string) => {
+            <FieldRow label="பொருந்தும் நட்சத்திரம்" highlightLabel={true} value={profile.poruthaNakshatram?.length ? profile.poruthaNakshatram.map((val: string) => {
               const parts = val.split('(');
               const nakName = parts[0].trim();
               const tamilNak = translateToTamil(nakName, nakshatraMap) || nakName;
