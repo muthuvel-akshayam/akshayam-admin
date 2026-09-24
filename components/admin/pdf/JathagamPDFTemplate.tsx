@@ -472,23 +472,40 @@ export default function JathagamPDFTemplate({ profile, profileId, family: family
           </div>
         </div>
 
-        {/* 3. Astrology Charts & Center QR Code */}
+        {/* 3. Astrology Charts & Center QR Code / Uploaded Image */}
         <div className="flex items-center justify-between gap-4 my-1 w-full" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', margin: '8px 0', width: '100%' }}>
-          <PDFChartBox title="ராசி" houses={rasiHouses} />
-          
-          <div className="flex flex-col items-center justify-center border border-[#d4af37] rounded-lg p-1.5 relative bg-[#fdfbf2]" style={{ width: '160px', height: '160px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyItems: 'center', justifyContent: 'center', border: '1px solid #d4af37', borderRadius: '8px', padding: '6px', position: 'relative', backgroundColor: '#fdfbf2' }}>
-            <div className="bg-white p-1 rounded relative mb-1" style={{ backgroundColor: '#ffffff', padding: '4px', borderRadius: '4px', position: 'relative', marginBottom: '2px' }}>
-              <img src="/app_qr_code.jpg" alt="QR Code" style={{ width: '85px', height: '85px', objectFit: 'contain' }} />
-            </div>
-            
-            <div className="flex flex-col items-center justify-center text-center w-full" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', width: '100%' }}>
-               <div className="font-bold text-emerald-800" style={{ fontSize: '8.5px', fontWeight: 'bold', color: '#065f46', lineHeight: '1.2', letterSpacing: '-0.01em', whiteSpace: 'nowrap' }}>www.akshayamtamilmatrimony.com</div>
-               <div className="font-bold text-red-600" style={{ fontSize: '9px', fontWeight: 'bold', color: '#dc2626', lineHeight: '1.2', letterSpacing: '0.01em', marginTop: '2px', whiteSpace: 'nowrap' }}>📞 96776 13716, 93452 89217</div>
-               <div className="font-semibold text-gray-800" style={{ fontSize: '7.5px', fontWeight: 600, color: '#1f2937', lineHeight: '1.2', marginTop: '2px', wordBreak: 'break-word', padding: '0 2px' }}>அருள்மிகு குழந்தை வேலாயுதசுவாமி திருக்கோயில், மலைக்கோயில், மங்கலம் ரோடு, திருப்பூர் - 641 604.</div>
-            </div>
-          </div>
+          {rasiHouses.length > 0 || amsamHouses.length > 0 ? (
+            <>
+              <PDFChartBox title="ராசி" houses={rasiHouses} />
+              
+              <div className="flex flex-col items-center justify-center border border-[#d4af37] rounded-lg p-1.5 relative bg-[#fdfbf2]" style={{ width: '160px', height: '160px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyItems: 'center', justifyContent: 'center', border: '1px solid #d4af37', borderRadius: '8px', padding: '6px', position: 'relative', backgroundColor: '#fdfbf2' }}>
+                <div className="bg-white p-1 rounded relative mb-1" style={{ backgroundColor: '#ffffff', padding: '4px', borderRadius: '4px', position: 'relative', marginBottom: '2px' }}>
+                  <img src="/app_qr_code.jpg" alt="QR Code" style={{ width: '85px', height: '85px', objectFit: 'contain' }} />
+                </div>
+                
+                <div className="flex flex-col items-center justify-center text-center w-full" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', width: '100%' }}>
+                   <div className="font-bold text-emerald-800" style={{ fontSize: '8.5px', fontWeight: 'bold', color: '#065f46', lineHeight: '1.2', letterSpacing: '-0.01em', whiteSpace: 'nowrap' }}>www.akshayamtamilmatrimony.com</div>
+                   <div className="font-bold text-red-600" style={{ fontSize: '9px', fontWeight: 'bold', color: '#dc2626', lineHeight: '1.2', letterSpacing: '0.01em', marginTop: '2px', whiteSpace: 'nowrap' }}>📞 96776 13716, 93452 89217</div>
+                   <div className="font-semibold text-gray-800" style={{ fontSize: '7.5px', fontWeight: 600, color: '#1f2937', lineHeight: '1.2', marginTop: '2px', wordBreak: 'break-word', padding: '0 2px' }}>அருள்மிகு குழந்தை வேலாயுதசுவாமி திருக்கோயில், மலைக்கோயில், மங்கலம் ரோடு, திருப்பூர் - 641 604.</div>
+                </div>
+              </div>
 
-          <PDFChartBox title="நவாம்சம்" houses={amsamHouses} />
+              <PDFChartBox title="நவாம்சம்" houses={amsamHouses} />
+            </>
+          ) : (
+            <div className="flex flex-col items-center justify-center w-full min-h-[160px] border border-dashed border-emerald-300 rounded-lg bg-emerald-50/30 p-4" style={{ width: '100%', minHeight: '160px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyItems: 'center', justifyContent: 'center', border: '1px dashed #6ee7b7', borderRadius: '8px', backgroundColor: 'rgba(236, 253, 245, 0.3)', padding: '16px' }}>
+              {profile.documents?.find((d: any) => d.type === 'JATHAGAM') ? (
+                <>
+                  <div className="font-bold text-emerald-800 mb-2" style={{ fontSize: '10px', fontWeight: 'bold', color: '#065f46', marginBottom: '8px' }}>ஜாதகம் இணைக்கப்பட்டுள்ளது</div>
+                  <img crossOrigin="anonymous" src={`/api/proxy-image?url=${encodeURIComponent(profile.documents.find((d: any) => d.type === 'JATHAGAM').url)}`} alt="Jathagam" style={{ maxWidth: '100%', maxHeight: '120px', objectFit: 'contain' }} />
+                </>
+              ) : (
+                <div className="font-bold text-emerald-800" style={{ fontSize: '10px', fontWeight: 'bold', color: '#065f46' }}>
+                  ஜாதக கட்டங்கள் இணைக்கப்படவில்லை (Jathagam Chart not available)
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* 4. Bottom Career & Family Details */}
