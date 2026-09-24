@@ -12,7 +12,10 @@ interface JathagamPDFTemplateProps {
 }
 
 const convertLegacyGrid = (gridData: any) => {
-  if (!gridData || typeof gridData !== 'object') return [];
+    if (!gridData || typeof gridData !== 'object') return [];
+    if (Array.isArray(gridData)) {
+      return gridData.filter(h => h && typeof h.houseIndex === 'number' && Array.isArray(h.planets));
+    }
   const houseMapping: Record<string, number> = {
     'meenam': 0, 'mesham': 1, 'rishabham': 2, 'mithunam': 3,
     'kadagam': 4, 'simmam': 5, 'kanni': 6, 'thulam': 7,
@@ -90,8 +93,10 @@ const maritalStatusMap: Record<string, string> = {
 };
 
 const doshamMap: Record<string, string> = {
-  'no_dosham': 'சுத்த ஜாதகம்', 'none': 'சுத்த ஜாதகம்',
-  'rahu_ketu': 'ராகு கேது தோஷம்', 'chevvai': 'செவ்வாய் தோஷம்', 'sarpa': 'சர்ப்ப தோஷம்'
+  'no_dosham': 'சுத்த ஜாதகம்', 'none': 'சுத்த ஜாதகம்', 'sutham': 'சுத்த ஜாதகம்', 'sutha jathagam': 'சுத்த ஜாதகம்',
+  'rahu_ketu': 'ராகு கேது தோஷம்', 'chevvai': 'செவ்வாய் தோஷம்', 'sarpa': 'சர்ப்ப தோஷம்',
+  'rahu kethu chevvai': 'ராகு கேது செவ்வாய் தோஷம்', 'rahu kethu': 'ராகு கேது தோஷம்', 'rahu ketu': 'ராகு கேது தோஷம்',
+  'kala sarpa': 'காள சர்ப்ப தோஷம்', 'kala sarpa dosham': 'காள சர்ப்ப தோஷம்'
 };
 
 const nakshatraMap: Record<string, string> = {
@@ -165,25 +170,27 @@ const translatePropertyText = (text: string | null | undefined) => {
 };
 
 // Strict colon-aligned row for bottom section
-const FieldRow = ({ label, value, labelWidth = "160px", valueWidth = "300px" }: { label: string; value: string | number | null | undefined; labelWidth?: string; valueWidth?: string }) => {
+const FieldRow = ({ label, value, labelWidth = "120px", valueWidth = "310px" }: { label: string; value: string | number | null | undefined; labelWidth?: string; valueWidth?: string }) => {
   const lWidth = labelWidth.startsWith('w-[') ? labelWidth.slice(3, -1) : labelWidth;
   const vWidth = valueWidth.startsWith('w-[') ? valueWidth.slice(3, -1) : valueWidth;
   return (
-    <div className="mb-1 text-[11px] leading-tight" style={{ display: 'grid', gridTemplateColumns: `${lWidth} 10px ${vWidth}`, marginBottom: '6px', fontSize: '11.5px', lineHeight: '1.4', alignItems: 'start' }}>
-      <div className="font-bold text-emerald-950" style={{ fontWeight: 'bold', color: '#022c22' }}>{label}</div>
-      <div className="font-bold text-emerald-950 text-center" style={{ fontWeight: 'bold', color: '#022c22', textAlign: 'center' }}>:</div>
-      <div className="font-bold text-gray-900 whitespace-pre-wrap break-words pl-1" style={{ fontWeight: 'bold', color: '#111827', whiteSpace: 'pre-wrap', wordBreak: 'break-word', paddingLeft: '4px' }}>{value || '-'}</div>
+    <div className="flex items-start mb-1 text-[11px] leading-tight" style={{ display: 'flex', alignItems: 'flex-start', marginBottom: '6px', fontSize: '11.5px', lineHeight: '1.4' }}>
+      <div className={`font-bold text-emerald-950 whitespace-nowrap flex-shrink-0`} style={{ fontWeight: 'bold', color: '#022c22', whiteSpace: 'nowrap', flexShrink: 0, width: lWidth }}>{label}</div>
+      <div className="font-bold text-emerald-950 text-center flex-shrink-0" style={{ fontWeight: 'bold', color: '#022c22', textAlign: 'center', width: '10px', flexShrink: 0 }}>:</div>
+      <div className={`font-bold text-gray-900 whitespace-pre-wrap break-words pl-1 flex-shrink-0`} style={{ fontWeight: 'bold', color: '#111827', whiteSpace: 'pre-wrap', wordBreak: 'break-word', paddingLeft: '4px', flexShrink: 0, width: vWidth }}>{value || '-'}</div>
     </div>
   );
 };
 
-const FieldItem = ({ label, value, colSpan = 1 }: { label: string; value: string | number | null | undefined; colSpan?: number }) => {
+const FieldItem = ({ label, value, colSpan = 1, highlightLabel = false }: { label: string; value: string | number | null | undefined; colSpan?: number; highlightLabel?: boolean }) => {
   const displayValue = (value === null || value === undefined || value === '' || value === 'null' || value === '-') ? 'குறிப்பிடப்படவில்லை' : value;
+  const labelColor = highlightLabel ? '#dc2626' : '#1e293b';
+  const labelFontWeight = highlightLabel ? 'bold' : 600;
   return (
     <div className={`flex items-start text-[10.5px] leading-tight text-slate-900`} style={{ display: 'flex', alignItems: 'flex-start', fontSize: '11px', lineHeight: '1.3', color: '#0f172a', width: colSpan === 2 ? '100%' : '50%', boxSizing: 'border-box', paddingRight: '8px', marginBottom: '4px' }}>
-      <div className={`font-semibold text-slate-800 whitespace-nowrap w-[100px] flex-shrink-0`} style={{ fontWeight: 600, color: '#1e293b', whiteSpace: 'nowrap', width: '100px', flexShrink: 0 }}>{label}</div>
+      <div className={`${highlightLabel ? 'font-bold text-red-600' : 'font-semibold text-slate-800'} whitespace-nowrap w-[100px] flex-shrink-0`} style={{ fontWeight: labelFontWeight, color: labelColor, whiteSpace: 'nowrap', width: '100px', flexShrink: 0 }}>{label}</div>
       <div className={`font-bold text-center text-slate-700 w-[10px] flex-shrink-0`} style={{ fontWeight: 'bold', textAlign: 'center', color: '#334155', width: '10px', flexShrink: 0 }}>:</div>
-      <div className={`font-medium text-slate-900 pl-1 break-words flex-1 flex-shrink-0`} style={{ fontWeight: 500, color: '#0f172a', paddingLeft: '4px', wordBreak: 'break-word', flex: '1 1 0%', flexShrink: 0 }}>{displayValue}</div>
+      <div className={`${highlightLabel ? 'font-bold text-red-600' : 'font-medium text-slate-900'} pl-1 break-words flex-1 flex-shrink-0`} style={{ fontWeight: highlightLabel ? 'bold' : 500, color: highlightLabel ? '#dc2626' : '#0f172a', paddingLeft: '4px', wordBreak: 'break-word', flex: '1 1 0%', flexShrink: 0 }}>{displayValue}</div>
     </div>
   );
 };
@@ -244,8 +251,7 @@ export default function JathagamPDFTemplate({ profile, profileId, family: family
     </div>
   );
 
-  const isUuid = profileId && profileId.length === 36 && profileId.includes('-');
-  const displayId = akshayamId || profile.displayId || (!isUuid ? profileId : (userIndex ? `${1000 + userIndex}` : `${profileId.substring(0, 8).toUpperCase()}`));
+  const displayId = akshayamId || profile.displayId || (userIndex ? `${1000 + userIndex}` : `${profileId.substring(0, 8).toUpperCase()}`);
   const profileUrl = `https://www.akshayamtamilmatrimony.com/profiles/${profileId}`;
 
   // Priority Mapping Logic
@@ -265,14 +271,14 @@ export default function JathagamPDFTemplate({ profile, profileId, family: family
   const dasaBalance = jData.dasaBalance || profile.dasaBalance || profile.birthDetails || 'தசா இருப்பு விவரம் பார்க்கவும்';
   
   const kulam = profile.koottam || jData.kulam || profile.subCaste || 'குறிப்பிடப்படவில்லை';
-  const fatherNameRaw = family.fatherName || jData.fatherName || '-';
-  const motherNameRaw = family.motherName || jData.motherName || '-';
-  const fatherLivingStatus = mapParentStatus(family.fatherLivingStatus || jData.fatherLivingStatus);
-  const motherLivingStatus = mapParentStatus(family.motherLivingStatus || jData.motherLivingStatus);
-  
-  const fatherName = fatherNameRaw !== '-' && fatherLivingStatus === 'இல்லை' ? `${fatherNameRaw} (காலமானார்)` : fatherNameRaw;
-  const motherName = motherNameRaw !== '-' && motherLivingStatus === 'இல்லை' ? `${motherNameRaw} (காலமானார்)` : motherNameRaw;
-  
+  const fatherName = family.fatherName || jData.fatherName || '-';
+  const motherName = family.motherName || jData.motherName || '-';
+  const fatherStatus = mapParentStatus(family.fatherLivingStatus || family.fatherStatus || jData.fatherStatus);
+  const motherStatus = mapParentStatus(family.motherLivingStatus || family.motherStatus || jData.motherStatus);
+  const isFatherLate = family.fatherLivingStatus === 'LATE' || fatherStatus === 'இல்லை' || fatherStatus === 'மறைந்தவர்';
+  const isMotherLate = family.motherLivingStatus === 'LATE' || motherStatus === 'இல்லை' || motherStatus === 'மறைந்தவர்';
+  const fatherNameDisplay = isFatherLate ? `${fatherName !== '-' ? fatherName : ''} (மறைந்தவர்)`.trim() : fatherName;
+  const motherNameDisplay = isMotherLate ? `${motherName !== '-' ? motherName : ''} (மறைந்தவர்)`.trim() : motherName;
   const formatSiblings = (siblingsStr: any) => {
     if (!siblingsStr || typeof siblingsStr !== 'string') return siblingsStr;
     if (!siblingsStr.includes('மூத்தவர் ஆண்:')) return siblingsStr;
@@ -337,14 +343,9 @@ export default function JathagamPDFTemplate({ profile, profileId, family: family
   // Height translation (e.g. 5ft 3in -> 5 அடி 3 அங்குலம்)
   let heightStr = 'குறிப்பிடப்படவில்லை';
   if (profile.height) {
-    if (typeof profile.height === 'number' || !isNaN(Number(profile.height))) {
-      const hNum = Number(profile.height);
-      const feet = Math.floor(hNum / 30.48);
-      const inches = Math.round((hNum % 30.48) / 2.54);
-      heightStr = `${feet} அடி ${inches} அங்குலம் / ${hNum} செ.மீ`;
-    } else {
-      heightStr = String(profile.height);
-    }
+    const feet = Math.floor(profile.height / 30.48);
+    const inches = Math.round((profile.height % 30.48) / 2.54);
+    heightStr = `${feet} அடி ${inches} அங்குலம் / ${profile.height} செ.மீ`;
   }
   
   const casteDisplay = translateToTamil(profile.caste, { 'kongu vellala gounder': 'கொங்கு வேளாளக் கவுண்டர்', 'gounder': 'கவுண்டர்' }) || 'குறிப்பிடப்படவில்லை';
@@ -398,16 +399,16 @@ export default function JathagamPDFTemplate({ profile, profileId, family: family
         </div>
 
         {/* Contact Strip */}
-        <div className="flex justify-center items-center bg-white py-1 text-[10px]" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '32px', backgroundColor: '#ffffff', padding: '4px 0', fontSize: '10px', marginTop: '8px', width: '100%' }}>
-          <div className="flex items-center gap-1 font-bold whitespace-nowrap shrink-0" style={{ display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 'bold', whiteSpace: 'nowrap', flexShrink: 0 }}>
+        <div className="flex justify-between items-center bg-white py-1 w-full" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#ffffff', padding: '4px 0', marginTop: '8px', width: '100%', overflow: 'hidden' }}>
+          <div className="flex items-center gap-1 font-bold whitespace-nowrap shrink-0" style={{ display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 'bold', whiteSpace: 'nowrap', flexShrink: 0, fontSize: '9px' }}>
             <span className="text-emerald-800" style={{ color: '#065f46' }}>📞</span>
             <span className="text-red-600 tracking-wide" style={{ color: '#dc2626', letterSpacing: '0.025em' }}>96776 13716, 93452 89217</span>
           </div>
-          <div className="flex items-center gap-1 font-bold text-emerald-800 whitespace-nowrap shrink-0" style={{ display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 'bold', color: '#065f46', whiteSpace: 'nowrap', flexShrink: 0 }}>
+          <div className="flex items-center gap-1 font-bold text-emerald-800 whitespace-nowrap shrink-0" style={{ display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 'bold', color: '#065f46', whiteSpace: 'nowrap', flexShrink: 0, fontSize: '9px' }}>
             <span>🌐</span> www.akshayamtamilmatrimony.com
           </div>
-          <div className="flex items-center gap-1 font-bold text-gray-800 whitespace-nowrap shrink-0" style={{ display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 'bold', color: '#1f2937', whiteSpace: 'nowrap', flexShrink: 0 }}>
-            <span className="text-emerald-800" style={{ color: '#065f46' }}>📍</span> மலைக்கோயில், மங்கலம் ரோடு, திருப்பூர் - 641 604.
+          <div className="flex items-center gap-1 font-bold text-gray-800 whitespace-nowrap shrink-0" style={{ display: 'flex', alignItems: 'center', gap: '2px', fontWeight: 'bold', color: '#1f2937', whiteSpace: 'nowrap', flexShrink: 0, fontSize: '8.5px' }}>
+            <span className="text-emerald-800" style={{ color: '#065f46' }}>📍</span> அருள்மிகு குழந்தை வேலாயுதசுவாமி திருக்கோயில், மலைக்கோயில், மங்கலம் ரோடு, திருப்பூர் - 641 604.
           </div>
         </div>
 
@@ -422,7 +423,7 @@ export default function JathagamPDFTemplate({ profile, profileId, family: family
           {/* Left Text Columns */}
           <div className="flex-1 pr-2 leading-tight text-[10.5px] text-slate-900 content-start" style={{ flex: '1', paddingRight: '12px', display: 'flex', flexWrap: 'wrap', alignContent: 'flex-start' }}>
             <FieldItem label="பெயர்" value={name} />
-            <FieldItem label="குலம்" value={kulam} />
+            <FieldItem label="குலம்" value={kulam} highlightLabel={true} />
             
             <FieldItem label="பாலினம்" value={profile.gender === 'MALE' ? 'ஆண்' : 'பெண்'} />
             <FieldItem label="பிறந்த தேதி" value={formatSafeDate(dob)} />
@@ -445,16 +446,16 @@ export default function JathagamPDFTemplate({ profile, profileId, family: family
             <FieldItem label="எடை" value={`${profile.weight} கிலோ`} />
             <FieldItem label="உடன் பிறந்தோர்" value={siblingsDisplay} />
             
-            <FieldItem label="தந்தை பெயர்" value={fatherName} />
-            <FieldItem label="தாய் பெயர்" value={motherName} />
+            <FieldItem label="தந்தை பெயர்" value={fatherNameDisplay} />
+            <FieldItem label="தாய் பெயர்" value={motherNameDisplay} />
             
-            <FieldItem label="நட்சத்திரம்" value={nakshatra} />
+            <FieldItem label="நட்சத்திரம்" value={nakshatra} highlightLabel={true} />
             <FieldItem label="பாதம்" value={padam} />
             
-            <FieldItem label="ராசி" value={rasi} />
+            <FieldItem label="ராசி" value={rasi} highlightLabel={true} />
             <FieldItem label="லக்னம்" value={lagnam} />
             
-            <FieldItem label="ஜாதகம்" value={dosham} />
+            <FieldItem label="ஜாதகம்" value={dosham} highlightLabel={true} />
           </div>
 
           {/* Right Photo Column */}
@@ -483,7 +484,7 @@ export default function JathagamPDFTemplate({ profile, profileId, family: family
             <div className="flex flex-col items-center justify-center text-center w-full" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', width: '100%' }}>
                <div className="font-bold text-emerald-800" style={{ fontSize: '8.5px', fontWeight: 'bold', color: '#065f46', lineHeight: '1.2', letterSpacing: '-0.01em', whiteSpace: 'nowrap' }}>www.akshayamtamilmatrimony.com</div>
                <div className="font-bold text-red-600" style={{ fontSize: '9px', fontWeight: 'bold', color: '#dc2626', lineHeight: '1.2', letterSpacing: '0.01em', marginTop: '2px', whiteSpace: 'nowrap' }}>📞 96776 13716, 93452 89217</div>
-               <div className="font-semibold text-gray-800" style={{ fontSize: '7.5px', fontWeight: 600, color: '#1f2937', lineHeight: '1.2', marginTop: '2px', wordBreak: 'break-word', padding: '0 2px' }}>மலைக்கோயில், மங்கலம் ரோடு, திருப்பூர் - 641 604.</div>
+               <div className="font-semibold text-gray-800" style={{ fontSize: '7.5px', fontWeight: 600, color: '#1f2937', lineHeight: '1.2', marginTop: '2px', wordBreak: 'break-word', padding: '0 2px' }}>அருள்மிகு குழந்தை வேலாயுதசுவாமி திருக்கோயில், மலைக்கோயில், மங்கலம் ரோடு, திருப்பூர் - 641 604.</div>
             </div>
           </div>
 
@@ -513,24 +514,24 @@ export default function JathagamPDFTemplate({ profile, profileId, family: family
             }).join(', ') : "Any"} />
             <FieldRow label="எதிர்பார்ப்பு" value={formatExpectations(profile.expectations)} />
             <FieldRow label="ராகு கேது ஜாதகம்" value={profile.dosham === 'RAHU_KETU' ? "உண்டு" : "-"} />
-            <div className="mt-1 text-[11px] leading-tight" style={{ display: 'grid', gridTemplateColumns: '160px 10px 1fr', marginTop: '4px', fontSize: '11px', lineHeight: '1.2', alignItems: 'start' }}>
-              <div className="font-bold text-emerald-950" style={{ fontWeight: 'bold', color: '#022c22' }}>தொடர்பு எண்</div>
-              <div className="font-bold text-emerald-950 text-center" style={{ fontWeight: 'bold', color: '#022c22', textAlign: 'center' }}>:</div>
-              <div className="font-bold text-red-600 pl-1" style={{ fontWeight: 'bold', color: '#dc2626', paddingLeft: '4px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span>+91 {profile.user?.mobile_no || "96776 13716, 93452 89217"}</span>
-                <span className="font-black text-[#004d40] text-[13px]" style={{ fontSize: '13px', color: '#004d40', fontWeight: '900' }}>www.akshayamtamilmatrimony.com</span>
-              </div>
+            <div className="grid grid-cols-[130px_10px_1fr] mt-1 text-[11px] leading-tight" style={{ display: 'flex', marginTop: '4px', fontSize: '11px', lineHeight: '1.2' }}>
+              <div className="font-bold text-emerald-950" style={{ fontWeight: 'bold', color: '#022c22', width: '130px' }}>தொடர்பு எண்</div>
+              <div className="font-bold text-emerald-950 text-center" style={{ fontWeight: 'bold', color: '#022c22', width: '10px', textAlign: 'center' }}>:</div>
+              <div className="font-bold text-red-600" style={{ fontWeight: 'bold', color: '#dc2626', flex: '1' }}>96776 13716, 93452 89217</div>
             </div>
           </div>
           <div className="w-[280px] flex flex-col gap-0.5 pt-5" style={{ width: '280px', display: 'flex', flexDirection: 'column', gap: '2px', paddingTop: '20px' }}>
-            <FieldRow label={family?.workNature === 'JOB' ? 'பதவி' : 'தொழில்'} value={occupationStr} labelWidth="155px" valueWidth="115px" />
-            {!isNotWorking && <FieldRow label={family?.workNature === 'JOB' ? 'வேலை செய்யும் இடம்' : 'தொழில் அலுவலகம்'} value={translateToTamil(profile.city, { 'coimbatore': 'கோயம்புத்தூர்', 'chennai': 'சென்னை', 'tiruppur': 'திருப்பூர்', 'erode': 'ஈரோடு', 'salem': 'சேலம்', 'karur': 'கரூர்', 'namakkal': 'நாமக்கல்' }) || nativePlace} labelWidth="155px" valueWidth="115px" />}
+            <FieldRow label={family?.workNature === 'JOB' ? 'பதவி' : 'தொழில்'} value={occupationStr} labelWidth="145px" valueWidth="125px" />
+            {!isNotWorking && <FieldRow label={family?.workNature === 'JOB' ? 'வேலை செய்யும் இடம்' : 'தொழில் அலுவலகம்'} value={translateToTamil(profile.city, { 'coimbatore': 'கோயம்புத்தூர்', 'chennai': 'சென்னை', 'tiruppur': 'திருப்பூர்', 'erode': 'ஈரோடு', 'salem': 'சேலம்', 'karur': 'கரூர்', 'namakkal': 'நாமக்கல்' }) || nativePlace} labelWidth="145px" valueWidth="125px" />}
           </div>
         </div>
 
         {/* 5. Akshayam Services Footer Box */}
         <div className="mt-auto flex-shrink-0 flex flex-col justify-end" style={{ marginTop: 'auto', flexShrink: 0, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
-          <div className="text-center font-bold text-red-600 mb-1" style={{ fontSize: '11px', fontWeight: 'bold', color: '#dc2626', textAlign: 'center', marginBottom: '4px' }}>ஜாதகம் முதல் பந்தி வரை</div>
+          <div className="relative mb-1 w-full flex justify-center items-end" style={{ position: 'relative', marginBottom: '4px', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'flex-end' }}>
+              <div className="font-black text-red-600" style={{ fontSize: '12px', fontWeight: 900, color: '#dc2626', position: 'absolute', left: '16px', bottom: '0' }}>ஜாதகம் முதல் பந்தி வரை</div>
+              <div className="font-bold text-emerald-800" style={{ fontSize: '13px', fontWeight: 'bold', color: '#065f46' }}>www.akshayamtamilmatrimony.com</div>
+            </div>
           <div className="bg-[#fdfbf2] border border-emerald-900 rounded-t p-1.5 text-[9px] leading-tight relative flex justify-between" style={{ backgroundColor: '#fdfbf2', border: '1px solid #064e3b', borderTopLeftRadius: '4px', borderTopRightRadius: '4px', padding: '6px', fontSize: '9px', lineHeight: '1.2', position: 'relative', display: 'flex', justifyContent: 'space-between' }}>
             {/* Left List */}
             <div className="w-[45%] flex flex-col gap-0.5 font-bold text-gray-800 pl-4" style={{ width: '45%', display: 'flex', flexDirection: 'column', gap: '2px', fontWeight: 'bold', color: '#1f2937', paddingLeft: '16px' }}>

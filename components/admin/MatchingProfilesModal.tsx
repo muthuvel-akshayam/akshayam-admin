@@ -9,6 +9,28 @@ import { AdminProfile, ProfileStatus } from '../../types/admin';
 import { getProfilesAction } from '../../actions/admin/profile.actions';
 import { searchCompatibilityAction } from '../../actions/admin/compatibility.actions';
 
+const translateToTamil = (val: string | null | undefined, dict: Record<string, string>) => {
+  if (!val) return val;
+  const key = val.trim().toLowerCase();
+  return dict[key] || dict[val.trim().toUpperCase()] || val;
+};
+
+const nakshatraMap: Record<string, string> = {
+  'ashwini': 'அஸ்வினி', 'aswini': 'அஸ்வினி', 'bharani': 'பரணி', 'krithika': 'கிருத்திகை', 'karthigai': 'கிருத்திகை', 
+  'rohini': 'ரோகிணி', 'mrigashiras': 'மிருகசீரிடம்', 'mrigasheersham': 'மிருகசீரிடம்', 
+  'ardra': 'திருவாதிரை', 'thiruvathirai': 'திருவாதிரை', 'punarvasu': 'புனர்பூசம்', 'punarpoosam': 'புனர்பூசம்',
+  'pushya': 'பூசம்', 'poosam': 'பூசம்', 'ashlesha': 'ஆயில்யம்', 'ayilyam': 'ஆயில்யம்',
+  'magha': 'மகம்', 'makam': 'மகம்', 'purva phalguni': 'பூரம்', 'pooram': 'பூரம்', 
+  'uttara phalguni': 'உத்திரம்', 'uthiram': 'உத்திரம்', 'hasta': 'அஸ்தம்', 'hastham': 'அஸ்தம்',
+  'chitra': 'சித்திரை', 'chithirai': 'சித்திரை', 'swati': 'சுவாதி', 'swathi': 'சுவாதி',
+  'vishakha': 'விசாகம்', 'visakam': 'விசாகம்', 'anuradha': 'அனுஷம்', 'anusham': 'அனுஷம்',
+  'jyeshtha': 'கேட்டை', 'kettai': 'கேட்டை', 'mula': 'மூலம்', 'moolam': 'மூலம்',
+  'purva ashadha': 'பூராடம்', 'pooradam': 'பூராடம்', 'uttara ashadha': 'உத்திராடம்', 'uthiradam': 'உத்திராடம்',
+  'shravana': 'திருவோணம்', 'thiruvonam': 'திருவோணம்', 'dhanishta': 'அவிட்டம்', 'avittam': 'அவிட்டம்',
+  'shatabhisha': 'சதயம்', 'sathayam': 'சதயம்', 'purva bhadrapada': 'பூரட்டாதி', 'poorattathi': 'பூரட்டாதி', 'poorattadhi': 'பூரட்டாதி',
+  'uttara bhadrapada': 'உத்திரட்டாதி', 'uthirattathi': 'உத்திரட்டாதி', 'uthirattadhi': 'உத்திரட்டாதி', 'revati': 'ரேவதி', 'revathi': 'ரேவதி'
+};
+
 export interface MatchingProfilesModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -296,7 +318,7 @@ export default function MatchingProfilesModal({ isOpen, onClose, baseProfile }: 
                       <div><span className="text-slate-400">Age:</span> {p.age} Yrs</div>
                       <div className="truncate"><span className="text-slate-400">City:</span> {p.city}</div>
                       <div><span className="text-slate-400">Height:</span> {p.height || 'N/A'}</div>
-                      <div className="truncate"><span className="text-slate-400">Star:</span> {p.nakshatra}</div>
+                      <div className="truncate"><span className="text-slate-400">Star:</span> {translateToTamil(p.nakshatra, nakshatraMap)}</div>
                     </div>
 
                     <div className="mt-2 flex justify-end">

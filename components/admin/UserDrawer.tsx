@@ -29,11 +29,44 @@ const getFullUrl = (url: string, label: string) => {
   if (!url) return '';
   if (url.startsWith('http')) return url;
   
-  if (label === 'ஜாதகம்' || label === 'ஜாதி சான்றிதழ்') {
+  if (label === 'ஜாதகம்' || label === 'ஜாதி சான்றிதழ்' || label === 'கட்டண ரசீது' || label === 'சுயவிவரப் படம்' || label === 'அடையாள சான்று') {
     return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/user-documents/${url}`;
   }
   
   return `http://localhost:3000${url.startsWith('/') ? '' : '/'}${url}`;
+};
+
+const translateToTamil = (val: string | null | undefined, dict: Record<string, string>) => {
+  if (!val) return val;
+  const key = val.trim().toLowerCase();
+  return dict[key] || dict[val.trim().toUpperCase()] || val;
+};
+
+const doshamMap: Record<string, string> = {
+  'no_dosham': 'சுத்த ஜாதகம்', 'none': 'சுத்த ஜாதகம்',
+  'rahu_ketu': 'ராகு கேது தோஷம்', 'chevvai': 'செவ்வாய் தோஷம்', 'sarpa': 'சர்ப்ப தோஷம்'
+};
+
+const nakshatraMap: Record<string, string> = {
+  'ashwini': 'அஸ்வினி', 'aswini': 'அஸ்வினி', 'bharani': 'பரணி', 'krithika': 'கிருத்திகை', 'karthigai': 'கிருத்திகை', 
+  'rohini': 'ரோகிணி', 'mrigashiras': 'மிருகசீரிடம்', 'mrigasheersham': 'மிருகசீரிடம்', 
+  'ardra': 'திருவாதிரை', 'thiruvathirai': 'திருவாதிரை', 'punarvasu': 'புனர்பூசம்', 'punarpoosam': 'புனர்பூசம்',
+  'pushya': 'பூசம்', 'poosam': 'பூசம்', 'ashlesha': 'ஆயில்யம்', 'ayilyam': 'ஆயில்யம்',
+  'magha': 'மகம்', 'makam': 'மகம்', 'purva phalguni': 'பூரம்', 'pooram': 'பூரம்', 
+  'uttara phalguni': 'உத்திரம்', 'uthiram': 'உத்திரம்', 'hasta': 'அஸ்தம்', 'hastham': 'அஸ்தம்',
+  'chitra': 'சித்திரை', 'chithirai': 'சித்திரை', 'swati': 'சுவாதி', 'swathi': 'சுவாதி',
+  'vishakha': 'விசாகம்', 'visakam': 'விசாகம்', 'anuradha': 'அனுஷம்', 'anusham': 'அனுஷம்',
+  'jyeshtha': 'கேட்டை', 'kettai': 'கேட்டை', 'mula': 'மூலம்', 'moolam': 'மூலம்',
+  'purva ashadha': 'பூராடம்', 'pooradam': 'பூராடம்', 'uttara ashadha': 'உத்திராடம்', 'uthiradam': 'உத்திராடம்',
+  'shravana': 'திருவோணம்', 'thiruvonam': 'திருவோணம்', 'dhanishta': 'அவிட்டம்', 'avittam': 'அவிட்டம்',
+  'shatabhisha': 'சதயம்', 'sathayam': 'சதயம்', 'purva bhadrapada': 'பூரட்டாதி', 'poorattathi': 'பூரட்டாதி', 'poorattadhi': 'பூரட்டாதி',
+  'uttara bhadrapada': 'உத்திரட்டாதி', 'uthirattathi': 'உத்திரட்டாதி', 'uthirattadhi': 'உத்திரட்டாதி', 'revati': 'ரேவதி', 'revathi': 'ரேவதி'
+};
+
+const rasiMap: Record<string, string> = {
+  'mesham': 'மேஷம்', 'rishabam': 'ரிஷபம்', 'rishabham': 'ரிஷபம்', 'mithunam': 'மிதுனம்',
+  'kadagam': 'கடகம்', 'simmam': 'சிம்மம்', 'kanni': 'கன்னி', 'thulam': 'துலாம்',
+  'viruchigam': 'விருச்சிகம்', 'dhanusu': 'தனுசு', 'magaram': 'மகரம்', 'kumbam': 'கும்பம்', 'meenam': 'மீனம்'
 };
 
 export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }: UserDrawerProps) {
@@ -99,7 +132,7 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
       ['உயரம்', profile.height ? `${profile.height} cm` : null], ['எடை', profile.weight ? `${profile.weight} kg` : null],
       ['உடல் நிலை', profile.physicalCondition], ['நிறம்', profile.skinColour],
       ['உணவு பழக்கம்', profile.foodHabits], ['குடி பழக்கம்', profile.drinkingHabits], ['புகை பழக்கம்', profile.smokingHabits],
-      ['ராசி', profile.rasi], ['நட்சத்திரம்', profile.nakshatra], ['பொருந்தும் நட்சத்திரங்கள்', profile.poruthaNakshatram], ['தோஷம்', profile.dosham],
+      ['ராசி', translateToTamil(profile.rasi, rasiMap)], ['நட்சத்திரம்', translateToTamil(profile.nakshatra, nakshatraMap)], ['பொருந்தும் நட்சத்திரங்கள்', profile.poruthaNakshatram], ['தோஷம்', translateToTamil(profile.dosham, doshamMap)],
       ['தசா இருப்பு', profile.dasaBalance], ['வீட்டு முகவரி', profile.houseAddress],
     ].map(([label, fieldValue]) => [label, value(fieldValue)] as [string, string | null])
       .filter((item): item is [string, string] => item[1] !== null);
@@ -147,13 +180,17 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
 
   const handleForceDownload = async (filePathOrUrl: string, label: string) => {
     try {
+      const profileIdStr = String(profile?.displayId || profile?.userId || profile?.id || userData?.id || 'UnknownID');
+      const profileName = profile?.name || 'UnknownName';
+      const filePrefix = `${profileIdStr}_${profileName.replace(/\\s+/g, '_')}`;
+
       const fullUrl = getFullUrl(filePathOrUrl, label);
       if (fullUrl.includes('supabase.co')) {
         const downloadUrl = fullUrl.includes('?') ? `${fullUrl}&download=` : `${fullUrl}?download=`;
         const a = document.createElement('a');
         a.href = downloadUrl;
         a.target = '_blank';
-        a.download = `${label}_${userData?.email || 'file'}`;
+        a.download = `${filePrefix}_${label}`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -166,7 +203,7 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
       const a = document.createElement('a');
       a.href = blobUrl;
       const extension = fullUrl.split('.').pop()?.split('?')[0] || 'jpg';
-      a.download = `${userData?.email || label}_${label}.${extension}`;
+      a.download = `${filePrefix}_${label}.${extension}`;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(blobUrl);
