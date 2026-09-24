@@ -515,17 +515,17 @@ export default function JathagamPDFTemplate({ profile, profileId, family: family
             <FieldRow label="எதிர்பார்ப்பு" value={formatExpectations(profile.expectations)} />
             <FieldRow label="ராகு கேது ஜாதகம்" value={profile.dosham === 'RAHU_KETU' ? "உண்டு" : "-"} />
             <div className="grid grid-cols-[160px_10px_1fr] mt-1 text-[11px] leading-tight" style={{ display: 'flex', marginTop: '4px', fontSize: '11.5px', lineHeight: '1.4', alignItems: 'start' }}>
-              <div className="font-bold text-emerald-950" style={{ fontWeight: 'bold', color: '#022c22', width: '160px' }}>தொடர்பு எண்</div>
-              <div className="font-bold text-emerald-950 text-center" style={{ fontWeight: 'bold', color: '#022c22', width: '10px', textAlign: 'center' }}>:</div>
-              <div className="font-bold text-red-600 pl-1" style={{ fontWeight: 'bold', color: '#dc2626', flex: '1', display: 'flex', alignItems: 'center', gap: '8px', paddingLeft: '4px' }}>
+              <div className="font-bold text-emerald-950 shrink-0" style={{ fontWeight: 'bold', color: '#022c22', width: '160px', flexShrink: 0 }}>தொடர்பு எண்</div>
+              <div className="font-bold text-emerald-950 text-center shrink-0" style={{ fontWeight: 'bold', color: '#022c22', width: '10px', flexShrink: 0, textAlign: 'center' }}>:</div>
+              <div className="font-bold text-red-600 pl-1 shrink-0" style={{ fontWeight: 'bold', color: '#dc2626', flex: '1', display: 'flex', alignItems: 'center', gap: '8px', paddingLeft: '4px', flexShrink: 0 }}>
                 <span>{String(profile.user?.mobile_no || "96776 13716, 93452 89217").replace(/^\+91\s*/, '')}</span>
                 <span className="font-black text-[#004d40] text-[13px]" style={{ fontSize: '13px', color: '#004d40', fontWeight: '900', marginLeft: 'auto' }}>www.akshayamtamilmatrimony.com</span>
               </div>
             </div>
           </div>
           <div className="w-[280px] flex flex-col gap-0.5 pt-5" style={{ width: '280px', display: 'flex', flexDirection: 'column', gap: '2px', paddingTop: '20px' }}>
-            <FieldRow label={family?.workNature === 'JOB' ? 'பதவி' : 'தொழில்'} value={occupationStr} labelWidth="145px" valueWidth="125px" />
-            {!isNotWorking && <FieldRow label={family?.workNature === 'JOB' ? 'வேலை செய்யும் இடம்' : 'தொழில் அலுவலகம்'} value={translateToTamil(profile.city, { 'coimbatore': 'கோயம்புத்தூர்', 'chennai': 'சென்னை', 'tiruppur': 'திருப்பூர்', 'erode': 'ஈரோடு', 'salem': 'சேலம்', 'karur': 'கரூர்', 'namakkal': 'நாமக்கல்' }) || nativePlace} labelWidth="145px" valueWidth="125px" />}
+            <FieldRow label={family?.workNature === 'JOB' ? 'பதவி' : 'தொழில்'} value={occupationStr} labelWidth="115px" valueWidth="155px" />
+            {!isNotWorking && <FieldRow label={family?.workNature === 'JOB' ? 'வேலை செய்யும் இடம்' : 'தொழில் அலுவலகம்'} value={translateToTamil(profile.city, { 'coimbatore': 'கோயம்புத்தூர்', 'chennai': 'சென்னை', 'tiruppur': 'திருப்பூர்', 'erode': 'ஈரோடு', 'salem': 'சேலம்', 'karur': 'கரூர்', 'namakkal': 'நாமக்கல்' }) || nativePlace} labelWidth="115px" valueWidth="155px" />}
           </div>
         </div>
 
