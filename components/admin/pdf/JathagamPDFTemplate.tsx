@@ -251,7 +251,7 @@ export default function JathagamPDFTemplate({ profile, profileId, family: family
     </div>
   );
 
-  const displayId = akshayamId || profile.displayId || (userIndex ? `${1000 + userIndex}` : `${profileId.substring(0, 8).toUpperCase()}`);
+  const displayId = profile?.displayId || akshayamId || (userIndex ? `${1000 + userIndex}` : `${profileId.substring(0, 8).toUpperCase()}`);
   const profileUrl = `https://www.akshayamtamilmatrimony.com/profiles/${profileId}`;
 
   // Priority Mapping Logic
