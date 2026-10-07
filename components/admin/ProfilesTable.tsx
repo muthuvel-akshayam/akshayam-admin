@@ -310,8 +310,8 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
 
                     {/* Profile ID */}
                     <td className="px-4 py-3.5 whitespace-nowrap">
-                      <span className="inline-block px-2 py-1 rounded-md bg-slate-100 border border-slate-200 text-slate-600 font-mono text-xs font-semibold">
-                        {profile.userIndex ? `#${profile.userIndex}` : String(profile.id).substring(0, 8)}
+                      <span className="inline-block px-2.5 py-1 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-700 font-mono text-xs font-bold shadow-sm">
+                        {profile.displayId || (profile.userIndex ? `AKM-${String(profile.userIndex).padStart(4, '0')}` : String(profile.id).substring(0, 8))}
                       </span>
                     </td>
 

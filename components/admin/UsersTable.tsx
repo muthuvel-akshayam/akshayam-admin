@@ -286,8 +286,8 @@ export const UsersTable: React.FC<UsersTableProps> = ({
                       </div>
                     </td>
                     <td className="px-4 py-3.5 whitespace-nowrap">
-                      <span className="text-xs text-slate-600 font-semibold bg-slate-100 px-2 py-1 rounded-md border border-slate-200">
-                        {user.userid || user.userIndex || user.id}
+                      <span className="text-xs text-emerald-700 font-bold bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200 shadow-sm font-mono">
+                        {user.userid || (user.userIndex ? `AKM-${String(user.userIndex).padStart(4, '0')}` : String(user.id).substring(0, 8))}
                       </span>
                     </td>
                     <td className="px-4 py-3.5 whitespace-nowrap text-slate-700 font-mono text-xs">

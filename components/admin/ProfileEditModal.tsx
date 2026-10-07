@@ -32,6 +32,7 @@ export const ProfileEditModal: React.FC<ProfileEditModalProps> = ({
   useEffect(() => {
     if (profile) {
       setFormData({
+        displayId: profile.displayId || (profile.userIndex ? `AKM-${String(profile.userIndex).padStart(4, '0')}` : profile.userId) || '',
         name: profile.name || '',
         gender: profile.gender || 'FEMALE',
         age: profile.age || 25,
@@ -92,6 +93,17 @@ export const ProfileEditModal: React.FC<ProfileEditModalProps> = ({
     >
       <form onSubmit={handleSubmit} className="space-y-4 text-xs sm:text-sm">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-xs font-bold text-slate-700  uppercase mb-1">Matrimony ID</label>
+            <input
+              type="text"
+              required
+              value={formData.displayId || ''}
+              onChange={(e) => setFormData({ ...formData, displayId: e.target.value })}
+              className="w-full p-2.5 rounded-xl border border-slate-300  bg-white  focus:border-emerald-600 focus:outline-none"
+            />
+          </div>
+
           <div>
             <label className="block text-xs font-bold text-slate-700  uppercase mb-1">Full Name</label>
             <input

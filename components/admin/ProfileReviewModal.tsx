@@ -185,7 +185,7 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
               {profile.age} Yrs • {profile.height} • {profile.religion}, {profile.caste} • {profile.city}
             </p>
             <p className="text-[10px] text-emerald-300 font-mono mt-0.5">
-              Profile ID: {profile.displayId || profile.userId}
+              Profile ID: <span className="font-bold text-white text-xs">{profile.displayId || (profile.userIndex ? `AKM-${String(profile.userIndex).padStart(4, '0')}` : profile.userId)}</span>
             </p>
           </div>
         </div>

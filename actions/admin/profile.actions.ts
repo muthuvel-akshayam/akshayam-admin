@@ -51,6 +51,7 @@ export async function approveProfileAction(
     revalidatePath('/admin/profiles');
     revalidatePath('/admin/profiles/pending');
     revalidatePath('/admin/profiles/approved');
+    revalidatePath('/admin/users');
 
     return {
       success: true,
@@ -219,6 +220,7 @@ export async function createProfileAction(
     revalidatePath('/admin');
     revalidatePath('/admin/profiles');
     revalidatePath('/admin/profiles/approved');
+    revalidatePath('/admin/users');
 
     return {
       success: true,
@@ -244,6 +246,7 @@ export async function editProfileAction(
     revalidatePath('/admin');
     revalidatePath('/admin/profiles');
     revalidatePath(`/admin/profiles/${id}`);
+    revalidatePath('/admin/users');
 
     return {
       success: true,

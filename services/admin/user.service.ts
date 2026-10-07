@@ -334,7 +334,7 @@ export class UserService {
         }
 
           const updatedUser = await prisma.$transaction(async (tx: any) => {
-            const dataToUpdate: any = { id: newUserId };
+            const dataToUpdate: any = { id: newUserId, userid: newUserId };
             if (existing.profile) {
               dataToUpdate.profile = {
                 update: {
@@ -388,6 +388,7 @@ export class UserService {
     return {
       id: raw.id || 0,
       userIndex: raw.userIndex,
+      userid: raw.userid || raw.profile?.displayId,
       name: raw.profile?.name || raw.name || raw.email?.split('@')[0] || 'User',
       email: raw.email || 'noemail@akshayam.com',
       phone: raw.mobile_no || raw.phone || '+91 00000 00000',

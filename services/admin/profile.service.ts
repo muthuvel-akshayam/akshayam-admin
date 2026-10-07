@@ -460,7 +460,7 @@ export class ProfileService {
         const createdUser = await db.user.create({
           data: {
             id: userId,
-            userid: userId,
+            userid: data.displayId || `AKM-${String(nextIndex).padStart(4, '0')}`,
             userIndex: nextIndex,
             mobile_no: data.mobileNumber || undefined,
             password: data.password || undefined,
@@ -523,6 +523,7 @@ export class ProfileService {
           data: {
             id: profileId,
             userId: userId,
+            displayId: data.displayId || `AKM-${String(nextIndex).padStart(4, '0')}`,
             name: data.name || 'Unknown',
             gender: data.gender || 'FEMALE',
             livingCountry: data.livingCountry || 'India',
@@ -585,10 +586,24 @@ export class ProfileService {
     try {
       const db = prisma as any;
       if (db.profile) {
+        const { displayId, ...restData } = data;
         const updated = await db.profile.update({
-          where: { id },
-          data,
+          where: { id: String(id) },
+          data: restData,
         });
+
+        if (displayId !== undefined) {
+          await db.profile.update({
+             where: { id: String(id) },
+             data: { displayId: displayId || null }
+          });
+          if (updated.userId) {
+             await db.user.update({
+                where: { id: updated.userId },
+                data: { userid: displayId || null }
+             });
+          }
+        }
         await logAdminAction(adminId, 'UPDATE_PROFILE', id);
         return ProfileService.formatProfile(updated);
       }
@@ -616,6 +631,7 @@ export class ProfileService {
       id: raw.id || 0,
       userId: raw.userId || 0,
       userIndex: raw.user?.userIndex || raw.userIndex,
+      displayId: raw.displayId || raw.user?.userid || undefined,
       name: raw.name || '',
       whatsappProfileDeliveryNumber: raw.user?.whatsappProfileDeliveryNumber || undefined,
       gender: raw.gender === 'MALE' ? 'MALE' : 'FEMALE',
