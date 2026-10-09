@@ -176,7 +176,7 @@ const FieldRow = ({ label, value, labelWidth = "120px", valueWidth = "310px", hi
   const color = highlightLabel ? '#dc2626' : '#111827';
   return (
     <div className="flex items-start mb-1 text-[11px] leading-tight" style={{ display: 'flex', alignItems: 'flex-start', marginBottom: '6px', fontSize: '11.5px', lineHeight: '1.4' }}>
-      <div className={`font-bold whitespace-nowrap flex-shrink-0 ${highlightLabel ? 'text-red-600' : 'text-emerald-950'}`} style={{ fontWeight: 'bold', color: highlightLabel ? '#dc2626' : '#022c22', whiteSpace: 'nowrap', flexShrink: 0, width: lWidth }}>{label}</div>
+      <div className={`font-bold flex-shrink-0 ${highlightLabel ? 'text-red-600' : 'text-emerald-950'}`} style={{ fontWeight: 'bold', color: highlightLabel ? '#dc2626' : '#022c22', whiteSpace: 'pre-wrap', flexShrink: 0, width: lWidth }}>{label}</div>
       <div className={`font-bold text-center flex-shrink-0 ${highlightLabel ? 'text-red-600' : 'text-emerald-950'}`} style={{ fontWeight: 'bold', color: highlightLabel ? '#dc2626' : '#022c22', textAlign: 'center', width: '10px', flexShrink: 0 }}>:</div>
       <div className={`font-bold whitespace-pre-wrap break-words pl-1 flex-shrink-0 ${highlightLabel ? 'text-red-600' : 'text-gray-900'}`} style={{ fontWeight: 'bold', color, whiteSpace: 'pre-wrap', wordBreak: 'break-word', paddingLeft: '4px', flexShrink: 0, width: vWidth }}>{value || '-'}</div>
     </div>
@@ -526,7 +526,7 @@ export default function JathagamPDFTemplate({ profile, profileId, family: family
             <FieldRow label="படிப்பு - விவரங்கள்" value={educationStr} />
             <FieldRow label="மாத வருமானம்" value={income} />
             <FieldRow label="சொத்து விவரம்" value={propertyStr} />
-            <FieldRow label="பொருந்தும் நட்சத்திரம்" highlightLabel={true} value={profile.poruthaNakshatram?.length ? profile.poruthaNakshatram.map((val: string) => {
+            <FieldRow label={"பொருந்தும்\nநட்சத்திரம்"} highlightLabel={true} value={profile.poruthaNakshatram?.length ? profile.poruthaNakshatram.map((val: string) => {
               const parts = val.split('(');
               const nakName = parts[0].trim();
               const tamilNak = translateToTamil(nakName, nakshatraMap) || nakName;
