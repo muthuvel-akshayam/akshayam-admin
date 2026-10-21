@@ -5,6 +5,7 @@
 // This file exports the Prisma client instance used by the Admin module.
 // Uses Prisma 7 adapter-pg to connect cleanly with Supabase poolers.
 
+import 'dotenv/config';
 import { PrismaClient } from '../../generated/prisma/client/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import pg from 'pg';
@@ -12,14 +13,19 @@ import pg from 'pg';
 const prismaClientSingleton = () => {
   const connectionString = process.env.DATABASE_URL || process.env.DIRECT_URL || '';
   if (!connectionString) {
-    console.warn("DATABASE_URL is not set");
+    console.warn("DATABASE_URL is not set in environment");
   }
   const pool = new pg.Pool({ 
     connectionString,
-    max: process.env.NODE_ENV === 'production' ? 1 : 2, // Limit connections per hot-reload to prevent exhaustion
+    max: process.env.NODE_ENV === 'production' ? 2 : 4,
     idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 5000,
+    connectionTimeoutMillis: 20000,
   });
+
+  pool.on('error', (err) => {
+    console.warn('[Supabase PG Pool] Background idle client notice:', err.message);
+  });
+
   const adapter = new PrismaPg(pool);
   return new PrismaClient({ adapter });
 };

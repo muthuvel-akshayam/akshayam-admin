@@ -614,7 +614,7 @@ export default function UserDrawer({ userId, isOpen, onClose, onReviewComplete }
       
       {/* Hidden container for PDF rendering */}
       {profile && (
-        <div style={{ position: 'absolute', left: '-9999px', top: 0, opacity: 0, pointerEvents: 'none', zIndex: -1 }}>
+        <div style={{ position: 'fixed', left: '-9999px', top: 0, pointerEvents: 'none', zIndex: -1000 }}>
           <JathagamPDFTemplate 
             profile={{ ...userData, ...profile }} 
             profileId={String(profile.displayId || profile.userId || profile.id)}

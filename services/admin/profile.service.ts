@@ -76,7 +76,7 @@ export class ProfileService {
         casteDistribution,
       };
     } catch (error) {
-      console.warn('Error fetching dashboard stats from DB, serving fallback:', error);
+      console.error('[DashboardService] Error fetching dashboard stats from DB:', error);
       return {
         totalUsers: 0,
         pendingProfiles: 0,
@@ -192,12 +192,34 @@ export class ProfileService {
       }
 
       if (filters.query) {
-        where.OR = [
-          { name: { contains: filters.query, mode: 'insensitive' } },
-          { city: { contains: filters.query, mode: 'insensitive' } },
-          { nakshatra: { contains: filters.query, mode: 'insensitive' } },
-          { caste: { contains: filters.query, mode: 'insensitive' } },
+        const trimmedQuery = filters.query.trim();
+        const orConditions: any[] = [
+          { name: { contains: trimmedQuery, mode: 'insensitive' } },
+          { city: { contains: trimmedQuery, mode: 'insensitive' } },
+          { nakshatra: { contains: trimmedQuery, mode: 'insensitive' } },
+          { caste: { contains: trimmedQuery, mode: 'insensitive' } },
+          { displayId: { contains: trimmedQuery, mode: 'insensitive' } },
+          { id: { contains: trimmedQuery, mode: 'insensitive' } },
+          { user: { userid: { contains: trimmedQuery, mode: 'insensitive' } } },
+          { user: { id: { contains: trimmedQuery, mode: 'insensitive' } } },
+          { user: { mobile_no: { contains: trimmedQuery } } },
+          { user: { email: { contains: trimmedQuery, mode: 'insensitive' } } },
         ];
+
+        const akmMatch = trimmedQuery.match(/^AKM-?(\d+)$/i);
+        if (akmMatch) {
+          const parsedIndex = parseInt(akmMatch[1], 10);
+          if (!isNaN(parsedIndex) && parsedIndex <= 2147483647) {
+            orConditions.push({ user: { userIndex: parsedIndex } });
+          }
+        } else if (/^\d+$/.test(trimmedQuery) && trimmedQuery.length <= 9) {
+          const parsedNum = parseInt(trimmedQuery, 10);
+          if (!isNaN(parsedNum) && parsedNum <= 2147483647) {
+            orConditions.push({ user: { userIndex: parsedNum } });
+          }
+        }
+
+        where.OR = orConditions;
       }
 
       const sortField = filters.sortBy === 'name' ? 'name' : filters.sortBy === 'age' ? 'age' : 'id';

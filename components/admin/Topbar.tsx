@@ -119,7 +119,7 @@ export const Topbar: React.FC<TopbarProps> = ({
         <form onSubmit={handleSearch} className="w-full relative">
           <input
             type="text"
-            placeholder="சுயவிவரங்கள், நட்சத்திரம், நகரம் தேடுக..."
+            placeholder="சுயவிவர ID, பெயர், நட்சத்திரம், நகரம் தேடுக..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full bg-slate-100  text-slate-800  pl-10 pr-4 py-2 rounded-xl text-sm border border-transparent focus:border-emerald-600 focus:bg-white  focus:outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all"

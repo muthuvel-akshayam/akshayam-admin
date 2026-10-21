@@ -6,6 +6,19 @@ export async function downloadBioDataPdf(elementId: string, filename: string) {
   if (!templateElement) return;
 
   try {
+    // Wait for all images inside the template to load before capturing
+    const images = Array.from(templateElement.querySelectorAll('img'));
+    await Promise.all(
+      images.map(img => {
+        if (img.complete && img.naturalHeight > 0) return Promise.resolve();
+        return new Promise<void>((resolve) => {
+          img.onload = () => resolve();
+          img.onerror = () => resolve();
+        });
+      })
+    );
+    await new Promise(r => setTimeout(r, 120));
+
     // Capture high-res canvas using html2canvas-pro
     const canvas = await html2canvas(templateElement, {
       scale: 2,
@@ -38,6 +51,19 @@ export async function printBioDataPdf(elementId: string) {
   if (!templateElement) return;
 
   try {
+    // Wait for all images inside the template to load before capturing
+    const images = Array.from(templateElement.querySelectorAll('img'));
+    await Promise.all(
+      images.map(img => {
+        if (img.complete && img.naturalHeight > 0) return Promise.resolve();
+        return new Promise<void>((resolve) => {
+          img.onload = () => resolve();
+          img.onerror = () => resolve();
+        });
+      })
+    );
+    await new Promise(r => setTimeout(r, 120));
+
     const canvas = await html2canvas(templateElement, {
       scale: 2,
       useCORS: true,

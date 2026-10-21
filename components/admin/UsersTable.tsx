@@ -27,6 +27,7 @@ export interface UsersTableProps {
   onFilterChange?: (search: string, status: string) => void;
   onRowClick?: (userId: string | number) => void;
   currentStatus?: string;
+  searchQuery?: string;
   isLoading?: boolean;
 }
 
@@ -39,6 +40,7 @@ export const UsersTable: React.FC<UsersTableProps> = ({
   onFilterChange,
   onRowClick,
   currentStatus = 'all',
+  searchQuery: initialSearchQuery = '',
   isLoading = false,
 }) => {
   const { showToast } = useToast();
@@ -46,7 +48,13 @@ export const UsersTable: React.FC<UsersTableProps> = ({
   const [deleteConfirmUser, setDeleteConfirmUser] = useState<AdminUser | null>(null);
   const [resetPasswordUser, setResetPasswordUser] = useState<AdminUser | null>(null);
   const [newPassword, setNewPassword] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(initialSearchQuery);
+
+  React.useEffect(() => {
+    if (initialSearchQuery !== undefined) {
+      setSearchQuery(initialSearchQuery);
+    }
+  }, [initialSearchQuery]);
 
   const handleStatusToggle = async (e: React.MouseEvent, user: AdminUser) => {
     e.stopPropagation();
@@ -168,14 +176,29 @@ export const UsersTable: React.FC<UsersTableProps> = ({
           <div className="relative flex-1">
             <input
               type="text"
-              placeholder="பயனர் பெயர், மின்னஞ்சல், போன் எண் தேடுக..."
+              placeholder="பயனர் ID, பெயர், மின்னஞ்சல், போன் எண் தேடுக..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-white text-slate-800 pl-9 pr-3 py-2 rounded-xl text-sm border border-slate-200 focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+              className="w-full bg-white text-slate-800 pl-9 pr-8 py-2 rounded-xl text-sm border border-slate-200 focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
             />
             <svg className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchQuery('');
+                  if (onFilterChange) onFilterChange('', currentStatus);
+                }}
+                className="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600 p-0.5 rounded-full"
+                title="அழி"
+              >
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            )}
           </div>
           <Button type="submit" variant="secondary" size="sm" className="shrink-0 h-9">தேடு</Button>
         </form>

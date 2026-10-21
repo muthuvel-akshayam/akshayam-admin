@@ -93,11 +93,31 @@ export async function GET(request: NextRequest) {
     }
 
     if (search) {
-      where.OR = [
-        { email: { contains: search, mode: 'insensitive' } },
-        { mobile_no: { contains: search } },
-        { profile: { is: { ...profileFilter, name: { contains: search, mode: 'insensitive' } } } },
+      const trimmedSearch = search.trim();
+      const orConditions: any[] = [
+        { email: { contains: trimmedSearch, mode: 'insensitive' } },
+        { mobile_no: { contains: trimmedSearch } },
+        { userid: { contains: trimmedSearch, mode: 'insensitive' } },
+        { id: { contains: trimmedSearch, mode: 'insensitive' } },
+        { profile: { is: { ...profileFilter, name: { contains: trimmedSearch, mode: 'insensitive' } } } },
+        { profile: { is: { ...profileFilter, displayId: { contains: trimmedSearch, mode: 'insensitive' } } } },
+        { profile: { is: { ...profileFilter, id: { contains: trimmedSearch, mode: 'insensitive' } } } },
       ];
+
+      const akmMatch = trimmedSearch.match(/^AKM-?(\d+)$/i);
+      if (akmMatch) {
+        const parsedIndex = parseInt(akmMatch[1], 10);
+        if (!isNaN(parsedIndex) && parsedIndex <= 2147483647) {
+          orConditions.push({ userIndex: parsedIndex });
+        }
+      } else if (/^\d+$/.test(trimmedSearch) && trimmedSearch.length <= 9) {
+        const parsedNum = parseInt(trimmedSearch, 10);
+        if (!isNaN(parsedNum) && parsedNum <= 2147483647) {
+          orConditions.push({ userIndex: parsedNum });
+        }
+      }
+
+      where.OR = orConditions;
     }
 
     const [users, total] = await Promise.all([
@@ -110,6 +130,7 @@ export async function GET(request: NextRequest) {
           profile: {
             select: {
               id: true,
+              displayId: true,
               name: true,
               gender: true,
               status: true,
@@ -118,6 +139,7 @@ export async function GET(request: NextRequest) {
               religion: true,
               caste: true,
               nakshatra: true,
+              profileCreatedBy: true,
             }
           }
         },
@@ -138,9 +160,10 @@ export async function GET(request: NextRequest) {
       profileId: u.profile?.id,
       isFeatured: u.isFeatured || false,
       paymentScreenshot: u.paymentScreenshot,
-      userid: u.userid,
+      userid: u.userid || u.profile?.displayId,
       userIndex: u.userIndex,
       paymentDone: u.paymentDone || false,
+      profileCreatedBy: u.profile?.profileCreatedBy,
     }));
 
     return NextResponse.json({

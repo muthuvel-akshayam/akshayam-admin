@@ -110,11 +110,30 @@ export class UserService {
         where.status = statusFilter;
       }
       if (query) {
-        where.OR = [
-          { email: { contains: query, mode: 'insensitive' } },
-          { mobile_no: { contains: query } },
-          { profile: { name: { contains: query, mode: 'insensitive' } } },
+        const trimmedQuery = query.trim();
+        const orConditions: any[] = [
+          { email: { contains: trimmedQuery, mode: 'insensitive' } },
+          { mobile_no: { contains: trimmedQuery } },
+          { userid: { contains: trimmedQuery, mode: 'insensitive' } },
+          { id: { contains: trimmedQuery, mode: 'insensitive' } },
+          { profile: { name: { contains: trimmedQuery, mode: 'insensitive' } } },
+          { profile: { displayId: { contains: trimmedQuery, mode: 'insensitive' } } },
         ];
+
+        const akmMatch = trimmedQuery.match(/^AKM-?(\d+)$/i);
+        if (akmMatch) {
+          const parsedIndex = parseInt(akmMatch[1], 10);
+          if (!isNaN(parsedIndex) && parsedIndex <= 2147483647) {
+            orConditions.push({ userIndex: parsedIndex });
+          }
+        } else if (/^\d+$/.test(trimmedQuery) && trimmedQuery.length <= 9) {
+          const parsedNum = parseInt(trimmedQuery, 10);
+          if (!isNaN(parsedNum) && parsedNum <= 2147483647) {
+            orConditions.push({ userIndex: parsedNum });
+          }
+        }
+
+        where.OR = orConditions;
       }
 
       if (db.user) {
@@ -124,7 +143,7 @@ export class UserService {
             skip,
             take: limit,
             orderBy: { createdAt: 'desc' },
-            include: { profile: { select: { id: true, name: true } } },
+            include: { profile: { select: { id: true, name: true, displayId: true, profileCreatedBy: true } } },
           }),
           db.user.count({ where }),
         ]);
@@ -151,13 +170,22 @@ export class UserService {
       mock = mock.filter((u) => u.status === statusFilter);
     }
     if (query) {
-      const q = query.toLowerCase();
-      mock = mock.filter(
-        (u) =>
+      const q = query.toLowerCase().trim();
+      mock = mock.filter((u) => {
+        const uId = String(u.id || '').toLowerCase();
+        const uIndex = u.userIndex !== undefined ? `akm-${String(u.userIndex).padStart(4, '0')}`.toLowerCase() : '';
+        const uIndexRaw = u.userIndex !== undefined ? String(u.userIndex) : '';
+        const uUserid = String(u.userid || '').toLowerCase();
+        return (
           u.name.toLowerCase().includes(q) ||
           u.email.toLowerCase().includes(q) ||
-          (u.phone && u.phone.includes(q))
-      );
+          (u.phone && u.phone.includes(q)) ||
+          uId.includes(q) ||
+          uUserid.includes(q) ||
+          uIndex.includes(q) ||
+          uIndexRaw === q
+        );
+      });
     }
 
     // Sort in descending order (newest first)

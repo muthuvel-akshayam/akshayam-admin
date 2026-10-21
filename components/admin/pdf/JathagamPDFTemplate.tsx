@@ -12,7 +12,15 @@ interface JathagamPDFTemplateProps {
 }
 
 const convertLegacyGrid = (gridData: any) => {
-    if (!gridData || typeof gridData !== 'object') return [];
+    if (!gridData) return [];
+    if (typeof gridData === 'string') {
+      try {
+        gridData = JSON.parse(gridData);
+      } catch {
+        return [];
+      }
+    }
+    if (typeof gridData !== 'object') return [];
     if (Array.isArray(gridData)) {
       return gridData.filter(h => h && typeof h.houseIndex === 'number' && Array.isArray(h.planets));
     }
@@ -203,6 +211,18 @@ export default function JathagamPDFTemplate({ profile, profileId, family: family
   const rasiHouses = convertLegacyGrid(profile.jathagamData?.rasiChart || profile.jathagamData?.rasiGrid || profile.rasiGrid);
   const amsamHouses = convertLegacyGrid(profile.jathagamData?.navamsamChart || profile.jathagamData?.amsamGrid || profile.amsamGrid);
   const family = familyProp || profile.family || {};
+
+  const resolveSupabaseDocUrl = (urlOrPath: string | null | undefined): string | null => {
+    if (!urlOrPath) return null;
+    if (urlOrPath.startsWith('http://') || urlOrPath.startsWith('https://') || urlOrPath.startsWith('data:')) {
+      return urlOrPath;
+    }
+    const baseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://wtpbmpxwiasbnngciwye.supabase.co';
+    return `${baseUrl}/storage/v1/object/public/user-documents/${urlOrPath}`;
+  };
+
+  const rawJathagam = profile.jathagamUrl || profile.jathakamUrl || profile.documents?.find((d: any) => d.type === 'JATHAGAM')?.url;
+  const resolvedJathagamUrl = resolveSupabaseDocUrl(rawJathagam);
 
   const formatExpectations = (exp: any) => {
     if (!exp) return "நல்ல வாழ்க்கைத்துணை";
@@ -503,18 +523,28 @@ export default function JathagamPDFTemplate({ profile, profileId, family: family
 
               <PDFChartBox title="நவாம்சம்" houses={amsamHouses} />
             </>
+          ) : resolvedJathagamUrl ? (
+            <div className="flex flex-col items-center justify-center w-full min-h-[160px] border border-dashed border-emerald-400 rounded-lg bg-emerald-50/40 p-2" style={{ width: '100%', minHeight: '160px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', border: '1px dashed #34d399', borderRadius: '8px', backgroundColor: 'rgba(236, 253, 245, 0.4)', padding: '8px' }}>
+              <div className="font-bold text-emerald-800 mb-1" style={{ fontSize: '11px', fontWeight: 'bold', color: '#065f46', marginBottom: '4px' }}>ஜாதகம் இணைக்கப்பட்டுள்ளது (Horoscope Chart)</div>
+              {resolvedJathagamUrl.toLowerCase().includes('.pdf') ? (
+                <div className="text-center p-3 bg-white rounded border border-emerald-200">
+                  <div className="text-emerald-800 font-bold text-xs">PDF கோப்பாக இணைக்கப்பட்டுள்ளது</div>
+                  <div className="text-[10px] text-slate-500 mt-0.5">({resolvedJathagamUrl.split('/').pop()})</div>
+                </div>
+              ) : (
+                <img 
+                  crossOrigin="anonymous" 
+                  src={`/api/proxy-image?url=${encodeURIComponent(resolvedJathagamUrl)}`} 
+                  alt="Jathagam Chart" 
+                  style={{ maxWidth: '100%', maxHeight: '145px', objectFit: 'contain', borderRadius: '4px' }} 
+                />
+              )}
+            </div>
           ) : (
             <div className="flex flex-col items-center justify-center w-full min-h-[160px] border border-dashed border-emerald-300 rounded-lg bg-emerald-50/30 p-4" style={{ width: '100%', minHeight: '160px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyItems: 'center', justifyContent: 'center', border: '1px dashed #6ee7b7', borderRadius: '8px', backgroundColor: 'rgba(236, 253, 245, 0.3)', padding: '16px' }}>
-              {profile.documents?.find((d: any) => d.type === 'JATHAGAM') ? (
-                <>
-                  <div className="font-bold text-emerald-800 mb-2" style={{ fontSize: '10px', fontWeight: 'bold', color: '#065f46', marginBottom: '8px' }}>ஜாதகம் இணைக்கப்பட்டுள்ளது</div>
-                  <img crossOrigin="anonymous" src={`/api/proxy-image?url=${encodeURIComponent(profile.documents.find((d: any) => d.type === 'JATHAGAM').url)}`} alt="Jathagam" style={{ maxWidth: '100%', maxHeight: '120px', objectFit: 'contain' }} />
-                </>
-              ) : (
-                <div className="font-bold text-emerald-800" style={{ fontSize: '10px', fontWeight: 'bold', color: '#065f46' }}>
-                  ஜாதக கட்டங்கள் இணைக்கப்படவில்லை (Jathagam Chart not available)
-                </div>
-              )}
+              <div className="font-bold text-emerald-800" style={{ fontSize: '10px', fontWeight: 'bold', color: '#065f46' }}>
+                ஜாதக கட்டங்கள் இணைக்கப்படவில்லை (Jathagam Chart not available)
+              </div>
             </div>
           )}
         </div>

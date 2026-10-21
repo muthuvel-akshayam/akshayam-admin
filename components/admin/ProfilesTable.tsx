@@ -178,7 +178,7 @@ export const ProfilesTable: React.FC<ProfilesTableProps> = ({
             <div className="relative flex-1">
               <input
                 type="text"
-                placeholder="Search name, city, nakshatra, caste..."
+                placeholder="Search Profile/User ID, name, city, nakshatra, caste..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full bg-white  text-slate-800  pl-9 pr-3 py-2 rounded-xl text-sm border border-slate-200  focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
