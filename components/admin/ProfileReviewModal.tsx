@@ -20,17 +20,36 @@ import { downloadBioDataPdf } from '../../lib/admin/generatePdf';
 import { useRouter } from 'next/navigation';
 
 const mapAstrologyGridToPlacements = (gridData: any): PlanetPlacement[] => {
-  if (!gridData || typeof gridData !== 'object') return [];
+  if (!gridData) return [];
+  if (typeof gridData === 'string') {
+    try {
+      gridData = JSON.parse(gridData);
+    } catch {
+      return [];
+    }
+  }
+  if (typeof gridData !== 'object') return [];
+  if (Array.isArray(gridData)) {
+    return gridData.filter(h => h && typeof h.houseIndex === 'number' && Array.isArray(h.planets));
+  }
   const houseMapping: Record<string, number> = {
     'meenam': 11, 'mesham': 0, 'rishabham': 1, 'mithunam': 2,
     'kadagam': 3, 'simmam': 4, 'kanni': 5, 'thulam': 6,
     'viruchigam': 7, 'dhanusu': 8, 'magaram': 9, 'kumbam': 10
   };
   
-  return Object.entries(gridData).map(([key, planets]) => ({
-    houseIndex: houseMapping[key.toLowerCase()] ?? 0,
-    planets: Array.isArray(planets) ? planets : []
-  }));
+  return Object.entries(gridData).map(([key, planets]) => {
+    let houseIndex: number;
+    if (!isNaN(Number(key))) {
+      houseIndex = Number(key);
+    } else {
+      houseIndex = houseMapping[key.toLowerCase()] ?? 0;
+    }
+    return {
+      houseIndex,
+      planets: Array.isArray(planets) ? planets : []
+    };
+  });
 };
 
 export interface ProfileReviewModalProps {
@@ -430,15 +449,62 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
               <p className="text-xs text-slate-500 mb-4">Click below to inspect the uploaded horoscope chart.</p>
             </div>
             <div className="border-2 border-dashed border-slate-300  rounded-xl p-4 text-center bg-white  flex flex-col items-center justify-center min-h-[160px]">
-              {(profile.rasiGrid || profile.amsamGrid) ? (
-                <div className="w-full">
-                  <JathagamGridView 
-                    rasiData={mapAstrologyGridToPlacements(profile.rasiGrid)}
-                    navamsamData={mapAstrologyGridToPlacements(profile.amsamGrid)}
-                  />
-                  {profile.jathagamUrl && (
-                    <div className="mt-6 border-t pt-4">
-                      <p className="text-xs text-slate-500 mb-2">Original Uploaded File:</p>
+              {(() => {
+                const parsedJData = typeof profile.jathagamData === 'string'
+                  ? (() => { try { return JSON.parse(profile.jathagamData); } catch { return {}; } })()
+                  : (profile.jathagamData || {});
+                const rasiSource = profile.rasiGrid || parsedJData?.rasiChart || parsedJData?.rasiGrid;
+                const amsamSource = profile.amsamGrid || parsedJData?.navamsamChart || parsedJData?.amsamGrid;
+                const hasAstrologyGrids = Boolean(rasiSource || amsamSource);
+
+                if (hasAstrologyGrids) {
+                  return (
+                    <div className="w-full">
+                      <JathagamGridView 
+                        rasiData={mapAstrologyGridToPlacements(rasiSource)}
+                        navamsamData={mapAstrologyGridToPlacements(amsamSource)}
+                      />
+                      {profile.jathagamUrl && (
+                        <div className="mt-6 border-t pt-4">
+                          <p className="text-xs text-slate-500 mb-2">Original Uploaded File:</p>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              setFullscreenImageUrl(profile.jathagamUrl || null);
+                            }}
+                            className="text-xs bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-4 py-1.5 rounded-lg inline-block transition-colors shadow-sm"
+                          >
+                            View Full Original File
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
+
+                if (profile.jathagamUrl) {
+                  return (
+                    <>
+                      {!jathagamImgError && !profile.jathagamUrl.toLowerCase().includes('.pdf') ? (
+                        <img
+                          src={profile.jathagamUrl}
+                          alt="Jathagam Preview"
+                          className="max-h-[140px] max-w-full object-contain mb-3 rounded-lg shadow-sm cursor-zoom-in"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setFullscreenImageUrl(profile.jathagamUrl || null);
+                          }}
+                          onError={() => setJathagamImgError(true)}
+                        />
+                      ) : (
+                        <svg className="w-10 h-10 text-emerald-600 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                      )}
+                      <p className="text-xs font-bold text-slate-800 ">Horoscope_Chart_{profile.name.replace(/\s+/g, '_')}</p>
                       <button
                         type="button"
                         onClick={(e) => {
@@ -446,56 +512,24 @@ export const ProfileReviewModal: React.FC<ProfileReviewModalProps> = ({
                           e.stopPropagation();
                           setFullscreenImageUrl(profile.jathagamUrl || null);
                         }}
-                        className="text-xs bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-4 py-1.5 rounded-lg inline-block transition-colors shadow-sm"
+                        className="mt-3 text-xs bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-4 py-1.5 rounded-lg inline-block transition-colors shadow-sm"
                       >
-                        View Full Original File
+                        View Jathagam Fullscreen
                       </button>
-                    </div>
-                  )}
-                </div>
-              ) : profile.jathagamUrl ? (
-                <>
-                  {!jathagamImgError && !profile.jathagamUrl.toLowerCase().includes('.pdf') ? (
-                    <img
-                      src={profile.jathagamUrl}
-                      alt="Jathagam Preview"
-                      className="max-h-[140px] max-w-full object-contain mb-3 rounded-lg shadow-sm cursor-zoom-in"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        setFullscreenImageUrl(profile.jathagamUrl || null);
-                      }}
-                      onError={() => setJathagamImgError(true)}
-                    />
-                  ) : (
-                    <svg className="w-10 h-10 text-emerald-600 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                  )}
-                  <p className="text-xs font-bold text-slate-800 ">Horoscope_Chart_{profile.name.replace(/\s+/g, '_')}</p>
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setFullscreenImageUrl(profile.jathagamUrl || null);
-                    }}
-                    className="mt-3 text-xs bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-4 py-1.5 rounded-lg inline-block transition-colors shadow-sm"
-                  >
-                    View Jathagam Fullscreen
-                  </button>
-                  <a
-                    href={profile.jathagamUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="mt-2 text-[10px] text-slate-500 hover:text-emerald-600 underline"
-                  >
-                    Open in new tab
-                  </a>
-                </>
-              ) : (
-                <p className="text-xs text-slate-400">No Jathagam uploaded for this profile yet.</p>
-              )}
+                      <a
+                        href={profile.jathagamUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="mt-2 text-[10px] text-slate-500 hover:text-emerald-600 underline"
+                      >
+                        Open in new tab
+                      </a>
+                    </>
+                  );
+                }
+
+                return <p className="text-xs text-slate-400">No Jathagam uploaded for this profile yet.</p>;
+              })()}
             </div>
           </div>
         </div>
